@@ -48,6 +48,7 @@ window.SidebarJS = (function(window, document) {
   }
 
   function _onTouchStart(e) {
+    this.container.touchMove = 0;
     this.container.touchStart = e.touches[0].pageX;
   }
 
