@@ -1,0 +1,18 @@
+{
+  "name": "sidebarjs",
+  "version": "2.1.5",
+  "description": "Create mobile sidebar/sidenav experiance in pure javascript",
+  "scripts": {
+    "develop": "compass watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lorenzodianni/SidebarJS.git"
+  },
+  "author": "Lorenzo D'Ianni",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lorenzodianni/SidebarJS/issues"
+  },
+  "homepage": "https://github.com/lorenzodianni/SidebarJS#readme"
+}
