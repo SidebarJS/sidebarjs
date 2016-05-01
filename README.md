@@ -8,7 +8,7 @@ Create mobile sidebar/sidenav experiance in pure javascript.
 ## Demo
 *Open the demo on your device and try the touch gestures!*
 
-* Basic: SOON
+* Basic: [Demo](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/basic.html)
 * Advanced: SOON
 
 
