@@ -9,35 +9,40 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 window.SidebarJS = function (window, document) {
   'use strict';
 
-  var IS_VISIBLE = 'sidebarjs--is-visible';
-  var IS_MOVING = 'sidebarjs--is-moving';
+  var CLASS_IS_VISIBLE = 'sidebarjs--is-visible';
+  var CLASS_IS_MOVING = 'sidebarjs--is-moving';
 
   var SidebarJS = function () {
-    function SidebarJS(config) {
+    function SidebarJS() {
       _classCallCheck(this, SidebarJS);
 
-      this.$component = document.querySelector(config ? config.component : '.sidebarjs');
-      this.$container = document.querySelector(config ? config.container : '.sidebarjs-container');
-      this.$background = document.querySelector(config ? config.background : '.sidebarjs-background');
-      this.$open = document.querySelector(config ? config.showElement : '.sidebarjs-open');
+      this.component = document.querySelector('.sidebarjs');
+      this.trigger = document.querySelector('.sidebarjs-trigger');
+      this.container = _create('div', 'container');
+      this.background = _create('div', 'background');
 
-      this.$container.addEventListener('touchstart', _onTouchStart.bind(this));
-      this.$container.addEventListener('touchmove', _onTouchMove.bind(this));
-      this.$container.addEventListener('touchend', _onTouchEnd.bind(this));
-      this.$background.addEventListener('click', this.close.bind(this));
-      this.$open.addEventListener('click', this.open.bind(this));
+      this.container.innerHTML = this.component.innerHTML;
+      this.component.innerHTML = '';
+      this.component.appendChild(this.container);
+      this.component.appendChild(this.background);
+
+      this.container.addEventListener('touchstart', _onTouchStart.bind(this));
+      this.container.addEventListener('touchmove', _onTouchMove.bind(this));
+      this.container.addEventListener('touchend', _onTouchEnd.bind(this));
+      this.background.addEventListener('click', this.close.bind(this));
+      this.trigger.addEventListener('click', this.open.bind(this));
     }
 
     _createClass(SidebarJS, [{
       key: 'open',
       value: function open() {
-        this.$component.classList.contains(IS_VISIBLE) ? this.$container.removeAttribute('style') : this.$component.classList.add(IS_VISIBLE);
+        this.component.classList.contains(CLASS_IS_VISIBLE) ? this.container.removeAttribute('style') : this.component.classList.add(CLASS_IS_VISIBLE);
       }
     }, {
       key: 'close',
       value: function close() {
-        this.$container.removeAttribute('style');
-        this.$component.classList.remove(IS_VISIBLE);
+        this.container.removeAttribute('style');
+        this.component.classList.remove(CLASS_IS_VISIBLE);
       }
     }]);
 
@@ -45,20 +50,26 @@ window.SidebarJS = function (window, document) {
   }();
 
   function _onTouchStart(e) {
-    this.$container.touchStart = e.touches[0].pageX;
+    this.container.touchStart = e.touches[0].pageX;
   }
 
   function _onTouchMove(e) {
-    this.$container.touchMove = this.$container.touchStart - e.touches[0].pageX;
-    if (this.$container.touchMove > 0) {
-      this.$component.classList.add(IS_MOVING);
-      _vendorify(this.$container, 'transform', 'translate(' + -this.$container.touchMove + 'px, 0)');
+    this.container.touchMove = this.container.touchStart - e.touches[0].pageX;
+    if (this.container.touchMove > 0) {
+      this.component.classList.add(CLASS_IS_MOVING);
+      _vendorify(this.container, 'transform', 'translate(' + -this.container.touchMove + 'px, 0)');
     }
   }
 
   function _onTouchEnd() {
-    this.$component.classList.remove(IS_MOVING);
-    this.$container.touchMove > this.$container.clientWidth / 3.5 ? this.close() : this.open();
+    this.component.classList.remove(CLASS_IS_MOVING);
+    this.container.touchMove > this.container.clientWidth / 3.5 ? this.close() : this.open();
+  }
+
+  function _create(tag, element) {
+    var el = document.createElement(tag);
+    el.setAttribute('class', 'sidebarjs-' + element);
+    return el;
   }
 
   function _vendorify(el, prop, val) {

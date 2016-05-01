@@ -38,6 +38,14 @@
   max-width: 300px;
   height: 100%;
   background: #FFF;
+  display: -moz-flex;
+  -moz-flex-direction: column;
+  display: -ms-flex;
+  -ms-flex-direction: column;
+  display: -webkit-flex;
+  -webkit-flex-direction: column;
+  display: flex;
+  flex-direction: column;
   -moz-box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1);
   -webkit-box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1);
   box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1);
@@ -50,7 +58,7 @@
   -webkit-transform: translate(-100%, 0);
   transform: translate(-100%, 0);
 }
-/* line 40, ../src/sidebarjs.scss */
+/* line 48, ../src/sidebarjs.scss */
 .sidebarjs--is-visible {
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
@@ -62,18 +70,18 @@
   -webkit-transition-delay: 0s;
   transition: transform 0s ease 0s;
 }
-/* line 44, ../src/sidebarjs.scss */
+/* line 52, ../src/sidebarjs.scss */
 .sidebarjs--is-visible .sidebarjs-container {
   -moz-transform: translate(0, 0);
   -ms-transform: translate(0, 0);
   -webkit-transform: translate(0, 0);
   transform: translate(0, 0);
 }
-/* line 47, ../src/sidebarjs.scss */
+/* line 55, ../src/sidebarjs.scss */
 .sidebarjs--is-visible .sidebarjs-background {
   opacity: .2;
 }
-/* line 53, ../src/sidebarjs.scss */
+/* line 61, ../src/sidebarjs.scss */
 .sidebarjs--is-moving .sidebarjs-container {
   -moz-transition: none;
   -o-transition: none;

@@ -23,7 +23,7 @@ a {
   text-decoration: none;
 }
 
-.js-sidebar--open {
+.sidebarjs-trigger {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +33,7 @@ a {
   box-shadow: 0 1px 3px rgba(0,0,0, .12), 0 1px 2px rgba(0,0,0, .24);
 }
 
-.sidebar--title {
+.sidebarjs h3 {
   display: flex;
   align-items: flex-end;
   height: 150px;
@@ -45,14 +45,14 @@ a {
   line-height: 100%;
 }
 
-.sidebar--menu {
+.sidebarjs nav {
   overflow: auto;
 }
-.sidebar--menu-link--group {
+.sidebarjs nav > div {
   display: flex;
   flex-direction: column;
   border-top: 1px solid rgba(0,0,0, .1);
 }
-.sidebar--menu-link--group-link {
+.sidebarjs nav > div a {
   padding: 16px;
 }
