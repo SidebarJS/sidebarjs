@@ -1,6 +1,6 @@
 {
   "name": "sidebarjs",
-  "version": "2.1.5",
+  "version": "0.0.1",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "scripts": {
     "develop": "compass watch"

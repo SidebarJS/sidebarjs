@@ -1,19 +1,19 @@
 /* jshint -W003  *//* jshint -W030  *//* jshint -W040 */
 
-window.Sidebar = (function(window, document) {
+window.SidebarJS = (function(window, document) {
   'use strict';
 
   const IS_VISIBLE = 'is-visible';
   const TRANSITION = 'transition: all';
   const TRANSLATE = 'transform: translate';
 
-  class Sidebar {
+  class SidebarJS {
     constructor(config) {
       this.$component = document.querySelector(config ? config.component : '.js-sidebar');
       this.$container = document.querySelector(config ? config.container : '.js-sidebar--container');
       this.$background = document.querySelector(config ? config.background : '.js-sidebar--background');
       this.$open = document.querySelector(config ? config.showElement : '.js-sidebar--open');
-      
+
       this.$container.addEventListener('touchstart', _onTouchStart.bind(this));
       this.$container.addEventListener('touchmove', _onTouchMove.bind(this));
       this.$container.addEventListener('touchend', _onTouchEnd.bind(this));
@@ -68,6 +68,6 @@ window.Sidebar = (function(window, document) {
     this.$container.touchMove > (this.$container.clientWidth/4) ? this.close() : this.open();
   }
 
-  return Sidebar;
+  return SidebarJS;
 
 })(window, document);
