@@ -22,12 +22,12 @@ $duration: .3s;
       @include transform(translate(0, 0));
     }
     [sidebarjs-background] {
-      opacity: .2;
+      opacity: .3;
     }
   }
 
   &.sidebarjs--is-moving {
-    [sidebarjs-container] {
+    [sidebarjs-container], [sidebarjs-background] {
       @include transition(none);
     }
   }

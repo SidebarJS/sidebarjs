@@ -42,6 +42,7 @@ window.SidebarJS = (function(window, document) {
 
     close() {
       this.container.removeAttribute('style');
+      this.background.removeAttribute('style');
       this.component.classList.remove(CLASS_IS_VISIBLE);
     }
   }
@@ -55,12 +56,18 @@ window.SidebarJS = (function(window, document) {
     if(this.container.touchMove > 0) {
       this.component.classList.add(CLASS_IS_MOVING);
       _vendorify(this.container, `transform`, `translate(${-this.container.touchMove}px, 0)`);
+      _updateOpacity.call(this);
     }
   }
 
   function _onTouchEnd() {
     this.component.classList.remove(CLASS_IS_MOVING);
     this.container.touchMove > (this.container.clientWidth/3.5) ? this.close() : this.open();
+  }
+
+  function _updateOpacity() {
+    var opacity = 0.3 - this.container.touchMove/(this.container.clientWidth*3.5);
+    this.background.style.opacity = (opacity).toString();
   }
 
   function _create(element) {

@@ -41,7 +41,7 @@
         box-shadow: 0 1px 3px rgba(0,0,0, .12), 0 1px 2px rgba(0,0,0, .24);
       }
 
-      aside h3 {
+      div h3 {
         display: flex;
         align-items: flex-end;
         height: 150px;
@@ -53,15 +53,15 @@
         line-height: 100%;
       }
 
-      aside nav {
+      div nav {
         overflow: auto;
       }
-      aside nav > div {
+      div nav > div {
         display: flex;
         flex-direction: column;
         border-top: 1px solid rgba(0,0,0, .1);
       }
-      aside nav > div a {
+      div nav > div a {
         padding: 16px;
       }
     </style>
@@ -70,7 +70,7 @@
     <header sidebarjs-toggle>open</header>
     <div>Selected: <span id="selected">-</span></div>
 
-    <aside sidebarjs>
+    <div sidebarjs>
       <h3>Title</h3>
       <nav>
         <div>
@@ -86,7 +86,7 @@
           <a href="#!">Link 5</a>
         </div>
       </nav>
-    </aside>
+    </div>
 
     <script src="../dist/sidebar.js"></script>
     <script type="text/javascript">

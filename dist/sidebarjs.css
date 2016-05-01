@@ -37,10 +37,10 @@
 }
 /* line 24, ../src/sidebarjs.scss */
 [sidebarjs].sidebarjs--is-visible [sidebarjs-background] {
-  opacity: .2;
+  opacity: .3;
 }
 /* line 30, ../src/sidebarjs.scss */
-[sidebarjs].sidebarjs--is-moving [sidebarjs-container] {
+[sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-background] {
   -moz-transition: none;
   -o-transition: none;
   -webkit-transition: none;
