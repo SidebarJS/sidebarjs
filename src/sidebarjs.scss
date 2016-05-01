@@ -4,7 +4,7 @@
 $timing: ease;
 $duration: .3s;
 
-.sidebarjs {
+[sidebarjs] {
   position: fixed;
   z-index: 9999;
   top: 0;
@@ -14,52 +14,52 @@ $duration: .3s;
   @include transform(translate(-100%, 0));
   @include transition(transform 0s $timing $duration);
 
-  &-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #000;
-    opacity: 0;
-    @include transition(opacity $duration $timing);
-  }
-
-  &-container {
-    position: relative;
-    z-index: 1;
-    width: 90%;
-    max-width: 300px;
-    height: 100%;
-    background: #FFF;
-    @include flexbox((
-      display: flex,
-      flex-direction: column
-    ), 1 2 3);
-    @include flexbox((
-      display: flex,
-      flex-direction: column
-    ), 3);
-    @include box-shadow(2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1));
-    @include transition(all $timing $duration);
-    @include transform(translate(-100%, 0));
-  }
-
-  &--is-visible {
+  &.sidebarjs--is-visible {
     @include transform(translate(0, 0));
     @include transition(transform 0s $timing 0s);
 
-    .sidebarjs-container {
+    [sidebarjs-container] {
       @include transform(translate(0, 0));
     }
-    .sidebarjs-background {
+    [sidebarjs-background] {
       opacity: .2;
     }
   }
 
-  &--is-moving {
-    .sidebarjs-container {
+  &.sidebarjs--is-moving {
+    [sidebarjs-container] {
       @include transition(none);
     }
   }
+}
+
+[sidebarjs-background] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  opacity: 0;
+  @include transition(opacity $duration $timing);
+}
+
+[sidebarjs-container] {
+  position: relative;
+  z-index: 1;
+  width: 90%;
+  max-width: 300px;
+  height: 100%;
+  background: #FFF;
+  @include flexbox((
+    display: flex,
+    flex-direction: column
+  ), 1 2 3);
+  @include flexbox((
+    display: flex,
+    flex-direction: column
+  ), 3);
+  @include box-shadow(2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1));
+  @include transition(all $timing $duration);
+  @include transform(translate(-100%, 0));
 }

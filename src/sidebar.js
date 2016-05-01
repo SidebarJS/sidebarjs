@@ -8,23 +8,32 @@ window.SidebarJS = (function(window, document) {
 
   class SidebarJS {
     constructor() {
-      this.component = document.querySelector('.sidebarjs');
-      this.trigger = document.querySelector('.sidebarjs-trigger');
-      this.container = _create('div', 'container');
-      this.background = _create('div', 'background');
+      this.component = document.querySelector('[sidebarjs]');
+      this.container = _create('sidebarjs-container');
+      this.background = _create('sidebarjs-background');
 
       this.container.innerHTML = this.component.innerHTML;
       this.component.innerHTML = '';
       this.component.appendChild(this.container);
       this.component.appendChild(this.background);
 
+      var _toggles = document.querySelectorAll('[sidebarjs-toggle]');
+      for(var i = 0; i < _toggles.length; i++) {
+        _toggles[i].addEventListener('click', this.toggle.bind(this));
+      }
+
       this.container.addEventListener('touchstart', _onTouchStart.bind(this));
       this.container.addEventListener('touchmove', _onTouchMove.bind(this));
       this.container.addEventListener('touchend', _onTouchEnd.bind(this));
       this.background.addEventListener('click', this.close.bind(this));
-      this.trigger.addEventListener('click', this.open.bind(this));
     }
-    
+
+    toggle() {
+      this.component.classList.contains(CLASS_IS_VISIBLE)
+      ? this.close()
+      : this.open();
+    }
+
     open() {
       this.component.classList.contains(CLASS_IS_VISIBLE)
       ? this.container.removeAttribute('style')
@@ -54,9 +63,9 @@ window.SidebarJS = (function(window, document) {
     this.container.touchMove > (this.container.clientWidth/3.5) ? this.close() : this.open();
   }
 
-  function _create(tag, element) {
-    const el = document.createElement(tag);
-    el.setAttribute('class', `sidebarjs-${element}`);
+  function _create(element) {
+    const el = document.createElement('div');
+    el.setAttribute(element, '');
     return el;
   }
 
