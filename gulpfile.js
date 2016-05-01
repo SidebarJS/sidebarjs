@@ -9,7 +9,7 @@ const cssmin      = require('gulp-cssmin');
 const sourcemaps  = require('gulp-sourcemaps');
 
 gulp.task('scripts', function(){
-  return gulp.src('./src/sidebar.js')
+  return gulp.src('./src/sidebarjs.js')
     .pipe(sourcemaps.init())
     .pipe(babel({
 			presets: ['es2015']
