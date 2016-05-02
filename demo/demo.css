@@ -16,6 +16,35 @@ a {
   text-decoration: none;
 }
 
+[sidebarjs] .img {
+  display: block;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  min-height: 24px;
+  margin-right: 16px;
+  opacity: .8;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.img.github {
+  background-image: url('./img/github.png');
+}
+.img.npm {
+  background-image: url('./img/npm.png');
+}
+.img.author {
+  background-image: url('./img/code.png');
+}
+.img.wiki {
+  background-image: url('./img/wiki.png');
+}
+.img.bugs {
+  background-image: url('./img/bugs.png');
+}
+
 /* –––––––––––––––––––––––––––––––––––––––
                 Basic Demo
 –––––––––––––––––––––––––––––––––––––––– */
@@ -46,7 +75,7 @@ header {
   background: #FFF;
   box-shadow: 0 -6px 0 #FFF, 0 6px 0 #FFF;
 }
-[sidebarjs] > .github {
+[sidebarjs] .large-img {
   position: absolute;
   top: 48%; left: 50%;
   transform: translate(-50%, -50%);
@@ -54,8 +83,6 @@ header {
   width: 110px;
   height: 110px;
   margin: auto;
-  background: url('./img/github.png') no-repeat center center;
-  background-size: cover;
 }
 header h1 {
   position: absolute;
@@ -122,34 +149,6 @@ header h1 {
 [sidebarjs] nav a:active {
   color: inherit;
   background: rgba(0,0,0, .1);
-}
-[sidebarjs] nav a .img {
-  display: block;
-  width: 24px;
-  min-width: 24px;
-  height: 24px;
-  min-height: 24px;
-  margin-right: 16px;
-  opacity: .8;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.img.github {
-  background-image: url('./img/github.png');
-}
-.img.npm {
-  background-image: url('./img/npm.png');
-}
-.img.author {
-  background-image: url('./img/code.png');
-}
-.img.wiki {
-  background-image: url('./img/wiki.png');
-}
-.img.bugs {
-  background-image: url('./img/bugs.png');
 }
 
 #selected {
