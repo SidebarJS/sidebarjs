@@ -22,9 +22,9 @@ window.SidebarJS = (function(window, document) {
         _toggles[i].addEventListener('click', this.toggle.bind(this));
       }
 
-      this.container.addEventListener('touchstart', _onTouchStart.bind(this));
-      this.container.addEventListener('touchmove', _onTouchMove.bind(this));
-      this.container.addEventListener('touchend', _onTouchEnd.bind(this));
+      this.component.addEventListener('touchstart', _onTouchStart.bind(this));
+      this.component.addEventListener('touchmove', _onTouchMove.bind(this));
+      this.component.addEventListener('touchend', _onTouchEnd.bind(this));
       this.background.addEventListener('click', this.close.bind(this));
     }
 
@@ -35,20 +35,15 @@ window.SidebarJS = (function(window, document) {
     }
 
     open() {
-      this.component.classList.contains(CLASS_IS_VISIBLE)
-      ? this.container.removeAttribute('style')
-      : this.component.classList.add(CLASS_IS_VISIBLE);
+      this.component.classList.add(CLASS_IS_VISIBLE);
     }
 
     close() {
-      this.container.removeAttribute('style');
-      this.background.removeAttribute('style');
       this.component.classList.remove(CLASS_IS_VISIBLE);
     }
   }
 
   function _onTouchStart(e) {
-    this.container.touchMove = 0;
     this.container.touchStart = e.touches[0].pageX;
   }
 
@@ -57,18 +52,17 @@ window.SidebarJS = (function(window, document) {
     if(this.container.touchMove > 0) {
       this.component.classList.add(CLASS_IS_MOVING);
       _vendorify(this.container, `transform`, `translate(${-this.container.touchMove}px, 0)`);
-      _updateOpacity.call(this);
+      var opacity = 0.3 - this.container.touchMove/(this.container.clientWidth*3.5);
+      this.background.style.opacity = (opacity).toString();
     }
   }
 
   function _onTouchEnd() {
     this.component.classList.remove(CLASS_IS_MOVING);
     this.container.touchMove > (this.container.clientWidth/3.5) ? this.close() : this.open();
-  }
-
-  function _updateOpacity() {
-    var opacity = 0.3 - this.container.touchMove/(this.container.clientWidth*3.5);
-    this.background.style.opacity = (opacity).toString();
+    this.container.touchMove = 0;
+    this.container.removeAttribute('style');
+    this.background.removeAttribute('style');
   }
 
   function _create(element) {
