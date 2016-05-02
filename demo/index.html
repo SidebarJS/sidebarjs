@@ -23,13 +23,13 @@
       <h3>SidebarJS</h3>
       <nav>
         <div>
-          <a target="_blank" href="https://github.com/lorenzodianni/SidebarJS"><div class="img github"></div>Github</a>
-          <a target="_blank" href="https://www.npmjs.com/~lorenzodianni"><div class="img npm"></div>npm</a>
-          <a target="_blank" href="https://github.com/lorenzodianni"><div class="img author"></div>Author</a>
+          <a anchor="https://github.com/lorenzodianni/SidebarJS"><div class="img github"></div>Github</a>
+          <a anchor="https://www.npmjs.com/~lorenzodianni"><div class="img npm"></div>npm</a>
+          <a anchor="https://github.com/lorenzodianni"><div class="img author"></div>Author</a>
         </div>
         <div>
-          <a target="_blank" href="https://github.com/lorenzodianni/SidebarJS/blob/master/README.md"><div class="img wiki"></div>Wiki</a>
-          <a target="_blank" href="https://github.com/lorenzodianni/SidebarJS/issues"><div class="img bugs"></div>Bugs</a>
+          <a anchor="https://github.com/lorenzodianni/SidebarJS/blob/master/README.md"><div class="img wiki"></div>Wiki</a>
+          <a anchor="https://github.com/lorenzodianni/SidebarJS/issues"><div class="img bugs"></div>Bugs</a>
         </div>
       </nav>
     </div>
@@ -63,8 +63,7 @@
     }
 
     function elementSelected(e) {
-      e.preventDefault();
-      selectedLink.setAttribute('href', this.href);
+      selectedLink.setAttribute('href', this.attributes['anchor'].value);
       selectedImg.className = 'img ' + this.text.toLowerCase();
       selectedLabel.innerText = this.text;
       sidebarjs.close();
