@@ -6,101 +6,70 @@
     <meta name="author" content="Lorenzo D'Ianni">
     <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>SidebarJS</title>
+    <title>SidebarJS - Basic Demo</title>
+    <link rel="stylesheet" href="./demo.css">
+
+    <!-- SidebarJS Styles -->
     <link rel="stylesheet" href="../dist/sidebarjs.css">
-
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        -webkit-font-smoothing: antialiased;
-        -moz-osx-font-smoothing: grayscale;
-        -webkit-overflow-scrolling: touch;
-        -webkit-tap-highlight-color: rgba(black, 0);
-      	-moz-tap-highlight-color: rgba(black, 0);
-      	tap-highlight-color: rgba(black, 0);
-      }
-
-      html, body {
-        font: 300 14px/100% 'Arial', sans-serif;
-      }
-
-      a {
-        color: inherit;
-        text-decoration: none;
-      }
-
-      header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 44px;
-        color: #FFF;
-        background: #2196F3;
-        box-shadow: 0 1px 3px rgba(0,0,0, .12), 0 1px 2px rgba(0,0,0, .24);
-      }
-
-      div h3 {
-        display: flex;
-        align-items: flex-end;
-        height: 150px;
-        min-height: 150px;
-        padding: 16px;
-        background: #2196F3;
-        color: white;
-        font-size: 32px;
-        line-height: 100%;
-      }
-
-      div nav {
-        overflow: auto;
-      }
-      div nav > div {
-        display: flex;
-        flex-direction: column;
-        border-top: 1px solid rgba(0,0,0, .1);
-      }
-      div nav > div a {
-        padding: 16px;
-      }
-    </style>
   </head>
   <body>
-    <header sidebarjs-toggle>open</header>
-    <div>Selected: <span id="selected">-</span></div>
+
+    <header>
+      <div class="icon hamburger-icon" sidebarjs-toggle></div>
+      <h1>SidebarJS</h1>
+    </header>
 
     <div sidebarjs>
-      <h3>Title</h3>
+      <h3>SidebarJS</h3>
       <nav>
         <div>
-          <a href="#!">Link 1</a>
-          <a href="#!">Link 2</a>
-          <a href="#!">Link 3</a>
+          <a target="_blank" href="https://github.com/lorenzodianni/SidebarJS"><div class="img github"></div>Github</a>
+          <a target="_blank" href="https://www.npmjs.com/~lorenzodianni"><div class="img npm"></div>npm</a>
+          <a target="_blank" href="https://github.com/lorenzodianni"><div class="img author"></div>Author</a>
         </div>
         <div>
-          <a href="#!">Link 1</a>
-          <a href="#!">Link 2</a>
-          <a href="#!">Link 3</a>
-          <a href="#!">Link 4</a>
-          <a href="#!">Link 5</a>
+          <a target="_blank" href="https://github.com/lorenzodianni/SidebarJS/blob/master/README.md"><div class="img wiki"></div>Wiki</a>
+          <a target="_blank" href="https://github.com/lorenzodianni/SidebarJS/issues"><div class="img bugs"></div>Bugs</a>
         </div>
       </nav>
     </div>
 
-    <script src="../dist/sidebarjs.js"></script>
-    <script type="text/javascript">
-      var sidebarjs = new SidebarJS();
+    <a target="_blank" id="selected">
+      <div class="img"></div>
+      <div class="label"></div>
+    </a>
 
-      // Example, only for this demo
-      var links = document.querySelectorAll('nav a');
-      var selected = document.querySelector('#selected');
-      for(var i = 0; i < links.length; i++) {
-        links[i].addEventListener('click', function() {
-          sidebarjs.close();
-          selected.innerText = this.innerText;
-        });
-      }
+    <a class="basic" href="https://rawgit.com/lorenzodianni/SidebarJS/master/demo/basic.html">Too much complex?<br>Try the simplest version</a>
+
+    <!-- SidebarJS Scripts -->
+    <script src="../dist/sidebarjs.js"></script>
+
+    <script type="text/javascript">
+      // SidebarJS Init
+      var sidebarjs = new SidebarJS();
     </script>
+
+    <!-- –––––––––––––––––
+     ONLY FOR THIS DEMO
+    –––––––––––––––––– -->
+    <script type="text/javascript">
+    var selectedLink = document.querySelector('#selected');
+    var selectedImg = document.querySelector('#selected .img');
+    var selectedLabel = document.querySelector('#selected .label');
+    var links = document.querySelectorAll('nav a');
+
+    for(var i = 0; i < links.length; i++) {
+      links[i].addEventListener('click', elementSelected)
+    }
+
+    function elementSelected(e) {
+      e.preventDefault();
+      selectedLink.setAttribute('href', this.href);
+      selectedImg.className = 'img ' + this.text.toLowerCase();
+      selectedLabel.innerText = this.text;
+      sidebarjs.close();
+    }
+    </script>
+
   </body>
 </html>
