@@ -78,9 +78,9 @@
   -webkit-flex-direction: column;
   display: flex;
   flex-direction: column;
-  -moz-box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1);
-  -webkit-box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1);
-  box-shadow: 2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;

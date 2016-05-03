@@ -59,7 +59,7 @@ $duration: .3s;
     display: flex,
     flex-direction: column
   ), 3);
-  @include box-shadow(2px 0 20px rgba(0, 0, 0, 0.2), 1px 0 10px rgba(0, 0, 0, 0.1));
+  @include box-shadow(2px 0 4px rgba(0, 0, 0, 0.2));
   @include transition(all $timing $duration);
   @include transform(translate(-100%, 0));
 }
