@@ -1,9 +1,9 @@
-# WIP REPO
-**SidebarJS is still in alpha.**
-**The entire repository is work in progress.**
-
 # SidebarJS
 Create mobile sidebar/sidenav experiance in pure javascript.
+
+```ssh
+npm install sidebarjs --save
+```
 
 ## Demo
 *Open the demo on your device and try the touch gestures!*
@@ -45,6 +45,3 @@ Then simply init it with **new SidebarJS()** and you are ready!
 ```
 
 # SOON A BETTER DOCUMENTATION
-# WIP REPO
-**SidebarJS is still in alpha.**
-**The entire repository is work in progress.**
