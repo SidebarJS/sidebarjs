@@ -28,8 +28,8 @@ Then simply init it with **new SidebarJS()** and you are ready!
 
   <div sidebarjs>
     <div sidebarjs-toggle>Open/Close</div>
-  	<nav>
-   	  <a href="link">Home</a>
+    <nav>
+      <a href="link">Home</a>
       <a href="link">About</a>
       <a href="link">Contacts</a>
     </nav>
@@ -37,8 +37,8 @@ Then simply init it with **new SidebarJS()** and you are ready!
 
   <script src="sidebarjs.min.js"></script>
   <script>
-  	// Init SidebarJS
-    var sidebar = new SidebarJS();
+  // Init SidebarJS
+  var sidebar = new SidebarJS();
   </script>
 
 </body>
