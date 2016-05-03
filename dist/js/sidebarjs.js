@@ -90,7 +90,7 @@ window.SidebarJS = function (window, document) {
   function _vendorify(el, prop, val) {
     var Prop = prop.charAt(0).toUpperCase() + prop.slice(1);
     var prefs = ['Moz', 'Webkit', 'O', 'ms'];
-    el.style.prop = val;
+    el.style[prop] = val;
     for (var i = 0; i < prefs.length; i++) {
       el.style[prefs[i] + Prop] = val;
     }
