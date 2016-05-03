@@ -12,25 +12,25 @@ gulp.task('scripts', function(){
     .pipe(babel({
 			presets: ['es2015']
 		}))
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist/js'))
     .pipe(rename({extname: '.min.js'}))
     .pipe(uglify())
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest('dist/js'));
 });
 
 gulp.task('styles', function () {
   return gulp.src('./src/sidebarjs.scss')
     .pipe(compass({
       config_file: './config.rb',
-      css: './dist',
+      css: './dist/css',
       sass: './src',
       comments: true,
       sourcemap: true
     }))
-    .pipe(gulp.dest('./dist'))
+    .pipe(gulp.dest('./dist/css'))
     .pipe(cssmin())
     .pipe(rename({ extname: '.min.css'}))
-    .pipe(gulp.dest('./dist'));
+    .pipe(gulp.dest('./dist/css'));
 });
 
 gulp.task('watch', function() {
