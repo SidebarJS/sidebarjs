@@ -17,9 +17,12 @@ window.SidebarJS = (function(window, document) {
       this.component.appendChild(this.container);
       this.component.appendChild(this.background);
 
-      var _toggles = document.querySelectorAll('[sidebarjs-toggle]');
-      for(var i = 0; i < _toggles.length; i++) {
-        _toggles[i].addEventListener('click', this.toggle.bind(this));
+      var _actions = ['toggle', 'open', 'close'];
+      for(var i = 0; i < _actions.length; i++) {
+        var _elements = document.querySelectorAll('[sidebarjs-' + _actions[i] + ']');
+        for(var j = 0; j < _elements.length; j++) {
+          _elements[j].addEventListener('click', this[_actions[i]].bind(this));
+        }
       }
 
       this.component.addEventListener('touchstart', _onTouchStart.bind(this));
