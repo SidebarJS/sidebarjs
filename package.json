@@ -1,6 +1,6 @@
 {
   "name": "sidebarjs",
-  "version": "0.8.9",
+  "version": "1.0.0",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "scripts": {},
   "repository": {
@@ -20,7 +20,6 @@
     "gulp-compass": "^2.1.0",
     "gulp-cssmin": "^0.1.7",
     "gulp-rename": "^1.2.2",
-    "gulp-sourcemaps": "^2.0.0-alpha",
     "gulp-uglify": "^1.5.3",
     "live-server": "^1.0.0"
   }
