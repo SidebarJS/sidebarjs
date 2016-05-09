@@ -8,8 +8,8 @@ npm install sidebarjs --save
 ## Demo
 *Open the demo on your device and try the touch gestures!*
 
-* [Basic demo](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/basic.html)
-* [Complex demo](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/index.html)
+* [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
+* [RawGit](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/index.html)
 
 ## Implementation
 Insert **sidebarjs.min.css** and **sidebarjs.min.js** in your index.html file and create a tag (div, aside or what you prefer) with the attribute **[sidebarjs]**.
