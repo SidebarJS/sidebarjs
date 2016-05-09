@@ -4,10 +4,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-/* jshint -W003  */ /* jshint -W014  */ /* jshint -W030  */ /* jshint -W040 */
-
 window.SidebarJS = function (window, document) {
-  'use strict';
 
   var CLASS_IS_VISIBLE = 'sidebarjs--is-visible';
   var CLASS_IS_MOVING = 'sidebarjs--is-moving';
@@ -99,3 +96,5 @@ window.SidebarJS = function (window, document) {
 
   return SidebarJS;
 }(window, document);
+
+module.exports = window.SidebarJS;

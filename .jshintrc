@@ -1,0 +1,9 @@
+{
+  "esnext": true,
+  "globalstrict": true,
+  "-W003" : true,
+  "-W014" : true,
+  "-W030" : true,
+  "-W040" : true,
+  "-W093" : true
+}

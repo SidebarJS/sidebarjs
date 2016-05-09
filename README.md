@@ -11,7 +11,7 @@ npm install sidebarjs --save
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/index.html)
 
-## Implementation
+## Fast Implementation
 Insert **sidebarjs.min.css** and **sidebarjs.min.js** in your index.html file and create a tag (div, aside or what you prefer) with the attribute **[sidebarjs]**.
 All contents you will write inside tag[sidebarjs] will be rendered inside the sidebar.
 For open/close the sidebar, put wherever you want the **[sidebarjs-toggle]** attribute.
@@ -43,5 +43,3 @@ Then simply init it with **new SidebarJS()** and you are ready!
 
 </body>
 ```
-
-# SOON A BETTER DOCUMENTATION

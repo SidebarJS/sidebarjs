@@ -1,7 +1,6 @@
-/* jshint -W003  *//* jshint -W014  *//* jshint -W030  *//* jshint -W040 */
+'use strict';
 
 window.SidebarJS = (function(window, document) {
-  'use strict';
 
   const CLASS_IS_VISIBLE  = 'sidebarjs--is-visible';
   const CLASS_IS_MOVING  = 'sidebarjs--is-moving';
@@ -87,3 +86,5 @@ window.SidebarJS = (function(window, document) {
   return SidebarJS;
 
 })(window, document);
+
+module.exports = window.SidebarJS;
