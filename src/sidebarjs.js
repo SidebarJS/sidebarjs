@@ -86,5 +86,3 @@ window.SidebarJS = (function(window, document) {
   return SidebarJS;
 
 })(window, document);
-
-module.exports = window.SidebarJS;
