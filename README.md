@@ -38,7 +38,7 @@ Then simply init it with **new SidebarJS()** and you are ready!
   <script src="sidebarjs.min.js"></script>
   <script>
   // Init SidebarJS
-  var sidebar = new SidebarJS();
+  var sidebarjs = new SidebarJS();
   </script>
 
 </body>
