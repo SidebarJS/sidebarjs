@@ -1,5 +1,7 @@
 'use strict';
 
+/* jshint -W117 */
+
 const gulp        = require('gulp');
 const rename      = require('gulp-rename');
 const uglify      = require('gulp-uglify');
