@@ -1,25 +1,25 @@
 'use strict';
 
 window.SidebarJS = (function(window, document) {
+  const sidebarjs  = `sidebarjs`;
+  const isVisible  = `${sidebarjs}--is-visible`;
+  const isMoving   = `${sidebarjs}--is-moving`;
 
-  const CLASS_IS_VISIBLE  = 'sidebarjs--is-visible';
-  const CLASS_IS_MOVING  = 'sidebarjs--is-moving';
-
-  class SidebarJS {
+  return class SidebarJS {
     constructor() {
-      this.component = document.querySelector('[sidebarjs]');
-      this.container = _create('sidebarjs-container');
-      this.background = _create('sidebarjs-background');
+      this.component = document.querySelector(`[${sidebarjs}]`);
+      this.container = _create(`${sidebarjs}-container`);
+      this.background = _create(`${sidebarjs}-background`);
 
       this.container.innerHTML = this.component.innerHTML;
       this.component.innerHTML = '';
       this.component.appendChild(this.container);
       this.component.appendChild(this.background);
 
-      var _actions = ['toggle', 'open', 'close'];
-      for(var i = 0; i < _actions.length; i++) {
-        var _elements = document.querySelectorAll('[sidebarjs-' + _actions[i] + ']');
-        for(var j = 0; j < _elements.length; j++) {
+      const _actions = ['toggle', 'open', 'close'];
+      for(let i = 0; i < _actions.length; i++) {
+        let _elements = document.querySelectorAll(`[${sidebarjs}-${_actions[i]}]`);
+        for(let j = 0; j < _elements.length; j++) {
           _elements[j].addEventListener('click', this[_actions[i]].bind(this));
         }
       }
@@ -31,19 +31,19 @@ window.SidebarJS = (function(window, document) {
     }
 
     toggle() {
-      this.component.classList.contains(CLASS_IS_VISIBLE)
+      this.component.classList.contains(isVisible)
       ? this.close()
       : this.open();
     }
 
     open() {
-      this.component.classList.add(CLASS_IS_VISIBLE);
+      this.component.classList.add(isVisible);
     }
 
     close() {
-      this.component.classList.remove(CLASS_IS_VISIBLE);
+      this.component.classList.remove(isVisible);
     }
-  }
+  };
 
   function _onTouchStart(e) {
     this.container.touchStart = e.touches[0].pageX;
@@ -52,7 +52,7 @@ window.SidebarJS = (function(window, document) {
   function _onTouchMove(e) {
     this.container.touchMove = this.container.touchStart - e.touches[0].pageX;
     if(this.container.touchMove > 0) {
-      this.component.classList.add(CLASS_IS_MOVING);
+      this.component.classList.add(isMoving);
       _vendorify(this.container, `transform`, `translate(${-this.container.touchMove}px, 0)`);
       var opacity = 0.3 - this.container.touchMove/(this.container.clientWidth*3.5);
       this.background.style.opacity = (opacity).toString();
@@ -60,7 +60,7 @@ window.SidebarJS = (function(window, document) {
   }
 
   function _onTouchEnd() {
-    this.component.classList.remove(CLASS_IS_MOVING);
+    this.component.classList.remove(isMoving);
     this.container.touchMove > (this.container.clientWidth/3.5) ? this.close() : this.open();
     this.container.touchMove = 0;
     this.container.removeAttribute('style');
@@ -82,7 +82,5 @@ window.SidebarJS = (function(window, document) {
     }
     return el;
   }
-
-  return SidebarJS;
 
 })(window, document);
