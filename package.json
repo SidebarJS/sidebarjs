@@ -26,6 +26,7 @@
     "gulp-compass": "^2.1.0",
     "gulp-cssmin": "^0.1.7",
     "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
     "live-server": "^1.0.0"
   }

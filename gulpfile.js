@@ -6,15 +6,19 @@ const uglify      = require('gulp-uglify');
 const babel       = require('gulp-babel');
 const compass     = require('gulp-compass');
 const cssmin      = require('gulp-cssmin');
+const sourcemaps  = require('gulp-sourcemaps');
 
 gulp.task('scripts', function(){
   return gulp.src('./src/sidebarjs.js')
     .pipe(babel({
-			presets: ['es2015']
+			presets: ['es2015'],
+      sourceMaps: true
 		}))
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(gulp.dest('dist/js'))
     .pipe(rename({extname: '.min.js'}))
     .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
     .pipe(gulp.dest('dist/js'));
 });
 
