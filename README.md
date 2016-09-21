@@ -11,7 +11,7 @@ npm install sidebarjs --save
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/index.html)
 
-## Fast Implementation
+## Implementation - Superfast explanation
 Insert **sidebarjs.min.css** and **sidebarjs.min.js** in your index.html file and create a tag (div, aside or what you prefer) with the attribute **[sidebarjs]**.
 All contents you will write inside tag[sidebarjs] will be rendered inside the sidebar.
 For open/close the sidebar, put wherever you want the **[sidebarjs-toggle]** attribute.
@@ -39,6 +39,82 @@ Then simply init it with **new SidebarJS()** and you are ready!
   <script>
   // Init SidebarJS
   var sidebarjs = new SidebarJS();
+  </script>
+
+</body>
+```
+
+## Implementation - Explanation step by step
+### Download files
+Download and save all files
+```ssh
+$ npm install sidebarjs --save
+```
+
+Insert _sidebarjs.min.css_ and _sidebarjs.min.js_ in your index.html.
+
+```html
+<head>
+
+  <link rel="stylesheet" href="node_modules/sidebarjs/dist/css/sidebarjs.min.css">
+
+</head>
+<body>
+
+  <script src="node_modules/sidebarjs/dist/js/sidebarjs.min.js"></script>
+
+</body>
+```
+
+### Create SidebarJS element
+Write **[sidebarjs]** attribute inside a tag (div, aside, or whatever you want).
+```html
+<div sidebarjs>
+  <div>Title</div>
+  <nav>
+    <a href="link">Home</a>
+    <a href="link">About</a>
+    <a href="link">Contacts</a>
+  </nav>
+</div>
+```
+
+### Trigger button
+Do you need a trigger button for open/close SidebarJS? Just put **[sidebarjs-toggle]** attribute inside a tag and it's done!
+```html
+<div sidebarjs-toggle>Open/Close</div>
+```
+
+### Init
+When you have files, [sidebarjs] and [sidebarjs-toggle] you can init your SidebarJS Module like:
+```js
+var sidebarjs = new SidebarJS()
+```
+
+### Full file example
+```html
+<head>
+
+  <link rel="stylesheet" href="node_modules/sidebarjs/dist/css/sidebarjs.min.css">
+
+</head>
+<body>
+
+  <div sidebarjs-toggle>Open/Close</div>
+
+  <div sidebarjs>
+    <div>Title</div>
+    <nav>
+      <a href="link">Home</a>
+      <a href="link">About</a>
+      <a href="link">Contacts</a>
+    </nav>
+  </div>
+
+  <script src="node_modules/sidebarjs/dist/js/sidebarjs.min.js"></script>
+  <script>
+    // Init SidebarJS
+    var sidebarjs = new SidebarJS();
   </script>
 
 </body>
