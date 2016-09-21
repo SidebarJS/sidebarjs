@@ -2,7 +2,7 @@
   "name": "sidebarjs",
   "version": "1.1.6",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
-  "scripts": {},
+  "main": "./dist/js/sidebarjs.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/lorenzodianni/SidebarJS.git"
