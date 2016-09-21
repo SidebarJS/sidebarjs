@@ -10,6 +10,22 @@ npm install sidebarjs --save
 
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/index.html)
+ 
+## Installation
+Classic
+```html
+<script src="your/path/sidebarjs.js"></script>
+```
+
+Require
+```js
+let SidebarJS = require('SidebarJS');
+```
+
+ES6
+```js
+import SidebarJS from 'SidebarJS';
+```
 
 ## Implementation - Superfast explanation
 Insert **sidebarjs.min.css** and **sidebarjs.min.js** in your index.html file and create a tag (div, aside or what you prefer) with the attribute **[sidebarjs]**.
