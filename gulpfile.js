@@ -27,7 +27,6 @@ gulp.task('scripts', function(){
 gulp.task('styles', function () {
   return gulp.src('./src/sidebarjs.scss')
     .pipe(compass({
-      config_file: './config.rb',
       css: './dist/css',
       sass: './src',
       comments: true,
