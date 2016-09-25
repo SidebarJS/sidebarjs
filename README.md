@@ -72,12 +72,12 @@ Insert _sidebarjs.min.css_ and _sidebarjs.min.js_ in your index.html.
 ```html
 <head>
 
-  <link rel="stylesheet" href="node_modules/sidebarjs/dist/sidebarjs.min.css">
+  <link rel="stylesheet" href="your/path/sidebarjs.min.css">
 
 </head>
 <body>
 
-  <script src="node_modules/sidebarjs/dist/sidebarjs.min.js"></script>
+  <script src="your/path/sidebarjs.min.js"></script>
 
 </body>
 ```
@@ -111,7 +111,7 @@ var sidebarjs = new SidebarJS()
 ```html
 <head>
 
-  <link rel="stylesheet" href="node_modules/sidebarjs/dist/sidebarjs.min.css">
+  <link rel="stylesheet" href="your/path/sidebarjs.min.css">
 
 </head>
 <body>
@@ -127,7 +127,7 @@ var sidebarjs = new SidebarJS()
     </nav>
   </div>
 
-  <script src="node_modules/sidebarjs/dist/sidebarjs.min.js"></script>
+  <script src="your/path/sidebarjs.min.js"></script>
   <script>
     // Init SidebarJS
     var sidebarjs = new SidebarJS();
