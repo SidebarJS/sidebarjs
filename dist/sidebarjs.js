@@ -5,7 +5,7 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 (function (window, document) {
-  var SidebarJS = function (window, document) {
+  var sidebarjs = function (window, document) {
     var sidebarjs = 'sidebarjs';
     var isVisible = sidebarjs + '--is-visible';
     var isMoving = sidebarjs + '--is-moving';
@@ -99,12 +99,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }(window, document);
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = SidebarJS;
+    module.exports = sidebarjs;
   } else if (typeof define === 'function' && define.amd) {
     define([], function () {
-      return SidebarJS;
+      return sidebarjs;
     });
   } else {
-    window.SidebarJS = SidebarJS;
+    window.sidebarjs = sidebarjs;
   }
 })(window, document);

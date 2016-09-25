@@ -1,7 +1,7 @@
 'use strict';
 
 (function(window, document){
-  const SidebarJS = (function(window, document) {
+  const sidebarjs = (function(window, document) {
     const sidebarjs  = `sidebarjs`;
     const isVisible  = `${sidebarjs}--is-visible`;
     const isMoving   = `${sidebarjs}--is-moving`;
@@ -90,11 +90,11 @@
 
 
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-    module.exports = SidebarJS;
+    module.exports = sidebarjs;
   } else if (typeof define === 'function' && define.amd) {
-    define([], () => SidebarJS);
+    define([], () => sidebarjs);
   } else {
-    window.SidebarJS = SidebarJS;
+    window.sidebarjs = sidebarjs;
   }
 
 })(window, document);

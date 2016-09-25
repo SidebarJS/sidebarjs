@@ -8,7 +8,6 @@ const uglify      = require('gulp-uglify');
 const babel       = require('gulp-babel');
 const compass     = require('gulp-compass');
 const cssmin      = require('gulp-cssmin');
-const sourcemaps  = require('gulp-sourcemaps');
 
 gulp.task('scripts', function(){
   return gulp.src('./src/sidebarjs.js')
@@ -16,26 +15,23 @@ gulp.task('scripts', function(){
 			presets: ['es2015'],
       sourceMaps: true
 		}))
-    .pipe(sourcemaps.init({loadMaps: true}))
-    .pipe(gulp.dest('dist/js'))
+    .pipe(gulp.dest('./dist'))
     .pipe(rename({extname: '.min.js'}))
     .pipe(uglify())
-    .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('dist/js'));
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('styles', function () {
   return gulp.src('./src/sidebarjs.scss')
     .pipe(compass({
-      css: './dist/css',
+      css: './dist',
       sass: './src',
-      comments: true,
-      sourcemap: true
+      comments: true
     }))
-    .pipe(gulp.dest('./dist/css'))
+    .pipe(gulp.dest('./dist'))
     .pipe(cssmin())
     .pipe(rename({ extname: '.min.css'}))
-    .pipe(gulp.dest('./dist/css'));
+    .pipe(gulp.dest('./dist'));
 });
 
 gulp.task('watch', function() {
@@ -43,4 +39,4 @@ gulp.task('watch', function() {
   gulp.watch('./src/sidebarjs.scss', ['styles']);
 });
 
-gulp.task('default', ['scripts', 'styles', 'watch']);
+gulp.task('build', ['scripts', 'styles', 'watch']);
