@@ -9,8 +9,8 @@ npm install sidebarjs --save
 *Open the demo on your device and try the touch gestures!*
 
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
-* [RawGit](https://rawgit.com/lorenzodianni/SidebarJS/master/demo/index.html)
- 
+* [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
+
 ## Installation
 Classic
 ```html
@@ -19,12 +19,12 @@ Classic
 
 Require
 ```js
-let SidebarJS = require('SidebarJS');
+let SidebarJS = require('sidebarjs');
 ```
 
 ES6
 ```js
-import SidebarJS from 'SidebarJS';
+import SidebarJS from 'sidebarjs';
 ```
 
 ## Implementation - Superfast explanation
@@ -72,12 +72,12 @@ Insert _sidebarjs.min.css_ and _sidebarjs.min.js_ in your index.html.
 ```html
 <head>
 
-  <link rel="stylesheet" href="node_modules/sidebarjs/dist/css/sidebarjs.min.css">
+  <link rel="stylesheet" href="node_modules/sidebarjs/dist/sidebarjs.min.css">
 
 </head>
 <body>
 
-  <script src="node_modules/sidebarjs/dist/js/sidebarjs.min.js"></script>
+  <script src="node_modules/sidebarjs/dist/sidebarjs.min.js"></script>
 
 </body>
 ```
@@ -111,7 +111,7 @@ var sidebarjs = new SidebarJS()
 ```html
 <head>
 
-  <link rel="stylesheet" href="node_modules/sidebarjs/dist/css/sidebarjs.min.css">
+  <link rel="stylesheet" href="node_modules/sidebarjs/dist/sidebarjs.min.css">
 
 </head>
 <body>
@@ -127,7 +127,7 @@ var sidebarjs = new SidebarJS()
     </nav>
   </div>
 
-  <script src="node_modules/sidebarjs/dist/js/sidebarjs.min.js"></script>
+  <script src="node_modules/sidebarjs/dist/sidebarjs.min.js"></script>
   <script>
     // Init SidebarJS
     var sidebarjs = new SidebarJS();

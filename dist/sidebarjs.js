@@ -12,7 +12,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       return sidebarjs;
     });
   } else {
-    window.sidebarjs = sidebarjs;
+    window.SidebarJS = sidebarjs;
   }
 })(function () {
   var sidebarjs = 'sidebarjs';

@@ -6,7 +6,7 @@
   } else if (typeof define === 'function' && define.amd) {
     define([], () => sidebarjs);
   } else {
-    window.sidebarjs = sidebarjs;
+    window.SidebarJS = sidebarjs;
   }
 })((function() {
   const sidebarjs  = `sidebarjs`;
