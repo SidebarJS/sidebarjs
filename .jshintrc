@@ -1,6 +1,11 @@
 {
   "esnext": true,
   "globalstrict": true,
+  "globals"   : {
+    "define"   : false
+  },
+  "node" : true,
+  "browser" : true,
   "-W003" : true,
   "-W014" : true,
   "-W030" : true,
