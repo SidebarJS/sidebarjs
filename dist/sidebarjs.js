@@ -119,7 +119,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'version',
       get: function get() {
-        return '1.5.0';
+        return '1.6.1';
       }
     }]);
 
