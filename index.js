@@ -1,1 +1,1 @@
-require('./dist/sidebarjs.js');
+module.exports = require('./dist/sidebarjs.js');
