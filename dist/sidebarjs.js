@@ -32,14 +32,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.component.appendChild(this.container);
       this.component.appendChild(this.background);
 
-      var _actions = ['toggle', 'open', 'close'];
-      for (var i = 0; i < _actions.length; i++) {
-        var _elements = document.querySelectorAll('[' + sidebarjs + '-' + _actions[i] + ']');
-        for (var j = 0; j < _elements.length; j++) {
-          _elements[j].addEventListener('click', this[_actions[i]].bind(this));
-        }
-      }
-
+      this.addAttributesEvents();
       this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
       this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
       this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
@@ -47,6 +40,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     _createClass(SidebarJS, [{
+      key: 'addAttributesEvents',
+      value: function addAttributesEvents() {
+        var _actions = ['toggle', 'open', 'close'];
+        for (var i = 0; i < _actions.length; i++) {
+          var _elements = document.querySelectorAll('[' + sidebarjs + '-' + _actions[i] + ']');
+          for (var j = 0; j < _elements.length; j++) {
+            if (!SidebarJS.elemHasListener(_elements[j])) {
+              _elements[j].addEventListener('click', this[_actions[i]].bind(this));
+              SidebarJS.elemHasListener(_elements[j], true);
+            }
+          }
+        }
+      }
+    }, {
       key: 'toggle',
       value: function toggle() {
         this.component.classList.contains(isVisible) ? this.close() : this.open();
@@ -103,6 +110,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           el.style[prefs[i] + Prop] = val;
         }
         return el;
+      }
+    }, {
+      key: 'elemHasListener',
+      value: function elemHasListener(elem, value) {
+        return elem && value ? elem.sidebarjsListener = value : elem.sidebarjsListener;
       }
     }, {
       key: 'version',

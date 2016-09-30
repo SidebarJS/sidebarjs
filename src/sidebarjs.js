@@ -24,18 +24,24 @@
       this.component.appendChild(this.container);
       this.component.appendChild(this.background);
 
-      const _actions = ['toggle', 'open', 'close'];
-      for(let i = 0; i < _actions.length; i++) {
-        let _elements = document.querySelectorAll(`[${sidebarjs}-${_actions[i]}]`);
-        for(let j = 0; j < _elements.length; j++) {
-          _elements[j].addEventListener('click', this[_actions[i]].bind(this));
-        }
-      }
-
+      this.addAttributesEvents();
       this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
       this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
       this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
       this.background.addEventListener('click', this.close.bind(this));
+    }
+
+    addAttributesEvents() {
+      const _actions = ['toggle', 'open', 'close'];
+      for(let i = 0; i < _actions.length; i++) {
+        let _elements = document.querySelectorAll(`[${sidebarjs}-${_actions[i]}]`);
+        for(let j = 0; j < _elements.length; j++) {
+          if(!SidebarJS.elemHasListener(_elements[j])) {
+            _elements[j].addEventListener('click', this[_actions[i]].bind(this));
+            SidebarJS.elemHasListener(_elements[j], true);
+          }
+        }
+      }
     }
 
     toggle() {
@@ -88,6 +94,10 @@
         el.style[prefs[i] + Prop] = val;
       }
       return el;
+    }
+
+    static elemHasListener(elem, value) {
+      return elem && value ? elem.sidebarjsListener = value : elem.sidebarjsListener;
     }
 
     static get version() {
