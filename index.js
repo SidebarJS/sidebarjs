@@ -1,0 +1,1 @@
+require('./dist/sidebarjs.js');
