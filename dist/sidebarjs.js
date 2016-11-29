@@ -21,18 +21,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   return function () {
     function SidebarJS() {
+      var options = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
       _classCallCheck(this, SidebarJS);
 
-      this.component = document.querySelector('[' + sidebarjs + ']');
-      this.container = SidebarJS.create(sidebarjs + '-container');
-      this.background = SidebarJS.create(sidebarjs + '-background');
+      this.component = options.container || document.querySelector('[' + sidebarjs + ']');
+      this.container = options.container || SidebarJS.create(sidebarjs + '-container');
+      this.background = options.background || SidebarJS.create(sidebarjs + '-background');
 
-      this.container.innerHTML = this.component.innerHTML;
-      this.component.innerHTML = '';
-      this.component.appendChild(this.container);
-      this.component.appendChild(this.background);
+      if (!options.container && !options.container && !options.background) {
+        this.container.innerHTML = this.component.innerHTML;
+        this.component.innerHTML = '';
+        this.component.appendChild(this.container);
+        this.component.appendChild(this.background);
+      }
 
-      this.addAttributesEvents();
+      this.addAttrsEventsListeners();
       this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
       this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
       this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
@@ -40,8 +44,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     _createClass(SidebarJS, [{
-      key: 'addAttributesEvents',
-      value: function addAttributesEvents() {
+      key: 'addAttrsEventsListeners',
+      value: function addAttrsEventsListeners() {
         var _actions = ['toggle', 'open', 'close'];
         for (var i = 0; i < _actions.length; i++) {
           var _elements = document.querySelectorAll('[' + sidebarjs + '-' + _actions[i] + ']');
@@ -119,7 +123,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'version',
       get: function get() {
-        return '1.6.1';
+        return '1.7.0';
       }
     }]);
 

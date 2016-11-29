@@ -14,24 +14,26 @@
   const isMoving   = `${sidebarjs}--is-moving`;
 
   return class SidebarJS {
-    constructor() {
-      this.component = document.querySelector(`[${sidebarjs}]`);
-      this.container = SidebarJS.create(`${sidebarjs}-container`);
-      this.background = SidebarJS.create(`${sidebarjs}-background`);
+    constructor(options = {}) {
+      this.component = options.container || document.querySelector(`[${sidebarjs}]`);
+      this.container = options.container || SidebarJS.create(`${sidebarjs}-container`);
+      this.background = options.background || SidebarJS.create(`${sidebarjs}-background`);
 
-      this.container.innerHTML = this.component.innerHTML;
-      this.component.innerHTML = '';
-      this.component.appendChild(this.container);
-      this.component.appendChild(this.background);
+      if(!options.container && !options.container && !options.background) {
+        this.container.innerHTML = this.component.innerHTML;
+        this.component.innerHTML = '';
+        this.component.appendChild(this.container);
+        this.component.appendChild(this.background);
+      }
 
-      this.addAttributesEvents();
+      this.addAttrsEventsListeners();
       this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
       this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
       this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
       this.background.addEventListener('click', this.close.bind(this));
     }
 
-    addAttributesEvents() {
+    addAttrsEventsListeners() {
       const _actions = ['toggle', 'open', 'close'];
       for(let i = 0; i < _actions.length; i++) {
         let _elements = document.querySelectorAll(`[${sidebarjs}-${_actions[i]}]`);
@@ -45,9 +47,7 @@
     }
 
     toggle() {
-      this.component.classList.contains(isVisible)
-      ? this.close()
-      : this.open();
+      this.component.classList.contains(isVisible) ? this.close() : this.open();
     }
 
     open() {
@@ -101,7 +101,7 @@
     }
 
     static get version() {
-      return '1.6.1';
+      return '1.7.0';
     }
   };
 })());
