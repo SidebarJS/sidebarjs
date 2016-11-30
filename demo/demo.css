@@ -129,7 +129,6 @@ header h1 {
 [sidebarjs] nav > div:first-child {
   border-top: none;
 }
-
 [sidebarjs] nav a {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -141,9 +140,6 @@ header h1 {
   align-items: center;
   color: rgba(0,0,0, .64);
   padding: 16px;
-  -moz-transition: background 0.3s ease;
-  -o-transition: background 0.3s ease;
-  -webkit-transition: background 0.3s ease;
   transition: background 0.3s ease;
 }
 [sidebarjs] nav a:active {
@@ -173,7 +169,7 @@ header h1 {
 
 .basic {
   position: absolute;
-  top 0; right: 0; bottom: 16px; left: 0;
+  right: 0; bottom: 16px; left: 0;
   margin: auto;
   text-align: center;
   color: #2196F3;
