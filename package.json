@@ -3,6 +3,12 @@
   "version": "1.6.1",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "main": "index.js",
+  "scripts": {
+    "gulp": "./node_modules/.bin/gulp",
+    "server": "./node_modules/.bin/live-server",
+    "start": "npm run gulp -- build && npm run server -- --open=demo",
+    "watch": "npm run gulp -- watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SidebarJS/sidebarjs.git"

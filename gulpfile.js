@@ -39,4 +39,4 @@ gulp.task('watch', function() {
   gulp.watch('./src/sidebarjs.scss', ['styles']);
 });
 
-gulp.task('build', ['scripts', 'styles', 'watch']);
+gulp.task('build', ['scripts', 'styles']);
