@@ -1,6 +1,3 @@
-@import "compass";
-@import "compass/css3";
-
 $timing: ease;
 $duration: .3s;
 
@@ -11,15 +8,14 @@ $duration: .3s;
   left: 0;
   width: 100%;
   height: 100%;
-  @include transform(translate(-100%, 0));
-  @include transition(transform 0s $timing $duration);
+  transform: translate(-100%, 0);
+  transition: transform 0s $timing $duration;
 
   &.sidebarjs--is-visible {
-    @include transform(translate(0, 0));
-    @include transition(transform 0s $timing 0s);
-
+    transform: translate(0, 0);
+    transition: transform 0s $timing 0s;
     [sidebarjs-container] {
-      @include transform(translate(0, 0));
+      transform: translate(0, 0);
     }
     [sidebarjs-background] {
       opacity: .3;
@@ -28,7 +24,7 @@ $duration: .3s;
 
   &.sidebarjs--is-moving {
     [sidebarjs-container], [sidebarjs-background] {
-      @include transition(none);
+      transition: none;
     }
   }
 }
@@ -41,25 +37,19 @@ $duration: .3s;
   height: 100%;
   background: #000;
   opacity: 0;
-  @include transition(opacity $duration $timing);
+  transition: opacity $duration $timing;
 }
 
 [sidebarjs-container] {
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
   width: 90%;
   max-width: 300px;
   height: 100%;
   background: #FFF;
-  @include flexbox((
-    display: flex,
-    flex-direction: column
-  ), 1 2 3);
-  @include flexbox((
-    display: flex,
-    flex-direction: column
-  ), 3);
-  @include box-shadow(2px 0 4px rgba(0, 0, 0, 0.2));
-  @include transition(all $timing $duration);
-  @include transform(translate(-100%, 0));
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+  transition: all $timing $duration;
+  transform: translate(-100%, 0);
 }

@@ -1,4 +1,3 @@
-/* line 7, ../src/sidebarjs.scss */
 [sidebarjs] {
   position: fixed;
   z-index: 9999;
@@ -6,48 +5,28 @@
   left: 0;
   width: 100%;
   height: 100%;
-  -moz-transform: translate(-100%, 0);
-  -ms-transform: translate(-100%, 0);
   -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-  -moz-transition: -moz-transform 0s ease 0.3s;
-  -o-transition: -o-transform 0s ease 0.3s;
-  -webkit-transition: -webkit-transform 0s ease;
-  -webkit-transition-delay: 0.3s;
+      -ms-transform: translate(-100%, 0);
+          transform: translate(-100%, 0);
+  transition: -webkit-transform 0s ease 0.3s;
   transition: transform 0s ease 0.3s;
-}
-/* line 17, ../src/sidebarjs.scss */
-[sidebarjs].sidebarjs--is-visible {
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
-  -moz-transition: -moz-transform 0s ease 0s;
-  -o-transition: -o-transform 0s ease 0s;
-  -webkit-transition: -webkit-transform 0s ease;
-  -webkit-transition-delay: 0s;
-  transition: transform 0s ease 0s;
-}
-/* line 21, ../src/sidebarjs.scss */
-[sidebarjs].sidebarjs--is-visible [sidebarjs-container] {
-  -moz-transform: translate(0, 0);
-  -ms-transform: translate(0, 0);
-  -webkit-transform: translate(0, 0);
-  transform: translate(0, 0);
-}
-/* line 24, ../src/sidebarjs.scss */
-[sidebarjs].sidebarjs--is-visible [sidebarjs-background] {
-  opacity: .3;
-}
-/* line 30, ../src/sidebarjs.scss */
-[sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-background] {
-  -moz-transition: none;
-  -o-transition: none;
-  -webkit-transition: none;
-  transition: none;
-}
+  transition: transform 0s ease 0.3s, -webkit-transform 0s ease 0.3s; }
+  [sidebarjs].sidebarjs--is-visible {
+    -webkit-transform: translate(0, 0);
+        -ms-transform: translate(0, 0);
+            transform: translate(0, 0);
+    transition: -webkit-transform 0s ease 0s;
+    transition: transform 0s ease 0s;
+    transition: transform 0s ease 0s, -webkit-transform 0s ease 0s; }
+    [sidebarjs].sidebarjs--is-visible [sidebarjs-container] {
+      -webkit-transform: translate(0, 0);
+          -ms-transform: translate(0, 0);
+              transform: translate(0, 0); }
+    [sidebarjs].sidebarjs--is-visible [sidebarjs-background] {
+      opacity: .3; }
+  [sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-background] {
+    transition: none; }
 
-/* line 36, ../src/sidebarjs.scss */
 [sidebarjs-background] {
   position: absolute;
   top: 0;
@@ -56,37 +35,23 @@
   height: 100%;
   background: #000;
   opacity: 0;
-  -moz-transition: opacity 0.3s ease;
-  -o-transition: opacity 0.3s ease;
-  -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease;
-}
+  transition: opacity 0.3s ease; }
 
-/* line 47, ../src/sidebarjs.scss */
 [sidebarjs-container] {
   position: relative;
   z-index: 1;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
   width: 90%;
   max-width: 300px;
   height: 100%;
   background: #FFF;
-  display: -moz-flex;
-  -moz-flex-direction: column;
-  display: -ms-flex;
-  -ms-flex-direction: column;
-  display: -webkit-flex;
-  -webkit-flex-direction: column;
-  display: flex;
-  flex-direction: column;
-  -moz-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
-  -webkit-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
-  -moz-transition: all 0.3s ease;
-  -o-transition: all 0.3s ease;
-  -webkit-transition: all 0.3s ease;
-  transition: all 0.3s ease;
-  -moz-transform: translate(-100%, 0);
-  -ms-transform: translate(-100%, 0);
+  transition: all ease 0.3s;
   -webkit-transform: translate(-100%, 0);
-  transform: translate(-100%, 0);
-}
+      -ms-transform: translate(-100%, 0);
+          transform: translate(-100%, 0); }

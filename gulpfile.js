@@ -2,12 +2,13 @@
 
 /* jshint -W117 */
 
-const gulp        = require('gulp');
-const rename      = require('gulp-rename');
-const uglify      = require('gulp-uglify');
-const babel       = require('gulp-babel');
-const compass     = require('gulp-compass');
-const cssmin      = require('gulp-cssmin');
+const gulp          = require('gulp');
+const rename        = require('gulp-rename');
+const uglify        = require('gulp-uglify');
+const babel         = require('gulp-babel');
+const sass          = require('gulp-sass');
+const autoprefixer  = require('gulp-autoprefixer');
+const cssmin        = require('gulp-cssmin');
 
 gulp.task('scripts', function(){
   return gulp.src('./src/sidebarjs.js')
@@ -21,12 +22,11 @@ gulp.task('scripts', function(){
     .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('styles', function () {
+gulp.task('styles', () => {
   return gulp.src('./src/sidebarjs.scss')
-    .pipe(compass({
-      css: './dist',
-      sass: './src',
-      comments: true
+    .pipe(sass().on('error', sass.logError))
+    .pipe(autoprefixer({
+      browsers: ['last 4 versions']
     }))
     .pipe(gulp.dest('./dist'))
     .pipe(cssmin())
