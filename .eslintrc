@@ -1,0 +1,16 @@
+{
+  "extends": "airbnb-base",
+  "env": {
+    "browser": true,
+    "node": true,
+    "amd": true
+  },
+  "rules": {
+    "no-param-reassign": 0,
+    "no-return-assign": 0,
+    "no-plusplus": 0,
+    "no-unused-expressions": 0,
+    "max-len": 0,
+    "object-curly-spacing": 0
+  }
+}

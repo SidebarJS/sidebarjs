@@ -1,6 +1,4 @@
-'use strict';
-
-(function(sidebarjs){
+((function (sidebarjs) {
   if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = sidebarjs;
   } else if (typeof define === 'function' && define.amd) {
@@ -8,22 +6,31 @@
   } else {
     window.SidebarJS = sidebarjs;
   }
-})((function() {
-  const sidebarjs  = `sidebarjs`;
-  const isVisible  = `${sidebarjs}--is-visible`;
-  const isMoving   = `${sidebarjs}--is-moving`;
+})((function () {
+  const sidebarjs = 'sidebarjs';
+  const isVisible = `${sidebarjs}--is-visible`;
+  const isMoving = `${sidebarjs}--is-moving`;
 
   return class SidebarJS {
     constructor(options = {}) {
       this.component = options.container || document.querySelector(`[${sidebarjs}]`);
       this.container = options.container || SidebarJS.create(`${sidebarjs}-container`);
       this.background = options.background || SidebarJS.create(`${sidebarjs}-background`);
+      this.documentMinSwipeX = options.documentMinSwipeX || 10;
+      this.documentSwipeRange = options.documentSwipeRange || 40;
+      this.swipeOpen = options.swipeOpen !== false;
 
-      if(!options.container && !options.container && !options.background) {
+      if (!options.container && !options.container && !options.background) {
         this.container.innerHTML = this.component.innerHTML;
         this.component.innerHTML = '';
         this.component.appendChild(this.container);
         this.component.appendChild(this.background);
+      }
+
+      if (this.swipeOpen) {
+        document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
+        document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
+        document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
       }
 
       this.addAttrsEventsListeners();
@@ -34,15 +41,43 @@
     }
 
     addAttrsEventsListeners() {
-      const _actions = ['toggle', 'open', 'close'];
-      for(let i = 0; i < _actions.length; i++) {
-        let _elements = document.querySelectorAll(`[${sidebarjs}-${_actions[i]}]`);
-        for(let j = 0; j < _elements.length; j++) {
-          if(!SidebarJS.elemHasListener(_elements[j])) {
-            _elements[j].addEventListener('click', this[_actions[i]].bind(this));
-            SidebarJS.elemHasListener(_elements[j], true);
+      const actions = ['toggle', 'open', 'close'];
+      for (let i = 0; i < actions.length; i++) {
+        const elements = document.querySelectorAll(`[${sidebarjs}-${actions[i]}]`);
+        for (let j = 0; j < elements.length; j++) {
+          if (!SidebarJS.elemHasListener(elements[j])) {
+            elements[j].addEventListener('click', this[actions[i]].bind(this));
+            SidebarJS.elemHasListener(elements[j], true);
           }
         }
+      }
+    }
+
+    onDocumentTouchStart(e) {
+      if (e.touches[0].clientX < this.documentSwipeRange) {
+        this.initialDocumentTouchX = e.touches[0].clientX;
+        this.onTouchStart(e);
+      }
+    }
+
+    onDocumentTouchMove(e) {
+      if (this.initialDocumentTouchX && !this.isVisible()) {
+        const difference = e.touches[0].clientX - this.initialDocumentTouchX;
+        if (difference > this.documentMinSwipeX) {
+          this.movedDocumentTouchX = true;
+          SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
+          SidebarJS.vendorify(this.component, 'transition', 'none');
+          this.onTouchMove(e);
+        }
+      }
+    }
+
+    onDocumentTouchEnd() {
+      this.initialDocumentTouchX = 0;
+      if (this.movedDocumentTouchX) {
+        this.movedDocumentTouchX = 0;
+        this.component.removeAttribute('style');
+        this.onTouchEnd();
       }
     }
 
@@ -64,20 +99,26 @@
 
     onTouchMove(e) {
       this.container.touchMove = this.container.touchStart - e.touches[0].pageX;
-      if(this.container.touchMove > 0) {
+      this.container.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
+      if (this.container.touchMove >= 0 || (this.movedDocumentTouchX && this.container.touchMoveDocument <= 0)) {
         this.component.classList.add(isMoving);
-        SidebarJS.vendorify(this.container, `transform`, `translate(${-this.container.touchMove}px, 0)`);
-        let opacity = 0.3 - this.container.touchMove/(this.container.clientWidth*3.5);
+        const movement = this.movedDocumentTouchX ? this.container.touchMoveDocument : -this.container.touchMove;
+        SidebarJS.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
+        const opacity = 0.3 - (-movement / (this.container.clientWidth * 3.5));
         this.background.style.opacity = (opacity).toString();
       }
     }
 
     onTouchEnd() {
       this.component.classList.remove(isMoving);
-      this.container.touchMove > (this.container.clientWidth/3.5) ? this.close() : this.open();
+      this.container.touchMove > (this.container.clientWidth / 3.5) ? this.close() : this.open();
       this.container.touchMove = 0;
       this.container.removeAttribute('style');
       this.background.removeAttribute('style');
+    }
+
+    isVisible() {
+      return this.component.classList.contains(isVisible);
     }
 
     static create(element) {
@@ -90,7 +131,7 @@
       const Prop = prop.charAt(0).toUpperCase() + prop.slice(1);
       const prefs = ['Moz', 'Webkit', 'O', 'ms'];
       el.style[prop] = val;
-      for(let i = 0; i < prefs.length; i++ ) {
+      for (let i = 0; i < prefs.length; i++) {
         el.style[prefs[i] + Prop] = val;
       }
       return el;
@@ -104,4 +145,4 @@
       return '1.7.0';
     }
   };
-})());
+})()));

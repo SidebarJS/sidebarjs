@@ -1,13 +1,12 @@
 {
   "name": "sidebarjs",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "main": "index.js",
   "scripts": {
-    "gulp": "./node_modules/.bin/gulp",
-    "server": "./node_modules/.bin/live-server",
-    "start": "npm run gulp -- build && npm run server -- --open=demo",
-    "watch": "npm run gulp -- watch"
+    "server": "live-server --open=demo",
+    "start": "gulp build && npm run server",
+    "dev": "gulp build && gulp watch | npm run server"
   },
   "repository": {
     "type": "git",
@@ -27,6 +26,9 @@
   ],
   "devDependencies": {
     "babel-preset-es2015": "^6.18.0",
+    "eslint": "^3.15.0",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
     "gulp": "^3.9.1",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-babel": "^6.1.2",

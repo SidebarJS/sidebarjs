@@ -16,7 +16,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
   }
 })(function () {
   var sidebarjs = 'sidebarjs';
-  var isVisible = sidebarjs + '--is-visible';
+  var _isVisible = sidebarjs + '--is-visible';
   var isMoving = sidebarjs + '--is-moving';
 
   return function () {
@@ -28,12 +28,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.component = options.container || document.querySelector('[' + sidebarjs + ']');
       this.container = options.container || SidebarJS.create(sidebarjs + '-container');
       this.background = options.background || SidebarJS.create(sidebarjs + '-background');
+      this.documentMinSwipeX = options.documentMinSwipeX || 10;
+      this.documentSwipeRange = options.documentSwipeRange || 40;
+      this.swipeOpen = options.swipeOpen !== false;
 
       if (!options.container && !options.container && !options.background) {
         this.container.innerHTML = this.component.innerHTML;
         this.component.innerHTML = '';
         this.component.appendChild(this.container);
         this.component.appendChild(this.background);
+      }
+
+      if (this.swipeOpen) {
+        document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
+        document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
+        document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
       }
 
       this.addAttrsEventsListeners();
@@ -46,31 +55,62 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     _createClass(SidebarJS, [{
       key: 'addAttrsEventsListeners',
       value: function addAttrsEventsListeners() {
-        var _actions = ['toggle', 'open', 'close'];
-        for (var i = 0; i < _actions.length; i++) {
-          var _elements = document.querySelectorAll('[' + sidebarjs + '-' + _actions[i] + ']');
-          for (var j = 0; j < _elements.length; j++) {
-            if (!SidebarJS.elemHasListener(_elements[j])) {
-              _elements[j].addEventListener('click', this[_actions[i]].bind(this));
-              SidebarJS.elemHasListener(_elements[j], true);
+        var actions = ['toggle', 'open', 'close'];
+        for (var i = 0; i < actions.length; i++) {
+          var elements = document.querySelectorAll('[' + sidebarjs + '-' + actions[i] + ']');
+          for (var j = 0; j < elements.length; j++) {
+            if (!SidebarJS.elemHasListener(elements[j])) {
+              elements[j].addEventListener('click', this[actions[i]].bind(this));
+              SidebarJS.elemHasListener(elements[j], true);
             }
           }
         }
       }
     }, {
+      key: 'onDocumentTouchStart',
+      value: function onDocumentTouchStart(e) {
+        if (e.touches[0].clientX < this.documentSwipeRange) {
+          this.initialDocumentTouchX = e.touches[0].clientX;
+          this.onTouchStart(e);
+        }
+      }
+    }, {
+      key: 'onDocumentTouchMove',
+      value: function onDocumentTouchMove(e) {
+        if (this.initialDocumentTouchX && !this.isVisible()) {
+          var difference = e.touches[0].clientX - this.initialDocumentTouchX;
+          if (difference > this.documentMinSwipeX) {
+            this.movedDocumentTouchX = true;
+            SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
+            SidebarJS.vendorify(this.component, 'transition', 'none');
+            this.onTouchMove(e);
+          }
+        }
+      }
+    }, {
+      key: 'onDocumentTouchEnd',
+      value: function onDocumentTouchEnd() {
+        this.initialDocumentTouchX = 0;
+        if (this.movedDocumentTouchX) {
+          this.movedDocumentTouchX = 0;
+          this.component.removeAttribute('style');
+          this.onTouchEnd();
+        }
+      }
+    }, {
       key: 'toggle',
       value: function toggle() {
-        this.component.classList.contains(isVisible) ? this.close() : this.open();
+        this.component.classList.contains(_isVisible) ? this.close() : this.open();
       }
     }, {
       key: 'open',
       value: function open() {
-        this.component.classList.add(isVisible);
+        this.component.classList.add(_isVisible);
       }
     }, {
       key: 'close',
       value: function close() {
-        this.component.classList.remove(isVisible);
+        this.component.classList.remove(_isVisible);
       }
     }, {
       key: 'onTouchStart',
@@ -81,10 +121,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'onTouchMove',
       value: function onTouchMove(e) {
         this.container.touchMove = this.container.touchStart - e.touches[0].pageX;
-        if (this.container.touchMove > 0) {
+        this.container.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
+        if (this.container.touchMove >= 0 || this.movedDocumentTouchX && this.container.touchMoveDocument <= 0) {
           this.component.classList.add(isMoving);
-          SidebarJS.vendorify(this.container, 'transform', 'translate(' + -this.container.touchMove + 'px, 0)');
-          var opacity = 0.3 - this.container.touchMove / (this.container.clientWidth * 3.5);
+          var movement = this.movedDocumentTouchX ? this.container.touchMoveDocument : -this.container.touchMove;
+          SidebarJS.vendorify(this.container, 'transform', 'translate(' + movement + 'px, 0)');
+          var opacity = 0.3 - -movement / (this.container.clientWidth * 3.5);
           this.background.style.opacity = opacity.toString();
         }
       }
@@ -96,6 +138,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this.container.touchMove = 0;
         this.container.removeAttribute('style');
         this.background.removeAttribute('style');
+      }
+    }, {
+      key: 'isVisible',
+      value: function isVisible() {
+        return this.component.classList.contains(_isVisible);
       }
     }], [{
       key: 'create',
