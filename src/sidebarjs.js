@@ -13,14 +13,14 @@
 
   return class SidebarJS {
     constructor(options = {}) {
-      this.component = options.container || document.querySelector(`[${sidebarjs}]`);
+      this.component = options.component || document.querySelector(`[${sidebarjs}]`);
       this.container = options.container || SidebarJS.create(`${sidebarjs}-container`);
       this.background = options.background || SidebarJS.create(`${sidebarjs}-background`);
       this.documentMinSwipeX = options.documentMinSwipeX || 10;
       this.documentSwipeRange = options.documentSwipeRange || 40;
       this.swipeOpen = options.swipeOpen !== false;
 
-      if (!options.container && !options.container && !options.background) {
+      if (!options.component && !options.container && !options.background) {
         this.container.innerHTML = this.component.innerHTML;
         this.component.innerHTML = '';
         this.component.appendChild(this.container);
@@ -142,7 +142,7 @@
     }
 
     static get version() {
-      return '1.7.0';
+      return '1.7.1';
     }
   };
 })()));
