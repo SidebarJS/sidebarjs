@@ -1,6 +1,6 @@
 {
   "name": "sidebarjs",
-  "version": "1.7.1",
+  "version": "1.8.0",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "main": "index.js",
   "scripts": {
