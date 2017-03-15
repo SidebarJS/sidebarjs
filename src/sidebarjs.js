@@ -18,7 +18,8 @@
       this.background = options.background || SidebarJS.create(`${sidebarjs}-background`);
       this.documentMinSwipeX = options.documentMinSwipeX || 10;
       this.documentSwipeRange = options.documentSwipeRange || 40;
-      this.swipeOpen = options.swipeOpen !== false;
+      this.nativeSwipe = options.nativeSwipe !== false;
+      this.nativeSwipeOpen = options.nativeSwipeOpen !== false;
 
       if (!options.component && !options.container && !options.background) {
         this.container.innerHTML = this.component.innerHTML;
@@ -27,16 +28,18 @@
         this.component.appendChild(this.background);
       }
 
-      if (this.swipeOpen) {
-        document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
-        document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
-        document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+      if(this.nativeSwipe) {
+        this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
+        this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
+        this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
+        if (this.nativeSwipeOpen) {
+          document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
+          document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
+          document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+        }
       }
 
       this.addAttrsEventsListeners();
-      this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
-      this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
-      this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
       this.background.addEventListener('click', this.close.bind(this));
     }
 
