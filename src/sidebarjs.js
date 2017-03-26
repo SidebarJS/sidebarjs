@@ -28,8 +28,8 @@
         this.component.appendChild(this.background);
       }
 
-      if(this.nativeSwipe) {
-        this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
+      if (this.nativeSwipe) {
+        this.component.addEventListener('tuchstart', this.onTouchStart.bind(this));
         this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
         this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
         if (this.nativeSwipeOpen) {
@@ -145,7 +145,7 @@
     }
 
     static get version() {
-      return '1.7.1';
+      return '1.8.0';
     }
   };
 })()));
