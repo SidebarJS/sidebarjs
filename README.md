@@ -1,6 +1,6 @@
-[![GitHub release](https://img.shields.io/github/release/SidebarJS/sidebarjs.svg?maxAge=2592000)](https://github.com/SidebarJS/sidebarjs/releases)
-[![npm](https://img.shields.io/npm/v/sidebarjs.svg?maxAge=2592000)](https://www.npmjs.com/package/sidebarjs)
-[![npm](https://img.shields.io/npm/dt/sidebarjs.svg?maxAge=2592000)](https://www.npmjs.com/package/sidebarjs)
+[![GitHub release](https://img.shields.io/github/release/SidebarJS/sidebarjs.svg)](https://github.com/SidebarJS/sidebarjs/releases)
+[![npm](https://img.shields.io/npm/v/sidebarjs.svg)](https://www.npmjs.com/package/sidebarjs)
+[![npm](https://img.shields.io/npm/dt/sidebarjs.svg)](https://www.npmjs.com/package/sidebarjs)
 
 # SidebarJS
 Create mobile sidebar/sidenav experiance in pure javascript.
