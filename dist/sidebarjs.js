@@ -107,18 +107,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (this.initialTouch && !this.isVisible()) {
           var documentSwiped = e.touches[0].clientX - this.initialTouch;
           if (documentSwiped > this.documentMinSwipeX) {
-            this.isOpeningFromDocumentSwipe = true;
+            this.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
             SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
             SidebarJS.vendorify(this.component, 'transition', 'none');
-            this.onTouchMove(e);
+            if (this.touchMoveDocument <= 0) {
+              this.moveSidebar(this.touchMoveDocument);
+            }
           }
         }
       }
     }, {
       key: 'onDocumentTouchEnd',
       value: function onDocumentTouchEnd() {
-        if (this.isOpeningFromDocumentSwipe) {
-          delete this.isOpeningFromDocumentSwipe;
+        if (this.touchMoveDocument) {
           delete this.touchMoveDocument;
           this.component.removeAttribute('style');
           this.onTouchEnd();
@@ -148,13 +149,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'onTouchMove',
       value: function onTouchMove(e) {
         this.touchMoveSidebar = this.initialTouch - e.touches[0].pageX;
-        this.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
-        if (this.touchMoveSidebar >= 0 || this.isOpeningFromDocumentSwipe && this.touchMoveDocument <= 0) {
-          this.component.classList.add(isMoving);
-          var movement = this.isOpeningFromDocumentSwipe ? this.touchMoveDocument : -this.touchMoveSidebar;
-          SidebarJS.vendorify(this.container, 'transform', 'translate(' + movement + 'px, 0)');
-          var opacity = 0.3 - -movement / (this.container.clientWidth * 3.5);
-          this.background.style.opacity = opacity.toString();
+        if (this.touchMoveSidebar >= 0) {
+          this.moveSidebar(-this.touchMoveSidebar);
         }
       }
     }, {
@@ -162,11 +158,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       value: function onTouchEnd() {
         this.component.classList.remove(isMoving);
         this.touchMoveSidebar > this.container.clientWidth / 3.5 ? this.close() : this.open();
-        this.touchMoveSidebar = 0;
         this.container.removeAttribute('style');
         this.background.removeAttribute('style');
         delete this.initialTouch;
         delete this.touchMoveSidebar;
+      }
+    }, {
+      key: 'moveSidebar',
+      value: function moveSidebar(movement) {
+        this.component.classList.add(isMoving);
+        SidebarJS.vendorify(this.container, 'transform', 'translate(' + movement + 'px, 0)');
+        this.changeBackgroundOpacity(movement);
+      }
+    }, {
+      key: 'changeBackgroundOpacity',
+      value: function changeBackgroundOpacity(movement) {
+        var opacity = 0.3 - -movement / (this.container.clientWidth * 3.5);
+        this.background.style.opacity = opacity.toString();
       }
     }, {
       key: 'isVisible',

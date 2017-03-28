@@ -87,17 +87,18 @@
       if (this.initialTouch && !this.isVisible()) {
         const documentSwiped = e.touches[0].clientX - this.initialTouch;
         if (documentSwiped > this.documentMinSwipeX) {
-          this.isOpeningFromDocumentSwipe = true;
+          this.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
           SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
           SidebarJS.vendorify(this.component, 'transition', 'none');
-          this.onTouchMove(e);
+          if (this.touchMoveDocument <= 0) {
+            this.moveSidebar(this.touchMoveDocument);
+          }
         }
       }
     }
 
     onDocumentTouchEnd() {
-      if (this.isOpeningFromDocumentSwipe) {
-        delete this.isOpeningFromDocumentSwipe;
+      if (this.touchMoveDocument) {
         delete this.touchMoveDocument;
         this.component.removeAttribute('style');
         this.onTouchEnd();
@@ -122,24 +123,29 @@
 
     onTouchMove(e) {
       this.touchMoveSidebar = this.initialTouch - e.touches[0].pageX;
-      this.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
-      if (this.touchMoveSidebar >= 0 || (this.isOpeningFromDocumentSwipe && this.touchMoveDocument <= 0)) {
-        this.component.classList.add(isMoving);
-        const movement = this.isOpeningFromDocumentSwipe ? this.touchMoveDocument : -this.touchMoveSidebar;
-        SidebarJS.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
-        const opacity = 0.3 - (-movement / (this.container.clientWidth * 3.5));
-        this.background.style.opacity = (opacity).toString();
+      if (this.touchMoveSidebar >= 0) {
+        this.moveSidebar(-this.touchMoveSidebar);
       }
     }
 
     onTouchEnd() {
       this.component.classList.remove(isMoving);
       this.touchMoveSidebar > (this.container.clientWidth / 3.5) ? this.close() : this.open();
-      this.touchMoveSidebar = 0;
       this.container.removeAttribute('style');
       this.background.removeAttribute('style');
       delete this.initialTouch;
       delete this.touchMoveSidebar;
+    }
+
+    moveSidebar(movement) {
+      this.component.classList.add(isMoving);
+      SidebarJS.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
+      this.changeBackgroundOpacity(movement);
+    }
+
+    changeBackgroundOpacity(movement) {
+      const opacity = 0.3 - (-movement / (this.container.clientWidth * 3.5));
+      this.background.style.opacity = (opacity).toString();
     }
 
     isVisible() {
