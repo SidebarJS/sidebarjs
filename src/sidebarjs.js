@@ -12,35 +12,55 @@
   const isMoving = `${sidebarjs}--is-moving`;
 
   return class SidebarJS {
-    constructor(options = {}) {
-      this.component = options.component || document.querySelector(`[${sidebarjs}]`);
-      this.container = options.container || SidebarJS.create(`${sidebarjs}-container`);
-      this.background = options.background || SidebarJS.create(`${sidebarjs}-background`);
-      this.documentMinSwipeX = options.documentMinSwipeX || 10;
-      this.documentSwipeRange = options.documentSwipeRange || 40;
-      this.nativeSwipe = options.nativeSwipe !== false;
-      this.nativeSwipeOpen = options.nativeSwipeOpen !== false;
+    constructor({
+      component,
+      container,
+      background,
+      documentMinSwipeX = 10,
+      documentSwipeRange = 40,
+      nativeSwipe,
+      nativeSwipeOpen,
+    } = {}) {
+      this.component = component || document.querySelector(`[${sidebarjs}]`);
+      this.container = container || SidebarJS.create(`${sidebarjs}-container`);
+      this.background = background || SidebarJS.create(`${sidebarjs}-background`);
+      this.documentMinSwipeX = documentMinSwipeX;
+      this.documentSwipeRange = documentSwipeRange;
+      this.nativeSwipe = nativeSwipe !== false;
+      this.nativeSwipeOpen = nativeSwipeOpen !== false;
 
-      if (!options.component && !options.container && !options.background) {
-        this.container.innerHTML = this.component.innerHTML;
-        this.component.innerHTML = '';
-        this.component.appendChild(this.container);
-        this.component.appendChild(this.background);
+      if (!component && !container && !background) {
+        this.transcludeContent();
       }
 
       if (this.nativeSwipe) {
-        this.component.addEventListener('tuchstart', this.onTouchStart.bind(this));
-        this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
-        this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
+        this.addNativeGestures();
         if (this.nativeSwipeOpen) {
-          document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
-          document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
-          document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+          this.addNativeOpenGestures();
         }
       }
 
       this.addAttrsEventsListeners();
       this.background.addEventListener('click', this.close.bind(this));
+    }
+
+    transcludeContent() {
+      this.container.innerHTML = this.component.innerHTML;
+      this.component.innerHTML = '';
+      this.component.appendChild(this.container);
+      this.component.appendChild(this.background);
+    }
+
+    addNativeGestures() {
+      this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
+      this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
+      this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
+    }
+
+    addNativeOpenGestures() {
+      document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
+      document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
+      document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
     }
 
     addAttrsEventsListeners() {
@@ -57,17 +77,17 @@
     }
 
     onDocumentTouchStart(e) {
-      if (e.touches[0].clientX < this.documentSwipeRange) {
-        this.initialDocumentTouchX = e.touches[0].clientX;
+      const touchPositionX = e.touches[0].clientX;
+      if (touchPositionX < this.documentSwipeRange) {
         this.onTouchStart(e);
       }
     }
 
     onDocumentTouchMove(e) {
-      if (this.initialDocumentTouchX && !this.isVisible()) {
-        const difference = e.touches[0].clientX - this.initialDocumentTouchX;
-        if (difference > this.documentMinSwipeX) {
-          this.movedDocumentTouchX = true;
+      if (this.initialTouch && !this.isVisible()) {
+        const documentSwiped = e.touches[0].clientX - this.initialTouch;
+        if (documentSwiped > this.documentMinSwipeX) {
+          this.isOpeningFromDocumentSwipe = true;
           SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
           SidebarJS.vendorify(this.component, 'transition', 'none');
           this.onTouchMove(e);
@@ -76,9 +96,9 @@
     }
 
     onDocumentTouchEnd() {
-      this.initialDocumentTouchX = 0;
-      if (this.movedDocumentTouchX) {
-        this.movedDocumentTouchX = 0;
+      if (this.isOpeningFromDocumentSwipe) {
+        delete this.isOpeningFromDocumentSwipe;
+        delete this.touchMoveDocument;
         this.component.removeAttribute('style');
         this.onTouchEnd();
       }
@@ -97,15 +117,15 @@
     }
 
     onTouchStart(e) {
-      this.container.touchStart = e.touches[0].pageX;
+      this.initialTouch = e.touches[0].pageX;
     }
 
     onTouchMove(e) {
-      this.container.touchMove = this.container.touchStart - e.touches[0].pageX;
-      this.container.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
-      if (this.container.touchMove >= 0 || (this.movedDocumentTouchX && this.container.touchMoveDocument <= 0)) {
+      this.touchMoveSidebar = this.initialTouch - e.touches[0].pageX;
+      this.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
+      if (this.touchMoveSidebar >= 0 || (this.isOpeningFromDocumentSwipe && this.touchMoveDocument <= 0)) {
         this.component.classList.add(isMoving);
-        const movement = this.movedDocumentTouchX ? this.container.touchMoveDocument : -this.container.touchMove;
+        const movement = this.isOpeningFromDocumentSwipe ? this.touchMoveDocument : -this.touchMoveSidebar;
         SidebarJS.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
         const opacity = 0.3 - (-movement / (this.container.clientWidth * 3.5));
         this.background.style.opacity = (opacity).toString();
@@ -114,10 +134,12 @@
 
     onTouchEnd() {
       this.component.classList.remove(isMoving);
-      this.container.touchMove > (this.container.clientWidth / 3.5) ? this.close() : this.open();
-      this.container.touchMove = 0;
+      this.touchMoveSidebar > (this.container.clientWidth / 3.5) ? this.close() : this.open();
+      this.touchMoveSidebar = 0;
       this.container.removeAttribute('style');
       this.background.removeAttribute('style');
+      delete this.initialTouch;
+      delete this.touchMoveSidebar;
     }
 
     isVisible() {

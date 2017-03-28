@@ -21,33 +21,35 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
   return function () {
     function SidebarJS() {
-      var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+          component = _ref.component,
+          container = _ref.container,
+          background = _ref.background,
+          _ref$documentMinSwipe = _ref.documentMinSwipeX,
+          documentMinSwipeX = _ref$documentMinSwipe === undefined ? 10 : _ref$documentMinSwipe,
+          _ref$documentSwipeRan = _ref.documentSwipeRange,
+          documentSwipeRange = _ref$documentSwipeRan === undefined ? 40 : _ref$documentSwipeRan,
+          nativeSwipe = _ref.nativeSwipe,
+          nativeSwipeOpen = _ref.nativeSwipeOpen;
 
       _classCallCheck(this, SidebarJS);
 
-      this.component = options.component || document.querySelector('[' + sidebarjs + ']');
-      this.container = options.container || SidebarJS.create(sidebarjs + '-container');
-      this.background = options.background || SidebarJS.create(sidebarjs + '-background');
-      this.documentMinSwipeX = options.documentMinSwipeX || 10;
-      this.documentSwipeRange = options.documentSwipeRange || 40;
-      this.nativeSwipe = options.nativeSwipe !== false;
-      this.nativeSwipeOpen = options.nativeSwipeOpen !== false;
+      this.component = component || document.querySelector('[' + sidebarjs + ']');
+      this.container = container || SidebarJS.create(sidebarjs + '-container');
+      this.background = background || SidebarJS.create(sidebarjs + '-background');
+      this.documentMinSwipeX = documentMinSwipeX;
+      this.documentSwipeRange = documentSwipeRange;
+      this.nativeSwipe = nativeSwipe !== false;
+      this.nativeSwipeOpen = nativeSwipeOpen !== false;
 
-      if (!options.component && !options.container && !options.background) {
-        this.container.innerHTML = this.component.innerHTML;
-        this.component.innerHTML = '';
-        this.component.appendChild(this.container);
-        this.component.appendChild(this.background);
+      if (!component && !container && !background) {
+        this.transcludeContent();
       }
 
       if (this.nativeSwipe) {
-        this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
-        this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
-        this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
+        this.addNativeGestures();
         if (this.nativeSwipeOpen) {
-          document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
-          document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
-          document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+          this.addNativeOpenGestures();
         }
       }
 
@@ -56,6 +58,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     _createClass(SidebarJS, [{
+      key: 'transcludeContent',
+      value: function transcludeContent() {
+        this.container.innerHTML = this.component.innerHTML;
+        this.component.innerHTML = '';
+        this.component.appendChild(this.container);
+        this.component.appendChild(this.background);
+      }
+    }, {
+      key: 'addNativeGestures',
+      value: function addNativeGestures() {
+        this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
+        this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
+        this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
+      }
+    }, {
+      key: 'addNativeOpenGestures',
+      value: function addNativeOpenGestures() {
+        document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
+        document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
+        document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+      }
+    }, {
       key: 'addAttrsEventsListeners',
       value: function addAttrsEventsListeners() {
         var actions = ['toggle', 'open', 'close'];
@@ -72,18 +96,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'onDocumentTouchStart',
       value: function onDocumentTouchStart(e) {
-        if (e.touches[0].clientX < this.documentSwipeRange) {
-          this.initialDocumentTouchX = e.touches[0].clientX;
+        var touchPositionX = e.touches[0].clientX;
+        if (touchPositionX < this.documentSwipeRange) {
           this.onTouchStart(e);
         }
       }
     }, {
       key: 'onDocumentTouchMove',
       value: function onDocumentTouchMove(e) {
-        if (this.initialDocumentTouchX && !this.isVisible()) {
-          var difference = e.touches[0].clientX - this.initialDocumentTouchX;
-          if (difference > this.documentMinSwipeX) {
-            this.movedDocumentTouchX = true;
+        if (this.initialTouch && !this.isVisible()) {
+          var documentSwiped = e.touches[0].clientX - this.initialTouch;
+          if (documentSwiped > this.documentMinSwipeX) {
+            this.isOpeningFromDocumentSwipe = true;
             SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
             SidebarJS.vendorify(this.component, 'transition', 'none');
             this.onTouchMove(e);
@@ -93,9 +117,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'onDocumentTouchEnd',
       value: function onDocumentTouchEnd() {
-        this.initialDocumentTouchX = 0;
-        if (this.movedDocumentTouchX) {
-          this.movedDocumentTouchX = 0;
+        if (this.isOpeningFromDocumentSwipe) {
+          delete this.isOpeningFromDocumentSwipe;
+          delete this.touchMoveDocument;
           this.component.removeAttribute('style');
           this.onTouchEnd();
         }
@@ -118,16 +142,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'onTouchStart',
       value: function onTouchStart(e) {
-        this.container.touchStart = e.touches[0].pageX;
+        this.initialTouch = e.touches[0].pageX;
       }
     }, {
       key: 'onTouchMove',
       value: function onTouchMove(e) {
-        this.container.touchMove = this.container.touchStart - e.touches[0].pageX;
-        this.container.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
-        if (this.container.touchMove >= 0 || this.movedDocumentTouchX && this.container.touchMoveDocument <= 0) {
+        this.touchMoveSidebar = this.initialTouch - e.touches[0].pageX;
+        this.touchMoveDocument = e.touches[0].pageX - this.container.clientWidth;
+        if (this.touchMoveSidebar >= 0 || this.isOpeningFromDocumentSwipe && this.touchMoveDocument <= 0) {
           this.component.classList.add(isMoving);
-          var movement = this.movedDocumentTouchX ? this.container.touchMoveDocument : -this.container.touchMove;
+          var movement = this.isOpeningFromDocumentSwipe ? this.touchMoveDocument : -this.touchMoveSidebar;
           SidebarJS.vendorify(this.container, 'transform', 'translate(' + movement + 'px, 0)');
           var opacity = 0.3 - -movement / (this.container.clientWidth * 3.5);
           this.background.style.opacity = opacity.toString();
@@ -137,10 +161,12 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       key: 'onTouchEnd',
       value: function onTouchEnd() {
         this.component.classList.remove(isMoving);
-        this.container.touchMove > this.container.clientWidth / 3.5 ? this.close() : this.open();
-        this.container.touchMove = 0;
+        this.touchMoveSidebar > this.container.clientWidth / 3.5 ? this.close() : this.open();
+        this.touchMoveSidebar = 0;
         this.container.removeAttribute('style');
         this.background.removeAttribute('style');
+        delete this.initialTouch;
+        delete this.touchMoveSidebar;
       }
     }, {
       key: 'isVisible',
@@ -173,7 +199,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }, {
       key: 'version',
       get: function get() {
-        return '1.7.1';
+        return '1.8.0';
       }
     }]);
 
