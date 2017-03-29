@@ -42,8 +42,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       this.nativeSwipe = nativeSwipe !== false;
       this.nativeSwipeOpen = nativeSwipeOpen !== false;
 
-      if (!component && !container && !background) {
-        this.transcludeContent();
+      var hasAllConfigDOMElements = component && container && background;
+      if (!hasAllConfigDOMElements) {
+        try {
+          this.transcludeContent();
+        } catch (e) {
+          throw new Error('You must define an element with [sidebarjs] attribute');
+        }
       }
 
       if (this.nativeSwipe) {

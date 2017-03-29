@@ -29,8 +29,13 @@
       this.nativeSwipe = nativeSwipe !== false;
       this.nativeSwipeOpen = nativeSwipeOpen !== false;
 
-      if (!component && !container && !background) {
-        this.transcludeContent();
+      const hasAllConfigDOMElements = component && container && background;
+      if (!hasAllConfigDOMElements) {
+        try {
+          this.transcludeContent();
+        } catch (e) {
+          throw new Error('You must define an element with [sidebarjs] attribute');
+        }
       }
 
       if (this.nativeSwipe) {

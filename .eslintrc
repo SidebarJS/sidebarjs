@@ -3,7 +3,14 @@
   "env": {
     "browser": true,
     "node": true,
-    "amd": true
+    "amd": true,
+    "jest": true
+  },
+  "globals": {
+    "describe": true,
+    "beforeEach": true,
+    "test": true,
+    "expect": true
   },
   "rules": {
     "no-param-reassign": 0,
