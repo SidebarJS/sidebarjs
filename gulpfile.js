@@ -9,7 +9,7 @@ const cssmin = require('gulp-cssmin');
 gulp.task('scripts', () => (
   gulp.src('./src/sidebarjs.js')
   .pipe(babel({
-    presets: ['es2015'],
+    presets: ['latest'],
     sourceMaps: true,
   }))
   .pipe(gulp.dest('./dist'))
