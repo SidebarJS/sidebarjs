@@ -1,6 +1,8 @@
 .DS_Store
 .sass-cache
 .idea
+src/*.js
+src/*.js.map
 
 # Logs
 logs

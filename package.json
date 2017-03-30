@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
+    "dist/js:compile": "tsc",
     "dist/js:bundle": "rollup -c",
     "dist/js:minify": "uglifyjs --c --m -o dist/sidebarjs.min.js -- dist/sidebarjs.js",
     "dist/js": "npm-run-all dist/js:*",
@@ -53,6 +54,7 @@
     "rollup-plugin-babel": "~2.7.1",
     "rollup-plugin-commonjs": "~8.0.2",
     "rollup-plugin-node-resolve": "~2.0.0",
+    "typescript": "~2.2.2",
     "uglifyjs": "~2.4.10"
   },
   "babel": {
