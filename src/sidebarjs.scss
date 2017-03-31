@@ -1,13 +1,17 @@
 $timing: ease;
 $duration: .3s;
 
-[sidebarjs] {
-  position: fixed;
-  z-index: 9999;
+%component--full-screen {
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+[sidebarjs] {
+  @extend %component--full-screen;
+  position: fixed;
+  z-index: 9999;
   transform: translate(-100%, 0);
   transition: transform 0s $timing $duration;
 
@@ -30,11 +34,8 @@ $duration: .3s;
 }
 
 [sidebarjs-background] {
+  @extend %component--full-screen;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background: #000;
   opacity: 0;
   transition: opacity $duration $timing;
