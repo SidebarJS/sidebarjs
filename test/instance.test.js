@@ -1,5 +1,5 @@
 /* global test, beforeEach, describe, expect */
-const SidebarJS = require('./../src/sidebarjs').default;
+import SidebarJS from './../src/sidebarjs';
 
 describe('Instance creation', () => {
   beforeEach(() => {
