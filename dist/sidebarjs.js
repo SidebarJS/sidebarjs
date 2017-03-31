@@ -14,25 +14,13 @@ function createCommonjsModule(fn, module) {
 
 var sidebarjs_1 = createCommonjsModule(function (module, exports) {
 "use strict";
-
 Object.defineProperty(exports, "__esModule", { value: true });
 var sidebarjs = 'sidebarjs';
 var isVisible = sidebarjs + "--is-visible";
 var isMoving = sidebarjs + "--is-moving";
-var SidebarJS = function () {
+var SidebarJS = (function () {
     function SidebarJS(_a) {
-        var _b = _a === void 0 ? {} : _a,
-            component = _b.component,
-            container = _b.container,
-            background = _b.background,
-            _c = _b.documentMinSwipeX,
-            documentMinSwipeX = _c === void 0 ? 10 : _c,
-            _d = _b.documentSwipeRange,
-            documentSwipeRange = _d === void 0 ? 40 : _d,
-            _e = _b.nativeSwipe,
-            nativeSwipe = _e === void 0 ? true : _e,
-            _f = _b.nativeSwipeOpen,
-            nativeSwipeOpen = _f === void 0 ? true : _f;
+        var _b = _a === void 0 ? {} : _a, component = _b.component, container = _b.container, background = _b.background, _c = _b.documentMinSwipeX, documentMinSwipeX = _c === void 0 ? 10 : _c, _d = _b.documentSwipeRange, documentSwipeRange = _d === void 0 ? 40 : _d, _e = _b.nativeSwipe, nativeSwipe = _e === void 0 ? true : _e, _f = _b.nativeSwipeOpen, nativeSwipeOpen = _f === void 0 ? true : _f;
         this.component = component || document.querySelector("[" + sidebarjs + "]");
         this.container = container || SidebarJS.create(sidebarjs + "-container");
         this.background = background || SidebarJS.create(sidebarjs + "-background");
@@ -44,7 +32,8 @@ var SidebarJS = function () {
         if (!hasAllConfigDOMElements) {
             try {
                 this.transcludeContent();
-            } catch (e) {
+            }
+            catch (e) {
                 throw new Error('You must define an element with [sidebarjs] attribute');
             }
         }
@@ -108,7 +97,7 @@ var SidebarJS = function () {
     };
     SidebarJS.prototype.onTouchEnd = function () {
         this.component.classList.remove(isMoving);
-        this.touchMoveSidebar > this.container.clientWidth / 3.5 ? this.close() : this.open();
+        this.touchMoveSidebar > (this.container.clientWidth / 3.5) ? this.close() : this.open();
         this.container.removeAttribute('style');
         this.background.removeAttribute('style');
         delete this.initialTouch;
@@ -120,8 +109,8 @@ var SidebarJS = function () {
         this.changeBackgroundOpacity(movement);
     };
     SidebarJS.prototype.changeBackgroundOpacity = function (movement) {
-        var opacity = 0.3 - -movement / (this.container.clientWidth * 3.5);
-        this.background.style.opacity = opacity.toString();
+        var opacity = 0.3 - (-movement / (this.container.clientWidth * 3.5));
+        this.background.style.opacity = (opacity).toString();
     };
     SidebarJS.prototype.onDocumentTouchStart = function (e) {
         var touchPositionX = e.touches[0].clientX;
@@ -167,14 +156,14 @@ var SidebarJS = function () {
         return elem && value ? elem.sidebarjsListener = value : elem.sidebarjsListener;
     };
     Object.defineProperty(SidebarJS, "version", {
-        get: function get() {
+        get: function () {
             return '1.8.1';
         },
         enumerable: true,
         configurable: true
     });
     return SidebarJS;
-}();
+}());
 exports.default = SidebarJS;
 
 });
