@@ -5,18 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "dist/js:compile": "tsc",
-    "dist/js:bundle": "rollup -c",
+    "dist/js:bundle": "tsc && rollup -c",
     "dist/js:minify": "uglifyjs --c --m -o dist/sidebarjs.min.js -- dist/sidebarjs.js",
     "dist/js": "npm-run-all dist/js:*",
     "dist/css:compile": "node-sass --include-path scss src/sidebarjs.scss dist/sidebarjs.css",
     "dist/css:autoprefixer": "postcss --use autoprefixer -b 'last 4 versions' -o dist/sidebarjs.css dist/sidebarjs.css",
     "dist/css:nano": "postcss --use cssnano -o dist/sidebarjs.min.css dist/sidebarjs.css",
     "dist/css": "npm-run-all dist/css:*",
-    "dist": "npm run dist/js && npm run dist/css",
     "server": "live-server --open=demo",
-    "start": "npm run dist && npm run server",
-    "dev": "npm run dist | npm run server"
+    "start": "npm run prod && npm run server",
+    "watch": "onchange 'src/*.scss' -- npm run dist/css:compile | onchange 'src/*.ts' -- npm run dist/js:bundle",
+    "dev": "npm run dist/css:compile & npm run dist/js:bundle && npm run watch | npm run server",
+    "prod": "npm run dist/js & npm run dist/css"
   },
   "repository": {
     "type": "git",
@@ -46,6 +46,7 @@
     "live-server": "^1.0.0",
     "node-sass": "~4.5.2",
     "npm-run-all": "~4.0.2",
+    "onchange": "~3.2.1",
     "postcss": "~5.2.16",
     "postcss-cli": "~3.0.0",
     "rollup": "~0.41.6",
