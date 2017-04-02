@@ -1,20 +1,20 @@
-import {Sidebar, SidebarConfig, HTMLSidebarElement} from './sidebarjs.interface';
+import {HTMLSidebarElement, Sidebar, SidebarConfig} from './sidebarjs.interface';
 
 const sidebarjs = 'sidebarjs';
 const isVisible = `${sidebarjs}--is-visible`;
 const isMoving = `${sidebarjs}--is-moving`;
 
 export default class SidebarJS implements Sidebar {
-  public component: HTMLElement
-  public container: HTMLElement
-  public background: HTMLElement
-  public documentMinSwipeX: number
-  public documentSwipeRange: number
-  public nativeSwipe: boolean
-  public nativeSwipeOpen: boolean
-  private initialTouch: number
-  private touchMoveSidebar: number
-  private touchMoveDocument: number
+  public component: HTMLElement;
+  public container: HTMLElement;
+  public background: HTMLElement;
+  public documentMinSwipeX: number;
+  public documentSwipeRange: number;
+  public nativeSwipe: boolean;
+  public nativeSwipeOpen: boolean;
+  private initialTouch: number;
+  private touchMoveSidebar: number;
+  private touchMoveDocument: number;
 
   constructor({
     component,
@@ -23,9 +23,9 @@ export default class SidebarJS implements Sidebar {
     documentMinSwipeX = 10,
     documentSwipeRange = 40,
     nativeSwipe = true,
-    nativeSwipeOpen = true
+    nativeSwipeOpen = true,
   }: SidebarConfig = {}) {
-    this.component = component || <HTMLElement>document.querySelector(`[${sidebarjs}]`);
+    this.component = component || <HTMLElement> document.querySelector(`[${sidebarjs}]`);
     this.container = container || SidebarJS.create(`${sidebarjs}-container`);
     this.background = background || SidebarJS.create(`${sidebarjs}-background`);
     this.documentMinSwipeX = documentMinSwipeX;
@@ -74,9 +74,9 @@ export default class SidebarJS implements Sidebar {
     for (let i = 0; i < actions.length; i++) {
       const elements = document.querySelectorAll(`[${sidebarjs}-${actions[i]}]`);
       for (let j = 0; j < elements.length; j++) {
-        if (!SidebarJS.elemHasListener(<HTMLElement>elements[j])) {
+        if (!SidebarJS.elemHasListener(<HTMLElement> elements[j])) {
           elements[j].addEventListener('click', this[actions[i]].bind(this));
-          SidebarJS.elemHasListener(<HTMLElement>elements[j], true);
+          SidebarJS.elemHasListener(<HTMLElement> elements[j], true);
         }
       }
     }
@@ -161,13 +161,13 @@ export default class SidebarJS implements Sidebar {
     }
   }
 
-  static create(element: string): HTMLElement {
+  public static create(element: string): HTMLElement {
     const el = document.createElement('div');
     el.setAttribute(element, '');
     return el;
   }
 
-  static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement {
+  public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement {
     const Prop = prop.charAt(0).toUpperCase() + prop.slice(1);
     const prefs = ['Moz', 'Webkit', 'O', 'ms'];
     el.style[prop] = val;
@@ -177,7 +177,7 @@ export default class SidebarJS implements Sidebar {
     return el;
   }
 
-  static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {
+  public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {
     return elem && value ? elem.sidebarjsListener = value : elem.sidebarjsListener;
   }
 

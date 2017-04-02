@@ -1,4 +1,4 @@
-import { Sidebar, SidebarConfig, HTMLSidebarElement } from './sidebarjs.interface';
+import { HTMLSidebarElement, Sidebar, SidebarConfig } from './sidebarjs.interface';
 export default class SidebarJS implements Sidebar {
     component: HTMLElement;
     container: HTMLElement;

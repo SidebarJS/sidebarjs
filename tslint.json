@@ -1,0 +1,15 @@
+{
+  "extends": "tslint:latest",
+  "defaultSeverity": "warning",
+  "rules": {
+    "curly": true,
+    "quotemark": [true, "single"],
+    "prefer-for-of": false,
+    "member-ordering": false,
+    "no-angle-bracket-type-assertion": false,
+    "max-line-length": {
+      "severity": "error",
+      "options": 140
+    }
+  }
+}

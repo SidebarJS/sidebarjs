@@ -55,6 +55,7 @@
     "rollup-plugin-commonjs": "~8.0.2",
     "rollup-plugin-node-resolve": "~2.0.0",
     "ts-jest": "~19.0.6",
+    "tslint": "~5.0.0",
     "typescript": "~2.2.2",
     "uglifyjs": "~2.4.10"
   },
