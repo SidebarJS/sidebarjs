@@ -178,7 +178,7 @@ export default class SidebarJS implements Sidebar {
   }
 
   public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {
-    return elem && value ? elem.sidebarjsListener = value : elem.sidebarjsListener;
+    return elem && (value === true || value === false) ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;
   }
 
   static get version(): string {

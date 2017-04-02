@@ -153,7 +153,7 @@ var SidebarJS = (function () {
         return el;
     };
     SidebarJS.elemHasListener = function (elem, value) {
-        return elem && value ? elem.sidebarjsListener = value : elem.sidebarjsListener;
+        return elem && (value === true || value === false) ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;
     };
     Object.defineProperty(SidebarJS, "version", {
         get: function () {
