@@ -14,8 +14,8 @@ describe('Actions', () => {
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
       sidebarjs.open();
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
-    })
-  })
+    });
+  });
 
   describe('Close', () => {
     it('Should remove sidebarjs--is-visible class to [sidebarjs] component', () => {
@@ -27,8 +27,8 @@ describe('Actions', () => {
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
       sidebarjs.close();
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
-    })
-  })
+    });
+  });
 
   describe('Toggle', () => {
     it('Should toggle sidebarjs--is-visible class to [sidebarjs] component', () => {
@@ -43,8 +43,8 @@ describe('Actions', () => {
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
       sidebarjs.toggle();
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
-    })
-  })
+    });
+  });
 
   describe('isVisible', () => {
     it('Should return a boolean value that describe the visibility of sidebar', () => {
@@ -55,6 +55,6 @@ describe('Actions', () => {
       expect(sidebarjs.isVisible()).toBe(true);
       sidebarjs.close();
       expect(sidebarjs.isVisible()).toBe(false);
-    })
-  })
-})
+    });
+  });
+});
