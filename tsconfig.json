@@ -4,9 +4,10 @@
     "target": "es5",
     "noImplicitAny": false,
     "noEmitOnError": true,
-    "sourceMap": true
+    "sourceMap": true,
+    "declaration": true
   },
-  "files": [
-    "src/sidebarjs.ts"
+  "include": [
+    "src/*.ts"
   ]
 }

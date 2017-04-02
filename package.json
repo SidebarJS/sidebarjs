@@ -3,6 +3,7 @@
   "version": "1.8.1",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "main": "index.js",
+  "typings": "index.d.ts",
   "scripts": {
     "test": "jest",
     "dist/js:bundle": "tsc && rollup -c",

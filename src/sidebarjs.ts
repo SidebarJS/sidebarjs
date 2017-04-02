@@ -1,4 +1,4 @@
-import {Sidebar, SidebarConfig, HTMLSidebarElement} from './interfaces';
+import {Sidebar, SidebarConfig, HTMLSidebarElement} from './sidebarjs.interface';
 
 const sidebarjs = 'sidebarjs';
 const isVisible = `${sidebarjs}--is-visible`;
