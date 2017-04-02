@@ -1,4 +1,3 @@
-/* global test, beforeEach, describe, expect */
 import SidebarJS from './../src/sidebarjs';
 
 describe('Instance creation', () => {
