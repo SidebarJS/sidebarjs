@@ -1,3 +1,4 @@
+import * as sinon from 'sinon';
 import SidebarJS from './../src/sidebarjs';
 
 describe('Instance creation', () => {
@@ -23,15 +24,20 @@ describe('Instance creation', () => {
 
   describe('Transclude', () => {
     it('Should transclude content', () => {
+      const spy = sinon.spy(SidebarJS.prototype, 'transcludeContent');
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarJS();
       expect(sidebarjs.container.innerHTML).toBe('Hello');
       expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
       expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
       expect(sidebarjs.background.attributes['sidebarjs-background']).toBeDefined();
+      expect(spy.called).toBe(true);
+      expect(spy.calledOnce).toBe(true);
+      spy.restore();
     });
 
     it('Should not transclude content with all custom HTMLElement params in config', () => {
+      const spy = sinon.spy(SidebarJS.prototype, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
@@ -51,9 +57,12 @@ describe('Instance creation', () => {
       expect(sidebarjs.background.attributes['custom-background']).toBeDefined();
       expect(sidebarjs.container.attributes['sidebarjs-container']).toBeUndefined();
       expect(sidebarjs.background.attributes['sidebarjs-background']).toBeUndefined();
+      expect(spy.called).toBe(false);
+      spy.restore();
     });
 
     it('Should transclude content if has not all custom HTMLElement params in config', () => {
+      const spy = sinon.spy(SidebarJS.prototype, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
@@ -69,6 +78,9 @@ describe('Instance creation', () => {
       expect(sidebarjs.container.innerText).toBeFalsy();
       expect(sidebarjs.container.children[0].outerHTML).toBe('<section custom-container="">Hello</section>');
       expect(sidebarjs.container.children[1].outerHTML).toBe('<section custom-background=""></section>');
+      expect(spy.called).toBe(true);
+      expect(spy.calledOnce).toBe(true);
+      spy.restore();
     });
   });
 
