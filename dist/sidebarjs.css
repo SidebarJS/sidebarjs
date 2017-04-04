@@ -7,51 +7,33 @@
 [sidebarjs] {
   position: fixed;
   z-index: 9999;
-  -webkit-transform: translate(-100%, 0);
-          transform: translate(-100%, 0);
-  -webkit-transition: -webkit-transform 0s ease 0.3s;
-  transition: -webkit-transform 0s ease 0.3s;
-  transition: transform 0s ease 0.3s;
-  transition: transform 0s ease 0.3s, -webkit-transform 0s ease 0.3s; }
+  transform: translate(-100%, 0);
+  transition: transform 0s ease 0.3s; }
   [sidebarjs].sidebarjs--is-visible {
-    -webkit-transform: translate(0, 0);
-            transform: translate(0, 0);
-    -webkit-transition: -webkit-transform 0s ease 0s;
-    transition: -webkit-transform 0s ease 0s;
-    transition: transform 0s ease 0s;
-    transition: transform 0s ease 0s, -webkit-transform 0s ease 0s; }
+    transform: translate(0, 0);
+    transition: transform 0s ease 0s; }
     [sidebarjs].sidebarjs--is-visible [sidebarjs-container] {
-      -webkit-transform: translate(0, 0);
-              transform: translate(0, 0); }
+      transform: translate(0, 0); }
     [sidebarjs].sidebarjs--is-visible [sidebarjs-background] {
       opacity: .3; }
   [sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-background] {
-    -webkit-transition: none;
     transition: none; }
 
 [sidebarjs-background] {
   position: absolute;
   background: #000;
   opacity: 0;
-  -webkit-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease; }
 
 [sidebarjs-container] {
   position: relative;
   z-index: 1;
-  display: -webkit-box;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   width: 90%;
   max-width: 300px;
   height: 100%;
   background: #FFF;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
-  -webkit-transition: all ease 0.3s;
   transition: all ease 0.3s;
-  -webkit-transform: translate(-100%, 0);
-          transform: translate(-100%, 0); }
+  transform: translate(-100%, 0); }

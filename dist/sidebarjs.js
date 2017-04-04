@@ -157,7 +157,7 @@ var SidebarJS = (function () {
     };
     Object.defineProperty(SidebarJS, "version", {
         get: function () {
-            return '1.8.1';
+            return '1.9.0';
         },
         enumerable: true,
         configurable: true
