@@ -20,16 +20,16 @@ export default class SidebarJS implements Sidebar {
     component,
     container,
     background,
-    documentMinSwipeX = 10,
-    documentSwipeRange = 40,
-    nativeSwipe = true,
-    nativeSwipeOpen = true,
+    documentMinSwipeX,
+    documentSwipeRange,
+    nativeSwipe,
+    nativeSwipeOpen,
   }: SidebarConfig = {}) {
     this.component = component || <HTMLElement> document.querySelector(`[${sidebarjs}]`);
     this.container = container || SidebarJS.create(`${sidebarjs}-container`);
     this.background = background || SidebarJS.create(`${sidebarjs}-background`);
-    this.documentMinSwipeX = documentMinSwipeX;
-    this.documentSwipeRange = documentSwipeRange;
+    this.documentMinSwipeX = documentMinSwipeX || 10;
+    this.documentSwipeRange = documentSwipeRange || 40;
     this.nativeSwipe = nativeSwipe !== false;
     this.nativeSwipeOpen = nativeSwipeOpen !== false;
 

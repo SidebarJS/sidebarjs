@@ -20,12 +20,12 @@ var isVisible = sidebarjs + "--is-visible";
 var isMoving = sidebarjs + "--is-moving";
 var SidebarJS = (function () {
     function SidebarJS(_a) {
-        var _b = _a === void 0 ? {} : _a, component = _b.component, container = _b.container, background = _b.background, _c = _b.documentMinSwipeX, documentMinSwipeX = _c === void 0 ? 10 : _c, _d = _b.documentSwipeRange, documentSwipeRange = _d === void 0 ? 40 : _d, _e = _b.nativeSwipe, nativeSwipe = _e === void 0 ? true : _e, _f = _b.nativeSwipeOpen, nativeSwipeOpen = _f === void 0 ? true : _f;
+        var _b = _a === void 0 ? {} : _a, component = _b.component, container = _b.container, background = _b.background, documentMinSwipeX = _b.documentMinSwipeX, documentSwipeRange = _b.documentSwipeRange, nativeSwipe = _b.nativeSwipe, nativeSwipeOpen = _b.nativeSwipeOpen;
         this.component = component || document.querySelector("[" + sidebarjs + "]");
         this.container = container || SidebarJS.create(sidebarjs + "-container");
         this.background = background || SidebarJS.create(sidebarjs + "-background");
-        this.documentMinSwipeX = documentMinSwipeX;
-        this.documentSwipeRange = documentSwipeRange;
+        this.documentMinSwipeX = documentMinSwipeX || 10;
+        this.documentSwipeRange = documentSwipeRange || 40;
         this.nativeSwipe = nativeSwipe !== false;
         this.nativeSwipeOpen = nativeSwipeOpen !== false;
         var hasAllConfigDOMElements = component && container && background;
