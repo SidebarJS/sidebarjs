@@ -15,6 +15,15 @@ npm install sidebarjs --save
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
 
+## Options
+| Option | Default | Type | Description |
+| :----- | :------ | :--- | :---------- |
+| `documentMinSwipeX` | 10 | Number | Minimum swipe in px required to trigger listener: open |
+| `documentSwipeRange` | 40 | Number | Range in px where document is listening for gesture: open |
+| `nativeSwipe` | true | Boolean | Open and close sidebar with swipe gestures |
+| `nativeSwipeOpen` | true | Boolean | Enable/Disable open on swipe
+| `position` | 'left' | String | Sidebar position, accepted values: left\right |
+
 ## Installation
 Classic
 ```html
