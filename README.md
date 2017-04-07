@@ -15,15 +15,6 @@ npm install sidebarjs --save
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
 
-## Options
-| Option | Default | Type | Description |
-| :----- | :------ | :--- | :---------- |
-| `documentMinSwipeX` | 10 | Number | Minimum swipe in px required to trigger listener: open |
-| `documentSwipeRange` | 40 | Number | Range in px where document is listening for gesture: open |
-| `nativeSwipe` | true | Boolean | Open and close sidebar with swipe gestures |
-| `nativeSwipeOpen` | true | Boolean | Enable/Disable open on swipe
-| `position` | 'left' | String | Sidebar position, accepted values: left\right |
-
 ## Installation
 Classic
 ```html
@@ -39,6 +30,15 @@ ES6
 ```js
 import SidebarJS from 'sidebarjs';
 ```
+
+## Options
+| Option | Default | Type | Description |
+| :----- | :------ | :--- | :---------- |
+| `documentMinSwipeX` | 10 | Number | Minimum swipe in px required to trigger listener: open |
+| `documentSwipeRange` | 40 | Number | Range in px where document is listening for gesture: open |
+| `nativeSwipe` | true | Boolean | Open and close sidebar with swipe gestures |
+| `nativeSwipeOpen` | true | Boolean | Enable/Disable open on swipe
+| `position` | 'left' | String | Sidebar position, accepted values: left\right |
 
 ## Implementation - Superfast explanation
 Insert **sidebarjs.min.css** and **sidebarjs.min.js** in your index.html file and create a tag (div, aside or what you prefer) with the attribute **[sidebarjs]**.
