@@ -8,28 +8,26 @@ $duration: .3s;
   height: 100%;
 }
 
-[sidebarjs] {
-  @extend %component--full-screen;
-  position: fixed;
-  z-index: 9999;
+%component--left {
   transform: translate(-100%, 0);
-  transition: transform 0s $timing $duration;
+}
 
-  &.sidebarjs--is-visible {
-    transform: translate(0, 0);
-    transition: transform 0s $timing 0s;
-    [sidebarjs-container] {
-      transform: translate(0, 0);
-    }
-    [sidebarjs-background] {
-      opacity: .3;
-    }
+%component--right {
+  transform: translate(100%, 0);
+}
+
+[sidebarjs].sidebarjs--left {
+  @extend %component--left;
+  [sidebarjs-container] {
+    @extend %component--left;
   }
+}
 
-  &.sidebarjs--is-moving {
-    [sidebarjs-container], [sidebarjs-background] {
-      transition: none;
-    }
+[sidebarjs].sidebarjs--right {
+  @extend %component--right;
+  [sidebarjs-container] {
+    @extend %component--right;
+    margin-left: auto;
   }
 }
 
@@ -49,8 +47,32 @@ $duration: .3s;
   width: 90%;
   max-width: 300px;
   height: 100%;
-  background: #FFF;
+  background: #fff;
   box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
   transition: all $timing $duration;
-  transform: translate(-100%, 0);
+}
+
+[sidebarjs] {
+  @extend %component--full-screen;
+  position: fixed;
+  z-index: 9999;
+  transition: transform 0s $timing $duration;
+
+  &.sidebarjs--is-visible {
+    transform: translate(0, 0);
+    transition: transform 0s $timing 0s;
+    [sidebarjs-container] {
+      transform: translate(0, 0);
+    }
+    [sidebarjs-background] {
+      opacity: .3;
+    }
+  }
+
+  &.sidebarjs--is-moving {
+    transition: none;
+    [sidebarjs-container], [sidebarjs-background] {
+      transition: none;
+    }
+  }
 }

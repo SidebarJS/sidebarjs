@@ -15,7 +15,7 @@
     "dist/css": "npm-run-all dist/css:*",
     "server": "live-server --open=demo",
     "start": "npm run prod && npm run server",
-    "watch": "onchange 'src/*.scss' -- npm run dist/css:compile | onchange 'src/*.ts' -- npm run dist/js:bundle",
+    "watch": "onchange 'src/*.scss' -- npm run dist/css:compile | onchange 'src/*.ts' -e 'src/*.d.ts'  -- npm run dist/js:bundle",
     "dev": "npm run dist/css:compile & npm run dist/js:bundle && npm run watch | npm run server",
     "prod": "npm run dist/js & npm run dist/css"
   },

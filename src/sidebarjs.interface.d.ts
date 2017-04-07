@@ -3,6 +3,7 @@ export interface Sidebar {
     close(): void;
     toggle(): void;
     isVisible(): boolean;
+    setPosition(position: string): void;
 }
 export interface SidebarConfig {
     component?: HTMLElement;
@@ -12,6 +13,7 @@ export interface SidebarConfig {
     documentSwipeRange?: number;
     nativeSwipe?: boolean;
     nativeSwipeOpen?: boolean;
+    position?: string;
 }
 export interface HTMLSidebarElement extends HTMLElement {
     sidebarjsListener?: boolean;
