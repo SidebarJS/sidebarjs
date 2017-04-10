@@ -10,7 +10,7 @@ export default class SidebarJS implements Sidebar {
     position: string;
     private initialTouch;
     private touchMoveSidebar;
-    private touchMoveDocument;
+    private openMovement;
     constructor({component, container, background, documentMinSwipeX, documentSwipeRange, nativeSwipe, nativeSwipeOpen, position}?: SidebarConfig);
     toggle(): void;
     open(): void;
@@ -28,9 +28,10 @@ export default class SidebarJS implements Sidebar {
     private onTouchEnd();
     private moveSidebar(movement);
     private changeBackgroundOpacity(movement);
-    private onDocumentTouchStart(e);
-    private onDocumentTouchMove(e);
-    private onDocumentTouchEnd();
+    private onSwipeOpenStart(e);
+    private onSwipeOpenMove(e);
+    private onSwipeOpenEnd();
+    private getSidebarPosition(swiped);
     static create(element: string): HTMLElement;
     static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
     static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;

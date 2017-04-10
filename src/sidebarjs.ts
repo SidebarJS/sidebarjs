@@ -19,7 +19,7 @@ export default class SidebarJS implements Sidebar {
   public position: string;
   private initialTouch: number;
   private touchMoveSidebar: number;
-  private touchMoveDocument: number;
+  private openMovement: number;
 
   constructor({
     component,
@@ -119,9 +119,9 @@ export default class SidebarJS implements Sidebar {
   }
 
   private addNativeOpenGestures(): void {
-    document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
-    document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
-    document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+    document.addEventListener('touchstart', this.onSwipeOpenStart.bind(this));
+    document.addEventListener('touchmove', this.onSwipeOpenMove.bind(this));
+    document.addEventListener('touchend', this.onSwipeOpenEnd.bind(this));
   }
 
   private onTouchStart(e: TouchEvent): void {
@@ -129,10 +129,10 @@ export default class SidebarJS implements Sidebar {
   }
 
   private onTouchMove(e: TouchEvent): void {
-    this.touchMoveSidebar = -(this.initialTouch - e.touches[0].pageX);
-    const isSwipeableToLeft = this.hasLeftPosition() && this.touchMoveSidebar <= 0;
-    const isSwipeableToRight = this.hasRightPosition() && this.touchMoveSidebar >= 0;
-    if (isSwipeableToLeft || isSwipeableToRight) {
+    const documentSwiped =  this.initialTouch - e.touches[0].clientX;
+    const sidebarMovement = this.getSidebarPosition(documentSwiped);
+    this.touchMoveSidebar = -documentSwiped;
+    if (sidebarMovement <= this.container.clientWidth) {
       this.moveSidebar(this.touchMoveSidebar);
     }
   }
@@ -157,7 +157,7 @@ export default class SidebarJS implements Sidebar {
     this.background.style.opacity = (opacity).toString();
   }
 
-  private onDocumentTouchStart(e: TouchEvent): void {
+  private onSwipeOpenStart(e: TouchEvent): void {
     const {clientWidth} = document.body;
     const touchPositionX = e.touches[0].clientX;
     const documentTouch = this.hasLeftPosition() ? touchPositionX : clientWidth - touchPositionX;
@@ -166,28 +166,29 @@ export default class SidebarJS implements Sidebar {
     }
   }
 
-  private onDocumentTouchMove(e: TouchEvent): void {
+  private onSwipeOpenMove(e: TouchEvent): void {
     if (this.initialTouch && !this.isVisible()) {
-      const documentSwiped = Math.abs(e.touches[0].clientX - this.initialTouch);
-      if (documentSwiped > this.documentMinSwipeX) {
+      const documentSwiped = e.touches[0].clientX - this.initialTouch;
+      const sidebarMovement = this.getSidebarPosition(documentSwiped);
+      if (sidebarMovement > 0) {
         SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
         SidebarJS.vendorify(this.component, 'transition', 'none');
-        this.touchMoveDocument = (this.container.clientWidth - documentSwiped) * (this.hasLeftPosition() ? -1 : 1);
-        const isSwipeableToRight = this.hasLeftPosition() && this.touchMoveDocument <= 0;
-        const isSwipeableToLeft = this.hasRightPosition() && this.touchMoveDocument >= 0;
-        if (isSwipeableToRight || isSwipeableToLeft) {
-          this.moveSidebar(this.touchMoveDocument);
-        }
+        this.openMovement = sidebarMovement * (this.hasLeftPosition() ? -1 : 1);
+        this.moveSidebar(this.openMovement);
       }
     }
   }
 
-  private onDocumentTouchEnd(): void {
-    if (this.touchMoveDocument) {
-      delete this.touchMoveDocument;
+  private onSwipeOpenEnd(): void {
+    if (this.openMovement) {
+      delete this.openMovement;
       this.component.removeAttribute('style');
       this.onTouchEnd();
     }
+  }
+
+  private getSidebarPosition(swiped: number): number {
+    return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
   }
 
   public static create(element: string): HTMLElement {

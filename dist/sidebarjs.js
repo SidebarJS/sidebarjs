@@ -101,18 +101,18 @@ var SidebarJS = (function () {
         this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
     };
     SidebarJS.prototype.addNativeOpenGestures = function () {
-        document.addEventListener('touchstart', this.onDocumentTouchStart.bind(this));
-        document.addEventListener('touchmove', this.onDocumentTouchMove.bind(this));
-        document.addEventListener('touchend', this.onDocumentTouchEnd.bind(this));
+        document.addEventListener('touchstart', this.onSwipeOpenStart.bind(this));
+        document.addEventListener('touchmove', this.onSwipeOpenMove.bind(this));
+        document.addEventListener('touchend', this.onSwipeOpenEnd.bind(this));
     };
     SidebarJS.prototype.onTouchStart = function (e) {
         this.initialTouch = e.touches[0].pageX;
     };
     SidebarJS.prototype.onTouchMove = function (e) {
-        this.touchMoveSidebar = -(this.initialTouch - e.touches[0].pageX);
-        var isSwipeableToLeft = this.hasLeftPosition() && this.touchMoveSidebar <= 0;
-        var isSwipeableToRight = this.hasRightPosition() && this.touchMoveSidebar >= 0;
-        if (isSwipeableToLeft || isSwipeableToRight) {
+        var documentSwiped = this.initialTouch - e.touches[0].clientX;
+        var sidebarMovement = this.getSidebarPosition(documentSwiped);
+        this.touchMoveSidebar = -documentSwiped;
+        if (sidebarMovement <= this.container.clientWidth) {
             this.moveSidebar(this.touchMoveSidebar);
         }
     };
@@ -133,7 +133,7 @@ var SidebarJS = (function () {
         var opacity = 0.3 - (Math.abs(movement) / (this.container.clientWidth * 3.5));
         this.background.style.opacity = (opacity).toString();
     };
-    SidebarJS.prototype.onDocumentTouchStart = function (e) {
+    SidebarJS.prototype.onSwipeOpenStart = function (e) {
         var clientWidth = document.body.clientWidth;
         var touchPositionX = e.touches[0].clientX;
         var documentTouch = this.hasLeftPosition() ? touchPositionX : clientWidth - touchPositionX;
@@ -141,27 +141,27 @@ var SidebarJS = (function () {
             this.onTouchStart(e);
         }
     };
-    SidebarJS.prototype.onDocumentTouchMove = function (e) {
+    SidebarJS.prototype.onSwipeOpenMove = function (e) {
         if (this.initialTouch && !this.isVisible()) {
-            var documentSwiped = Math.abs(e.touches[0].clientX - this.initialTouch);
-            if (documentSwiped > this.documentMinSwipeX) {
+            var documentSwiped = e.touches[0].clientX - this.initialTouch;
+            var sidebarMovement = this.getSidebarPosition(documentSwiped);
+            if (sidebarMovement > 0) {
                 SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
                 SidebarJS.vendorify(this.component, 'transition', 'none');
-                this.touchMoveDocument = (this.container.clientWidth - documentSwiped) * (this.hasLeftPosition() ? -1 : 1);
-                var isSwipeableToRight = this.hasLeftPosition() && this.touchMoveDocument <= 0;
-                var isSwipeableToLeft = this.hasRightPosition() && this.touchMoveDocument >= 0;
-                if (isSwipeableToRight || isSwipeableToLeft) {
-                    this.moveSidebar(this.touchMoveDocument);
-                }
+                this.openMovement = sidebarMovement * (this.hasLeftPosition() ? -1 : 1);
+                this.moveSidebar(this.openMovement);
             }
         }
     };
-    SidebarJS.prototype.onDocumentTouchEnd = function () {
-        if (this.touchMoveDocument) {
-            delete this.touchMoveDocument;
+    SidebarJS.prototype.onSwipeOpenEnd = function () {
+        if (this.openMovement) {
+            delete this.openMovement;
             this.component.removeAttribute('style');
             this.onTouchEnd();
         }
+    };
+    SidebarJS.prototype.getSidebarPosition = function (swiped) {
+        return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
     };
     SidebarJS.create = function (element) {
         var el = document.createElement('div');
