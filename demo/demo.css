@@ -49,6 +49,13 @@ a {
                 Basic Demo
 –––––––––––––––––––––––––––––––––––––––– */
 header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-between;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
   position: relative;
   padding: 12px;
   background: #2196F3;
@@ -107,7 +114,12 @@ header h1 {
 }
 
 [sidebarjs] h3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
+  -webkit-align-items: flex-end;
+  -ms-flex-align: end;
   align-items: flex-end;
   min-height: 180px;
   padding: 16px;
@@ -122,6 +134,9 @@ header h1 {
 }
 
 [sidebarjs] nav > div {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
   display: flex;
   flex-direction: column;
   border-top: 1px solid rgba(0,0,0, .1);

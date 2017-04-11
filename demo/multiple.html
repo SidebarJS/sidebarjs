@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="author" content="Lorenzo D'Ianni">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>SidebarJS - Basic Demo</title>
+    <link rel="stylesheet" href="./demo.css">
+
+    <!-- SidebarJS Styles -->
+    <link rel="stylesheet" href="../dist/sidebarjs.min.css">
+  </head>
+  <body>
+
+    <header>
+      <div class="icon hamburger-icon" sidebarjs-toggle="leftSidebarName"></div>
+      <h1>SidebarJS</h1>
+      <div class="icon hamburger-icon" sidebarjs-toggle="rightSidebarName"></div>
+    </header>
+
+    <div sidebarjs="leftSidebarName">
+      <h3>Left SidebarJS</h3>
+      <nav>
+        <div>
+          <a href="https://github.com/SidebarJS/sidebarjs"><div class="img github"></div>Github</a>
+          <a href="https://www.npmjs.com/package/sidebarjs"><div class="img npm"></div>npm</a>
+          <a href="https://github.com/lorenzodianni"><div class="img author"></div>Author</a>
+        </div>
+      </nav>
+    </div>
+
+    <div sidebarjs="rightSidebarName">
+      <h3>Right SidebarJS</h3>
+      <nav>
+        <div>
+          <a href="https://github.com/SidebarJS/sidebarjs/wiki/Setup"><div class="img wiki"></div>Wiki</a>
+          <a href="https://github.com/SidebarJS/sidebarjs/issues"><div class="img bugs"></div>Bugs</a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- SidebarJS Scripts -->
+    <script src="../dist/sidebarjs.min.js"></script>
+
+    <script type="text/javascript">
+      // SidebarJS Init
+      var leftSidebarjs = new SidebarJS({
+        component: document.querySelector('[sidebarjs="leftSidebarName"]'),
+      });
+      var rightSidebarjs = new SidebarJS({
+        component: document.querySelector('[sidebarjs="rightSidebarName"]'),
+        position: 'right',
+      });
+    </script>
+
+  </body>
+</html>
