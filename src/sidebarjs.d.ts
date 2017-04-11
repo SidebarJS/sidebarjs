@@ -17,7 +17,7 @@ export default class SidebarJS implements Sidebar {
     close(): void;
     isVisible(): boolean;
     setPosition(position: string): void;
-    addAttrsEventsListeners(): void;
+    addAttrsEventsListeners(sidebarName: string): void;
     private hasLeftPosition();
     private hasRightPosition();
     private transcludeContent();
@@ -32,6 +32,7 @@ export default class SidebarJS implements Sidebar {
     private onSwipeOpenMove(e);
     private onSwipeOpenEnd();
     private getSidebarPosition(swiped);
+    private targetElementIsBackground(e);
     static create(element: string): HTMLElement;
     static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
     static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;

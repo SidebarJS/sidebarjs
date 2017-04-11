@@ -56,7 +56,7 @@ export default class SidebarJS implements Sidebar {
     }
 
     this.setPosition(position);
-    this.addAttrsEventsListeners();
+    this.addAttrsEventsListeners(this.component.getAttribute(sidebarjs));
     this.background.addEventListener('click', this.close.bind(this));
   }
 
@@ -84,10 +84,10 @@ export default class SidebarJS implements Sidebar {
     setTimeout(() => this.component.classList.remove(isMoving), TRANSITION_DURATION);
   }
 
-  public addAttrsEventsListeners(): void {
+  public addAttrsEventsListeners(sidebarName: string): void {
     const actions = ['toggle', 'open', 'close'];
     for (let i = 0; i < actions.length; i++) {
-      const elements = document.querySelectorAll(`[${sidebarjs}-${actions[i]}]`);
+      const elements = document.querySelectorAll(`[${sidebarjs}-${actions[i]}="${sidebarName}"]`);
       for (let j = 0; j < elements.length; j++) {
         if (!SidebarJS.elemHasListener(<HTMLElement> elements[j])) {
           elements[j].addEventListener('click', this[actions[i]].bind(this));
@@ -158,6 +158,9 @@ export default class SidebarJS implements Sidebar {
   }
 
   private onSwipeOpenStart(e: TouchEvent): void {
+    if (this.targetElementIsBackground(e)) {
+      return;
+    }
     const {clientWidth} = document.body;
     const touchPositionX = e.touches[0].clientX;
     const documentTouch = this.hasLeftPosition() ? touchPositionX : clientWidth - touchPositionX;
@@ -167,7 +170,7 @@ export default class SidebarJS implements Sidebar {
   }
 
   private onSwipeOpenMove(e: TouchEvent): void {
-    if (this.initialTouch && !this.isVisible()) {
+    if (!this.targetElementIsBackground(e) && this.initialTouch && !this.isVisible()) {
       const documentSwiped = e.touches[0].clientX - this.initialTouch;
       const sidebarMovement = this.getSidebarPosition(documentSwiped);
       if (sidebarMovement > 0) {
@@ -189,6 +192,11 @@ export default class SidebarJS implements Sidebar {
 
   private getSidebarPosition(swiped: number): number {
     return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
+  }
+
+  private targetElementIsBackground(e: TouchEvent): boolean {
+    const touchedElement = <HTMLElement> e.target;
+    return touchedElement.hasAttribute(`${sidebarjs}-background`);
   }
 
   public static create(element: string): HTMLElement {

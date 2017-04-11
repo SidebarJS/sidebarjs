@@ -48,7 +48,7 @@ var SidebarJS = (function () {
             }
         }
         this.setPosition(position);
-        this.addAttrsEventsListeners();
+        this.addAttrsEventsListeners(this.component.getAttribute(sidebarjs));
         this.background.addEventListener('click', this.close.bind(this));
     }
     SidebarJS.prototype.toggle = function () {
@@ -71,10 +71,10 @@ var SidebarJS = (function () {
         this.component.classList.add(sidebarjs + "--" + (this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION));
         setTimeout(function () { return _this.component.classList.remove(isMoving); }, TRANSITION_DURATION);
     };
-    SidebarJS.prototype.addAttrsEventsListeners = function () {
+    SidebarJS.prototype.addAttrsEventsListeners = function (sidebarName) {
         var actions = ['toggle', 'open', 'close'];
         for (var i = 0; i < actions.length; i++) {
-            var elements = document.querySelectorAll("[" + sidebarjs + "-" + actions[i] + "]");
+            var elements = document.querySelectorAll("[" + sidebarjs + "-" + actions[i] + "=\"" + sidebarName + "\"]");
             for (var j = 0; j < elements.length; j++) {
                 if (!SidebarJS.elemHasListener(elements[j])) {
                     elements[j].addEventListener('click', this[actions[i]].bind(this));
@@ -134,6 +134,9 @@ var SidebarJS = (function () {
         this.background.style.opacity = (opacity).toString();
     };
     SidebarJS.prototype.onSwipeOpenStart = function (e) {
+        if (this.targetElementIsBackground(e)) {
+            return;
+        }
         var clientWidth = document.body.clientWidth;
         var touchPositionX = e.touches[0].clientX;
         var documentTouch = this.hasLeftPosition() ? touchPositionX : clientWidth - touchPositionX;
@@ -142,7 +145,7 @@ var SidebarJS = (function () {
         }
     };
     SidebarJS.prototype.onSwipeOpenMove = function (e) {
-        if (this.initialTouch && !this.isVisible()) {
+        if (!this.targetElementIsBackground(e) && this.initialTouch && !this.isVisible()) {
             var documentSwiped = e.touches[0].clientX - this.initialTouch;
             var sidebarMovement = this.getSidebarPosition(documentSwiped);
             if (sidebarMovement > 0) {
@@ -162,6 +165,10 @@ var SidebarJS = (function () {
     };
     SidebarJS.prototype.getSidebarPosition = function (swiped) {
         return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
+    };
+    SidebarJS.prototype.targetElementIsBackground = function (e) {
+        var touchedElement = e.target;
+        return touchedElement.hasAttribute(sidebarjs + "-background");
     };
     SidebarJS.create = function (element) {
         var el = document.createElement('div');
