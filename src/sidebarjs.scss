@@ -1,6 +1,16 @@
 $timing: ease;
 $duration: .3s;
 
+@mixin shadow($position) {
+  $x: 0;
+  @if ($position == 'left') {
+    $x: 2px;
+  } @else if ($position == 'right') {
+    $x: -2px;
+  }
+  box-shadow: $x 0 4px rgba(0, 0, 0, 0.2);
+}
+
 %component--full-screen {
   top: 0;
   left: 0;
@@ -20,6 +30,7 @@ $duration: .3s;
   @extend %component--left;
   [sidebarjs-container] {
     @extend %component--left;
+    @include shadow('left');
   }
 }
 
@@ -27,6 +38,7 @@ $duration: .3s;
   @extend %component--right;
   [sidebarjs-container] {
     @extend %component--right;
+    @include shadow('right');
     margin-left: auto;
   }
 }
@@ -48,7 +60,6 @@ $duration: .3s;
   max-width: 300px;
   height: 100%;
   background: #fff;
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
   transition: all $timing $duration;
 }
 
