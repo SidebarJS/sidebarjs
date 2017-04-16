@@ -220,6 +220,6 @@ export default class SidebarJS implements Sidebar {
   }
 
   static get version(): string {
-    return '1.10.1';
+    return '2.0.0';
   }
 }
