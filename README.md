@@ -23,12 +23,12 @@ Classic
 
 Require
 ```js
-let SidebarJS = require('sidebarjs');
+const { SidebarJS } = require('sidebarjs');
 ```
 
 ES6
 ```js
-import SidebarJS from 'sidebarjs';
+import { SidebarJS } from 'sidebarjs';
 ```
 
 ## Options
