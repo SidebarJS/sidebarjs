@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.SidebarJS = factory());
-}(this, (function () { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+	typeof define === 'function' && define.amd ? define(['exports'], factory) :
+	(factory((global.SidebarJS = global.SidebarJS || {})));
+}(this, (function (exports) { 'use strict';
 
 function unwrapExports (x) {
 	return x && x.__esModule ? x['default'] : x;
@@ -196,12 +196,16 @@ var SidebarJS = (function () {
     });
     return SidebarJS;
 }());
-exports.default = SidebarJS;
+exports.SidebarJS = SidebarJS;
 
 });
 
 var sidebarjs = unwrapExports(sidebarjs_1);
+var sidebarjs_2 = sidebarjs_1.SidebarJS;
 
-return sidebarjs;
+exports['default'] = sidebarjs;
+exports.SidebarJS = sidebarjs_2;
+
+Object.defineProperty(exports, '__esModule', { value: true });
 
 })));

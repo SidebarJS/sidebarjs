@@ -8,7 +8,7 @@ const RIGHT_POSITION = 'right';
 const TRANSITION_DURATION = 400;
 const POSITIONS = [LEFT_POSITION, RIGHT_POSITION];
 
-export default class SidebarJS implements Sidebar {
+export class SidebarJS implements Sidebar {
   public component: HTMLElement;
   public container: HTMLElement;
   public background: HTMLElement;

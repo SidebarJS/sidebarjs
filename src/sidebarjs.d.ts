@@ -1,5 +1,5 @@
 import { HTMLSidebarElement, Sidebar, SidebarConfig } from './sidebarjs.interface';
-export default class SidebarJS implements Sidebar {
+export declare class SidebarJS implements Sidebar {
     component: HTMLElement;
     container: HTMLElement;
     background: HTMLElement;
