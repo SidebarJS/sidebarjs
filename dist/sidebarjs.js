@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.SidebarJS = global.SidebarJS || {})));
-}(this, (function (exports) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.SidebarJS = factory());
+}(this, (function () { 'use strict';
 
 function unwrapExports (x) {
 	return x && x.__esModule ? x['default'] : x;
@@ -189,23 +189,19 @@ var SidebarJS = (function () {
     };
     Object.defineProperty(SidebarJS, "version", {
         get: function () {
-            return '2.0.1';
+            return '2.1.0';
         },
         enumerable: true,
         configurable: true
     });
     return SidebarJS;
 }());
-exports.SidebarJS = SidebarJS;
+exports.default = SidebarJS;
 
 });
 
 var sidebarjs = unwrapExports(sidebarjs_1);
-var sidebarjs_2 = sidebarjs_1.SidebarJS;
 
-exports['default'] = sidebarjs;
-exports.SidebarJS = sidebarjs_2;
-
-Object.defineProperty(exports, '__esModule', { value: true });
+return sidebarjs;
 
 })));

@@ -1,4 +1,4 @@
-import {HTMLSidebarElement, Sidebar, SidebarConfig} from './sidebarjs.interface';
+import { HTMLSidebarElement, Sidebar, SidebarConfig } from './sidebarjs.interface';
 
 const sidebarjs = 'sidebarjs';
 const isVisible = `${sidebarjs}--is-visible`;
@@ -8,7 +8,7 @@ const RIGHT_POSITION = 'right';
 const TRANSITION_DURATION = 400;
 const POSITIONS = [LEFT_POSITION, RIGHT_POSITION];
 
-export class SidebarJS implements Sidebar {
+export default class SidebarJS implements Sidebar {
   public component: HTMLElement;
   public container: HTMLElement;
   public background: HTMLElement;
@@ -22,15 +22,15 @@ export class SidebarJS implements Sidebar {
   private openMovement: number;
 
   constructor({
-    component,
-    container,
-    background,
-    documentMinSwipeX,
-    documentSwipeRange,
-    nativeSwipe,
-    nativeSwipeOpen,
-    position,
-  }: SidebarConfig = {}) {
+                component,
+                container,
+                background,
+                documentMinSwipeX,
+                documentSwipeRange,
+                nativeSwipe,
+                nativeSwipeOpen,
+                position,
+              }: SidebarConfig = {}) {
     this.component = component || <HTMLElement> document.querySelector(`[${sidebarjs}]`);
     this.container = container || SidebarJS.create(`${sidebarjs}-container`);
     this.background = background || SidebarJS.create(`${sidebarjs}-background`);
@@ -129,7 +129,7 @@ export class SidebarJS implements Sidebar {
   }
 
   private onTouchMove(e: TouchEvent): void {
-    const documentSwiped =  this.initialTouch - e.touches[0].clientX;
+    const documentSwiped = this.initialTouch - e.touches[0].clientX;
     const sidebarMovement = this.getSidebarPosition(documentSwiped);
     this.touchMoveSidebar = -documentSwiped;
     if (sidebarMovement <= this.container.clientWidth) {
@@ -220,6 +220,6 @@ export class SidebarJS implements Sidebar {
   }
 
   static get version(): string {
-    return '2.0.1';
+    return '2.1.0';
   }
 }
