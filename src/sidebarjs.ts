@@ -1,4 +1,4 @@
-import { HTMLSidebarElement, Sidebar, SidebarConfig } from './sidebarjs.interface';
+import { SidebarBase, SidebarConfig, HTMLSidebarElement } from '../index';
 
 const sidebarjs = 'sidebarjs';
 const isVisible = `${sidebarjs}--is-visible`;
@@ -8,7 +8,7 @@ const RIGHT_POSITION = 'right';
 const TRANSITION_DURATION = 400;
 const POSITIONS = [LEFT_POSITION, RIGHT_POSITION];
 
-export default class SidebarJS implements Sidebar {
+export default class SidebarJS implements SidebarBase {
   public component: HTMLElement;
   public container: HTMLElement;
   public background: HTMLElement;
