@@ -1,5 +1,5 @@
+import { HTMLSidebarElement } from './../index';
 import SidebarJS from './../src/sidebarjs';
-import {HTMLSidebarElement} from "../src/sidebarjs.interface";
 
 describe('Static', () => {
   beforeEach(() => {
