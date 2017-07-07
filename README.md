@@ -16,6 +16,17 @@ npm install sidebarjs --save
 * [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
 
 ## Installation
+
+Typescript
+```js
+import * as SidebarJS from 'sidebarjs';
+```
+
+ES6
+```js
+import SidebarJS from 'sidebarjs';
+```
+
 Classic
 ```html
 <script src="your/path/sidebarjs.js"></script>
@@ -24,11 +35,6 @@ Classic
 Require
 ```js
 const SidebarJS = require('sidebarjs');
-```
-
-ES6
-```js
-import SidebarJS from 'sidebarjs';
 ```
 
 ## Options
