@@ -1,4 +1,4 @@
-import { SidebarBase, SidebarConfig, HTMLSidebarElement } from '../index';
+import { HTMLSidebarElement, SidebarBase, SidebarConfig } from '../index';
 
 const sidebarjs = 'sidebarjs';
 const isVisible = `${sidebarjs}--is-visible`;
