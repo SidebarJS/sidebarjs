@@ -5,29 +5,29 @@ export = SidebarJS;
 declare class SidebarJS implements SidebarJS.SidebarBase {
   constructor(options?: SidebarJS.SidebarConfig);
 
-  component: HTMLElement;
-  container: HTMLElement;
-  background: HTMLElement;
-  documentMinSwipeX: number;
-  documentSwipeRange: number;
-  nativeSwipe: boolean;
-  nativeSwipeOpen: boolean;
-  position: string;
+  public component: HTMLElement;
+  public container: HTMLElement;
+  public background: HTMLElement;
+  public documentMinSwipeX: number;
+  public documentSwipeRange: number;
+  public nativeSwipe: boolean;
+  public nativeSwipeOpen: boolean;
+  public position: string;
   private initialTouch;
   private touchMoveSidebar;
   private openMovement;
 
-  toggle(): void;
+  public toggle(): void;
 
-  open(): void;
+  public open(): void;
 
-  close(): void;
+  public close(): void;
 
-  isVisible(): boolean;
+  public isVisible(): boolean;
 
-  setPosition(position: string): void;
+  public setPosition(position: string): void;
 
-  addAttrsEventsListeners(sidebarName: string): void;
+  public addAttrsEventsListeners(sidebarName: string): void;
 
   private hasLeftPosition();
 
@@ -59,15 +59,14 @@ declare class SidebarJS implements SidebarJS.SidebarBase {
 
   private targetElementIsBackground(e);
 
-  static create(element: string): HTMLElement;
+  public static create(element: string): HTMLElement;
 
-  static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
+  public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
 
-  static elemHasListener(elem: SidebarJS.HTMLSidebarElement, value?: boolean): boolean;
+  public static elemHasListener(elem: SidebarJS.HTMLSidebarElement, value?: boolean): boolean;
 
-  static readonly version: string;
+  public static readonly version: string;
 }
-
 
 declare namespace SidebarJS {
   export interface SidebarBase {
