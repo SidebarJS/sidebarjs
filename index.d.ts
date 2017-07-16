@@ -1,80 +1,101 @@
 export as namespace SidebarJS;
-
 export = SidebarJS;
 
-declare class SidebarJS implements SidebarJS.SidebarBase {
-  constructor(options?: SidebarJS.SidebarConfig);
-
-  public component: HTMLElement;
-  public container: HTMLElement;
-  public background: HTMLElement;
-  public documentMinSwipeX: number;
-  public documentSwipeRange: number;
-  public nativeSwipe: boolean;
-  public nativeSwipeOpen: boolean;
-  public position: string;
-  private initialTouch;
-  private touchMoveSidebar;
-  private openMovement;
-
-  public toggle(): void;
-
-  public open(): void;
-
-  public close(): void;
-
-  public isVisible(): boolean;
-
-  public setPosition(position: string): void;
-
-  public addAttrsEventsListeners(sidebarName: string): void;
-
-  private hasLeftPosition();
-
-  private hasRightPosition();
-
-  private transcludeContent();
-
-  private addNativeGestures();
-
-  private addNativeOpenGestures();
-
-  private onTouchStart(e);
-
-  private onTouchMove(e);
-
-  private onTouchEnd();
-
-  private moveSidebar(movement);
-
-  private changeBackgroundOpacity(movement);
-
-  private onSwipeOpenStart(e);
-
-  private onSwipeOpenMove(e);
-
-  private onSwipeOpenEnd();
-
-  private getSidebarPosition(swiped);
-
-  private targetElementIsBackground(e);
-
-  public static create(element: string): HTMLElement;
-
-  public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
-
-  public static elemHasListener(elem: SidebarJS.HTMLSidebarElement, value?: boolean): boolean;
-
-  public static readonly version: string;
-}
-
 declare namespace SidebarJS {
+  export class SidebarElement implements SidebarBase {
+    constructor(options?: SidebarConfig);
+
+    public component: HTMLElement;
+    public container: HTMLElement;
+    public background: HTMLElement;
+    public documentMinSwipeX: number;
+    public documentSwipeRange: number;
+    public nativeSwipe: boolean;
+    public nativeSwipeOpen: boolean;
+    public position: SidebarPosition;
+    private initialTouch;
+    private touchMoveSidebar;
+    private openMovement;
+
+    public toggle(): void;
+
+    public open(): void;
+
+    public close(): void;
+
+    public isVisible(): boolean;
+
+    public setPosition(position: SidebarPosition): void;
+
+    public addAttrsEventsListeners(sidebarName: string): void;
+
+    private hasLeftPosition();
+
+    private hasRightPosition();
+
+    private transcludeContent();
+
+    private addNativeGestures();
+
+    private addNativeOpenGestures();
+
+    private onTouchStart(e: TouchEvent);
+
+    private onTouchMove(e: TouchEvent);
+
+    private onTouchEnd();
+
+    private moveSidebar(movement: number);
+
+    private changeBackgroundOpacity(movement: number);
+
+    private onSwipeOpenStart(e: TouchEvent);
+
+    private onSwipeOpenMove(e: TouchEvent);
+
+    private onSwipeOpenEnd();
+
+    private getSidebarPosition(swiped: number);
+
+    private targetElementIsBackground(e: TouchEvent);
+
+    public static create(element: string): HTMLElement;
+
+    public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
+
+    public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;
+
+    public static readonly version: string;
+  }
+
+  export class SidebarService implements SidebarBase {
+    constructor();
+
+    private instances: any;
+
+    public create(): SidebarElement;
+
+    public open(sidebarName?: string): void;
+
+    public close(sidebarName?: string): void;
+
+    public toggle(sidebarName?: string): void;
+
+    public isVisible(sidebarName?: string): boolean;
+
+    public setPosition(position: SidebarPosition, sidebarName?: string): void;
+
+    public elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;
+
+    public destroy(sidebarName?: string): void;
+  }
+
   export interface SidebarBase {
     open(): void;
     close(): void;
     toggle(): void;
     isVisible(): boolean;
-    setPosition(position: string): void;
+    setPosition(position: SidebarPosition): void;
   }
 
   export interface SidebarConfig {
@@ -85,10 +106,12 @@ declare namespace SidebarJS {
     documentSwipeRange?: number;
     nativeSwipe?: boolean;
     nativeSwipeOpen?: boolean;
-    position?: string;
+    position?: SidebarPosition;
   }
 
   export interface HTMLSidebarElement extends HTMLElement {
     sidebarjsListener?: boolean;
   }
+
+  export type SidebarPosition = 'left' | 'right';
 }
