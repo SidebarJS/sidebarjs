@@ -1,24 +1,24 @@
 import { HTMLSidebarElement } from './../index';
-import SidebarJS from './../src/sidebarjs';
+import { SidebarElement } from './../src/sidebarElement';
 
 describe('Static', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
   });
 
-  describe('SidebarJS.create', () => {
+  describe('SidebarElement.create', () => {
     it('Should create a div element with specific attribute', () => {
-      const elem = SidebarJS.create('hello');
+      const elem = SidebarElement.create('hello');
       expect(elem).toBeInstanceOf(HTMLDivElement);
       expect(elem.attributes['hello']).toBeDefined();
       expect(elem.outerHTML).toBe('<div hello=""></div>');
     });
   });
 
-  describe('SidebarJS.vendorify', () => {
+  describe('SidebarElement.vendorify', () => {
     it('Should add css vendor prefixes', () => {
       const elem = document.createElement('div');
-      SidebarJS.vendorify(elem, 'transform', `translate(0, 0)`);
+      SidebarElement.vendorify(elem, 'transform', `translate(0, 0)`);
       expect(elem.style['MozTransform']).toBeDefined();
       expect(elem.style['MozTransform']).toBe('translate(0, 0)');
       expect(elem.style['WebkitTransform']).toBeDefined();
@@ -32,17 +32,17 @@ describe('Static', () => {
     });
   });
 
-  describe('SidebarJS.elemHasListener', () => {
-    it('Should return boolean value that notify if element has SidebarJS listeners', () => {
+  describe('SidebarElement.elemHasListener', () => {
+    it('Should return boolean value that notify if element has SidebarElement listeners', () => {
       document.body.innerHTML = `
         <button sidebarjs-toggle></button>
         <div sidebarjs></div>
       `;
       const elem = <HTMLSidebarElement>document.querySelector('button[sidebarjs-toggle]');
-      const hasFalseListener = SidebarJS.elemHasListener(elem);
+      const hasFalseListener = SidebarElement.elemHasListener(elem);
       expect(hasFalseListener).toBe(false);
-      new SidebarJS();
-      const hasTrueListener = SidebarJS.elemHasListener(elem);
+      new SidebarElement();
+      const hasTrueListener = SidebarElement.elemHasListener(elem);
       expect(hasTrueListener).toBe(true);
     });
 
@@ -52,11 +52,11 @@ describe('Static', () => {
         <div sidebarjs></div>
       `;
       const elem = <HTMLSidebarElement>document.querySelector('button[sidebarjs-toggle]');
-      const hasFalseListener = SidebarJS.elemHasListener(elem);
+      const hasFalseListener = SidebarElement.elemHasListener(elem);
       expect(hasFalseListener).toBe(false);
-      const isSetToTrueListener = SidebarJS.elemHasListener(elem, true);
+      const isSetToTrueListener = SidebarElement.elemHasListener(elem, true);
       expect(isSetToTrueListener).toBe(true);
-      const isSetToFalseListener = SidebarJS.elemHasListener(elem, false);
+      const isSetToFalseListener = SidebarElement.elemHasListener(elem, false);
       expect(isSetToFalseListener).toBe(false);
     })
   });
