@@ -21,21 +21,22 @@ export class SidebarElement implements SidebarBase {
   private touchMoveSidebar: number;
   private openMovement: number;
 
-  constructor({
-                component,
-                container,
-                background,
-                documentMinSwipeX,
-                documentSwipeRange,
-                nativeSwipe,
-                nativeSwipeOpen,
-                position = 'left',
-              }: SidebarConfig = {}) {
-    this.component = component || <HTMLElement> document.querySelector(`[${sidebarjs}]`);
+  constructor(config: SidebarConfig = {}) {
+    const {
+      component,
+      container,
+      background,
+      documentMinSwipeX = 10,
+      documentSwipeRange = 40,
+      nativeSwipe,
+      nativeSwipeOpen,
+      position = 'left',
+    } = config;
+    this.component = component || document.querySelector(`[${sidebarjs}]`) as HTMLElement;
     this.container = container || SidebarElement.create(`${sidebarjs}-container`);
     this.background = background || SidebarElement.create(`${sidebarjs}-background`);
-    this.documentMinSwipeX = documentMinSwipeX || 10;
-    this.documentSwipeRange = documentSwipeRange || 40;
+    this.documentMinSwipeX = documentMinSwipeX;
+    this.documentSwipeRange = documentSwipeRange;
     this.nativeSwipe = nativeSwipe !== false;
     this.nativeSwipeOpen = nativeSwipeOpen !== false;
 

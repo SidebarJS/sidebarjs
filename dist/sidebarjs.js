@@ -23,13 +23,14 @@ var RIGHT_POSITION = 'right';
 var TRANSITION_DURATION = 400;
 var POSITIONS = [LEFT_POSITION, RIGHT_POSITION];
 var SidebarElement = (function () {
-    function SidebarElement(_a) {
-        var _b = _a === void 0 ? {} : _a, component = _b.component, container = _b.container, background = _b.background, documentMinSwipeX = _b.documentMinSwipeX, documentSwipeRange = _b.documentSwipeRange, nativeSwipe = _b.nativeSwipe, nativeSwipeOpen = _b.nativeSwipeOpen, _c = _b.position, position = _c === void 0 ? 'left' : _c;
+    function SidebarElement(config) {
+        if (config === void 0) { config = {}; }
+        var component = config.component, container = config.container, background = config.background, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c;
         this.component = component || document.querySelector("[" + sidebarjs + "]");
         this.container = container || SidebarElement.create(sidebarjs + "-container");
         this.background = background || SidebarElement.create(sidebarjs + "-background");
-        this.documentMinSwipeX = documentMinSwipeX || 10;
-        this.documentSwipeRange = documentSwipeRange || 40;
+        this.documentMinSwipeX = documentMinSwipeX;
+        this.documentSwipeRange = documentSwipeRange;
         this.nativeSwipe = nativeSwipe !== false;
         this.nativeSwipeOpen = nativeSwipeOpen !== false;
         var hasAllConfigDOMElements = component && container && background;
