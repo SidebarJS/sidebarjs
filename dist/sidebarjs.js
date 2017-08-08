@@ -190,7 +190,7 @@ var SidebarElement = (function () {
     };
     Object.defineProperty(SidebarElement, "version", {
         get: function () {
-            return '2.2.0';
+            return '3.0.0';
         },
         enumerable: true,
         configurable: true

@@ -221,6 +221,6 @@ export class SidebarElement implements SidebarBase {
   }
 
   static get version(): string {
-    return '2.2.0';
+    return '3.0.0';
   }
 }
