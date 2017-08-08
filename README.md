@@ -15,6 +15,11 @@ npm install sidebarjs --save
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
 
+## Libraries
+[Angular | ng-sidebarjs](https://github.com/SidebarJS/ng-sidebarjs)
+
+[AngularJS | angular-sidebarjs](https://github.com/SidebarJS/angular-sidebarjs)
+
 ## Import
 
 Typescript
