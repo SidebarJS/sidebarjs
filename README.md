@@ -19,12 +19,17 @@ npm install sidebarjs --save
 
 Typescript
 ```js
-import * as SidebarJS from 'sidebarjs';
+import {SidebarElement, SidebarService} from 'sidebarjs';
 ```
 
 ES6
 ```js
-import SidebarJS from 'sidebarjs';
+import {SidebarElement, SidebarService} from 'sidebarjs';
+```
+
+Require
+```js
+const {SidebarElement, SidebarService} = require('sidebarjs');
 ```
 
 Classic
@@ -32,25 +37,19 @@ Classic
 <script src="your/path/sidebarjs.js"></script>
 ```
 
-Require
+## Options
 ```js
-const SidebarJS = require('sidebarjs');
+const sidebarjs = new SidebarElement({
+    component?: HTMLElement['sidebarjs'], // Sidebar DOM element
+    documentMinSwipeX?: 10, // Minimum swipe in px required to trigger listener: open
+    documentSwipeRange?: 40, // Range in px where document is listening for gesture: open
+    nativeSwipe?: true, // Open and close sidebar with swipe gestures
+    nativeSwipeOpen?: true, // Enable/Disable open on swipe
+    position?: 'left', // Sidebar position, accepted values: left|right
+})
 ```
 
-## Options
-| Option | Default | Type | Description |
-| :----- | :------ | :--- | :---------- |
-| `documentMinSwipeX` | 10 | Number | Minimum swipe in px required to trigger listener: open |
-| `documentSwipeRange` | 40 | Number | Range in px where document is listening for gesture: open |
-| `nativeSwipe` | true | Boolean | Open and close sidebar with swipe gestures |
-| `nativeSwipeOpen` | true | Boolean | Enable/Disable open on swipe
-| `position` | 'left' | String | Sidebar position, accepted values: left\right |
-
-## Implementation - Superfast explanation
-Insert **sidebarjs.min.css** and **sidebarjs.min.js** in your index.html file and create a tag (div, aside or what you prefer) with the attribute **[sidebarjs]**.
-All contents you will write inside tag[sidebarjs] will be rendered inside the sidebar.
-For open/close the sidebar, put wherever you want the **[sidebarjs-toggle]** attribute.
-Then simply init it with **new SidebarJS()** and you are ready!
+## Single Sidebar
 ```html
 <head>
 
@@ -73,13 +72,56 @@ Then simply init it with **new SidebarJS()** and you are ready!
   <script src="sidebarjs.min.js"></script>
   <script>
   // Init SidebarJS
-  var sidebarjs = new SidebarJS();
+  var sidebarjs = new SidebarJS.SidebarElement();
   </script>
 
 </body>
 ```
 
-## Implementation - Explanation step by step
+## Multiple Sidebars
+```html
+<head>
+
+  <link rel="stylesheet" href="sidebarjs.min.css">
+
+</head>
+<body>
+
+  <div sidebarjs-toggle="leftSidebarName">Open/Close Right Sidebar</div>
+  <div sidebarjs-toggle="rightSidebarName">Open/Close Right Sidebar</div>
+
+  <div sidebarjs="leftSidebarName">
+    <nav>
+      <a href="link">My</a>
+      <a href="link">Left</a>
+      <a href="link">Content</a>
+    </nav>
+  </div>
+
+  <div sidebarjs="rightSidebarName">
+    <nav>
+      <a href="link">My</a>
+      <a href="link">Right</a>
+      <a href="link">Content</a>
+    </nav>
+  </div>
+
+  <script src="sidebarjs.min.js"></script>
+  <script>
+  var leftSidebarjs = new SidebarJS.SidebarElement({
+    component: document.querySelector('[sidebarjs="leftSidebarName"]'),
+  });
+  
+  var rightSidebarjs = new SidebarJS.SidebarElement({
+    component: document.querySelector('[sidebarjs="rightSidebarName"]'),
+    position: 'right',
+  });
+  </script>
+
+</body>
+```
+
+## Implementation step by step
 ### Download files
 Download and save all files
 ```ssh
@@ -123,7 +165,7 @@ Do you need a trigger button for open/close SidebarJS? Just put **[sidebarjs-tog
 ### Init
 When you have files, [sidebarjs] and [sidebarjs-toggle] you can init your SidebarJS Module like:
 ```js
-var sidebarjs = new SidebarJS()
+const sidebarjs = new SidebarJS.SidebarElement()
 ```
 
 ### Full file example
@@ -149,7 +191,7 @@ var sidebarjs = new SidebarJS()
   <script src="your/path/sidebarjs.min.js"></script>
   <script>
     // Init SidebarJS
-    var sidebarjs = new SidebarJS();
+    const sidebarjs = new SidebarJS.SidebarElement();
   </script>
 
 </body>
