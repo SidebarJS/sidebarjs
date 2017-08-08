@@ -15,7 +15,7 @@ npm install sidebarjs --save
 * [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
 * [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
 
-## Installation
+## Import
 
 Typescript
 ```js
@@ -61,7 +61,6 @@ const sidebarjs = new SidebarElement({
   <div sidebarjs-toggle>Open/Close</div>
 
   <div sidebarjs>
-    <div sidebarjs-toggle>Open/Close</div>
     <nav>
       <a href="link">Home</a>
       <a href="link">About</a>
@@ -87,7 +86,7 @@ const sidebarjs = new SidebarElement({
 </head>
 <body>
 
-  <div sidebarjs-toggle="leftSidebarName">Open/Close Right Sidebar</div>
+  <div sidebarjs-toggle="leftSidebarName">Open/Close Left Sidebar</div>
   <div sidebarjs-toggle="rightSidebarName">Open/Close Right Sidebar</div>
 
   <div sidebarjs="leftSidebarName">
