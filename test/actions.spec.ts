@@ -1,4 +1,4 @@
-import SidebarJS from './../src/sidebarjs';
+import { SidebarElement } from './../src/sidebarElement';
 
 describe('Actions', () => {
   const isVisibleClassName = 'sidebarjs--is-visible';
@@ -9,7 +9,7 @@ describe('Actions', () => {
   describe('Open', () => {
     it('Should add sidebarjs--is-visible class to [sidebarjs] component', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS();
+      const sidebarjs = new SidebarElement();
       const componentClassList = sidebarjs.component.classList;
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
       sidebarjs.open();
@@ -20,7 +20,7 @@ describe('Actions', () => {
   describe('Close', () => {
     it('Should remove sidebarjs--is-visible class to [sidebarjs] component', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS();
+      const sidebarjs = new SidebarElement();
       const componentClassList = sidebarjs.component.classList;
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
       sidebarjs.open();
@@ -33,7 +33,7 @@ describe('Actions', () => {
   describe('Toggle', () => {
     it('Should toggle sidebarjs--is-visible class to [sidebarjs] component', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS();
+      const sidebarjs = new SidebarElement();
       const componentClassList = sidebarjs.component.classList;
       sidebarjs.toggle();
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
@@ -49,7 +49,7 @@ describe('Actions', () => {
   describe('isVisible', () => {
     it('Should return a boolean value that describe the visibility of sidebar', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS();
+      const sidebarjs = new SidebarElement();
       expect(sidebarjs.isVisible()).toBe(false);
       sidebarjs.open();
       expect(sidebarjs.isVisible()).toBe(true);

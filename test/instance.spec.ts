@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import SidebarJS from './../src/sidebarjs';
+import { SidebarElement } from './../src/sidebarElement';
 
 describe('Instance creation', () => {
   beforeEach(() => {
@@ -8,7 +8,7 @@ describe('Instance creation', () => {
 
   test('Should create instance', () => {
     document.body.innerHTML = '<div sidebarjs></div>';
-    const sidebarjs = new SidebarJS();
+    const sidebarjs = new SidebarElement();
     expect(sidebarjs).toBeDefined();
     expect(sidebarjs.component).toBeInstanceOf(HTMLDivElement);
     expect(sidebarjs.container).toBeInstanceOf(HTMLDivElement);
@@ -19,14 +19,14 @@ describe('Instance creation', () => {
   });
 
   test('Should not create instance', () => {
-    expect(() => new SidebarJS()).toThrowError('You must define an element with [sidebarjs] attribute');
+    expect(() => new SidebarElement()).toThrowError('You must define an element with [sidebarjs] attribute');
   });
 
   describe('Transclude', () => {
     it('Should transclude content', () => {
-      const spy = sinon.spy(SidebarJS.prototype, 'transcludeContent');
+      const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
-      const sidebarjs = new SidebarJS();
+      const sidebarjs = new SidebarElement();
       expect(sidebarjs.container.innerHTML).toBe('Hello');
       expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
       expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
@@ -37,14 +37,14 @@ describe('Instance creation', () => {
     });
 
     it('Should not transclude content with all custom HTMLElement params in config', () => {
-      const spy = sinon.spy(SidebarJS.prototype, 'transcludeContent');
+      const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
           <section custom-background></section>
         </div>`;
       const element = document.querySelector('[sidebarjs]');
-      const sidebarjs = new SidebarJS({
+      const sidebarjs = new SidebarElement({
         component: <HTMLElement> element,
         container: <HTMLElement> element.children[0],
         background: <HTMLElement> element.children[1],
@@ -62,14 +62,14 @@ describe('Instance creation', () => {
     });
 
     it('Should transclude content if has not all custom HTMLElement params in config', () => {
-      const spy = sinon.spy(SidebarJS.prototype, 'transcludeContent');
+      const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
           <section custom-background></section> 
         </div>`;
       const element = document.querySelector('[sidebarjs]');
-      const sidebarjs = new SidebarJS({
+      const sidebarjs = new SidebarElement({
         component: <HTMLElement> element,
         container: <HTMLElement> element.children[0],
         /* background: <HTMLElement>element.children[1], */
@@ -87,28 +87,28 @@ describe('Instance creation', () => {
   describe('Native Swipe', () => {
     it('Should has native gestures', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS();
+      const sidebarjs = new SidebarElement();
       expect(sidebarjs.nativeSwipe).toBe(true);
       expect(sidebarjs.nativeSwipeOpen).toBe(true);
     });
 
     it('Should not has nativeSwipe', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS({nativeSwipe: false});
+      const sidebarjs = new SidebarElement({nativeSwipe: false});
       expect(sidebarjs.nativeSwipe).toBe(false);
       expect(sidebarjs.nativeSwipeOpen).toBe(true);
     });
 
     it('Should not has nativeSwipeOpen', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS({nativeSwipeOpen: false});
+      const sidebarjs = new SidebarElement({nativeSwipeOpen: false});
       expect(sidebarjs.nativeSwipe).toBe(true);
       expect(sidebarjs.nativeSwipeOpen).toBe(false);
     });
 
     it('Should not has native gestures', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
-      const sidebarjs = new SidebarJS({nativeSwipe: false, nativeSwipeOpen: false});
+      const sidebarjs = new SidebarElement({nativeSwipe: false, nativeSwipeOpen: false});
       expect(sidebarjs.nativeSwipe).toBe(false);
       expect(sidebarjs.nativeSwipeOpen).toBe(false);
     });

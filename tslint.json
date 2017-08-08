@@ -12,6 +12,7 @@
     "object-literal-sort-keys": false,
     "no-angle-bracket-type-assertion": false,
     "interface-name": false,
+    "max-classes-per-file": [2],
     "max-line-length": {
       "severity": "error",
       "options": 140

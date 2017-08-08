@@ -1,14 +1,14 @@
-import { HTMLSidebarElement, SidebarBase, SidebarConfig } from '../index';
+import { HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition } from '../index';
 
-const sidebarjs = 'sidebarjs';
-const isVisible = `${sidebarjs}--is-visible`;
-const isMoving = `${sidebarjs}--is-moving`;
-const LEFT_POSITION = 'left';
-const RIGHT_POSITION = 'right';
-const TRANSITION_DURATION = 400;
-const POSITIONS = [LEFT_POSITION, RIGHT_POSITION];
+const sidebarjs: string = 'sidebarjs';
+const isVisible: string = `${sidebarjs}--is-visible`;
+const isMoving: string = `${sidebarjs}--is-moving`;
+const LEFT_POSITION: SidebarPosition = 'left';
+const RIGHT_POSITION: SidebarPosition = 'right';
+const TRANSITION_DURATION: number = 400;
+const POSITIONS: SidebarPosition[] = [LEFT_POSITION, RIGHT_POSITION];
 
-export default class SidebarJS implements SidebarBase {
+export class SidebarElement implements SidebarBase {
   public component: HTMLElement;
   public container: HTMLElement;
   public background: HTMLElement;
@@ -16,26 +16,27 @@ export default class SidebarJS implements SidebarBase {
   public documentSwipeRange: number;
   public nativeSwipe: boolean;
   public nativeSwipeOpen: boolean;
-  public position: string;
+  public position: SidebarPosition;
   private initialTouch: number;
   private touchMoveSidebar: number;
   private openMovement: number;
 
-  constructor({
-                component,
-                container,
-                background,
-                documentMinSwipeX,
-                documentSwipeRange,
-                nativeSwipe,
-                nativeSwipeOpen,
-                position,
-              }: SidebarConfig = {}) {
-    this.component = component || <HTMLElement> document.querySelector(`[${sidebarjs}]`);
-    this.container = container || SidebarJS.create(`${sidebarjs}-container`);
-    this.background = background || SidebarJS.create(`${sidebarjs}-background`);
-    this.documentMinSwipeX = documentMinSwipeX || 10;
-    this.documentSwipeRange = documentSwipeRange || 40;
+  constructor(config: SidebarConfig = {}) {
+    const {
+      component,
+      container,
+      background,
+      documentMinSwipeX = 10,
+      documentSwipeRange = 40,
+      nativeSwipe,
+      nativeSwipeOpen,
+      position = 'left',
+    } = config;
+    this.component = component || document.querySelector(`[${sidebarjs}]`) as HTMLElement;
+    this.container = container || SidebarElement.create(`${sidebarjs}-container`);
+    this.background = background || SidebarElement.create(`${sidebarjs}-background`);
+    this.documentMinSwipeX = documentMinSwipeX;
+    this.documentSwipeRange = documentSwipeRange;
     this.nativeSwipe = nativeSwipe !== false;
     this.nativeSwipeOpen = nativeSwipeOpen !== false;
 
@@ -76,7 +77,7 @@ export default class SidebarJS implements SidebarBase {
     return this.component.classList.contains(isVisible);
   }
 
-  public setPosition(position: string): void {
+  public setPosition(position: SidebarPosition): void {
     this.component.classList.add(isMoving);
     this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
     POSITIONS.forEach((POS) => this.component.classList.remove(`${sidebarjs}--${POS}`));
@@ -89,9 +90,9 @@ export default class SidebarJS implements SidebarBase {
     for (let i = 0; i < actions.length; i++) {
       const elements = document.querySelectorAll(`[${sidebarjs}-${actions[i]}="${sidebarName}"]`);
       for (let j = 0; j < elements.length; j++) {
-        if (!SidebarJS.elemHasListener(<HTMLElement> elements[j])) {
+        if (!SidebarElement.elemHasListener(<HTMLElement> elements[j])) {
           elements[j].addEventListener('click', this[actions[i]].bind(this));
-          SidebarJS.elemHasListener(<HTMLElement> elements[j], true);
+          SidebarElement.elemHasListener(<HTMLElement> elements[j], true);
         }
       }
     }
@@ -148,7 +149,7 @@ export default class SidebarJS implements SidebarBase {
 
   private moveSidebar(movement: number): void {
     this.component.classList.add(isMoving);
-    SidebarJS.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
+    SidebarElement.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
     this.changeBackgroundOpacity(movement);
   }
 
@@ -174,8 +175,8 @@ export default class SidebarJS implements SidebarBase {
       const documentSwiped = e.touches[0].clientX - this.initialTouch;
       const sidebarMovement = this.getSidebarPosition(documentSwiped);
       if (sidebarMovement > 0) {
-        SidebarJS.vendorify(this.component, 'transform', 'translate(0, 0)');
-        SidebarJS.vendorify(this.component, 'transition', 'none');
+        SidebarElement.vendorify(this.component, 'transform', 'translate(0, 0)');
+        SidebarElement.vendorify(this.component, 'transition', 'none');
         this.openMovement = sidebarMovement * (this.hasLeftPosition() ? -1 : 1);
         this.moveSidebar(this.openMovement);
       }
@@ -220,6 +221,6 @@ export default class SidebarJS implements SidebarBase {
   }
 
   static get version(): string {
-    return '2.2.0';
+    return '3.0.0';
   }
 }
