@@ -73,7 +73,7 @@ declare namespace SidebarJS {
 
     private instances: any;
 
-    public create(): SidebarElement;
+    public create(options: SidebarConfig): SidebarElement;
 
     public open(sidebarName?: string): void;
 
