@@ -2,15 +2,13 @@ import commonjs from 'rollup-plugin-commonjs';
 import npm from 'rollup-plugin-node-resolve';
 
 export default {
-  entry: 'src/index.js',
-  moduleName: 'SidebarJS',
-  exports: 'named',
-  targets: [
-    {
-      dest: 'dist/sidebarjs.js',
-      format: 'umd',
-    },
-  ],
+  input: 'src/index.js',
+  name: 'SidebarJS',
+  output: [{
+    file: 'dist/sidebarjs.js',
+    format: 'umd',
+    exports: 'named',
+  }],
   plugins: [
     npm({
       main: true,

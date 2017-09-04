@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
 	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.SidebarJS = global.SidebarJS || {})));
+	(factory((global.SidebarJS = {})));
 }(this, (function (exports) { 'use strict';
 
 function unwrapExports (x) {
@@ -201,6 +201,8 @@ exports.SidebarElement = SidebarElement;
 
 });
 
+unwrapExports(sidebarElement);
+
 var sidebarService = createCommonjsModule(function (module, exports) {
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
@@ -257,6 +259,8 @@ var SidebarService = (function () {
 exports.SidebarService = SidebarService;
 
 });
+
+unwrapExports(sidebarService);
 
 var index = createCommonjsModule(function (module, exports) {
 "use strict";
