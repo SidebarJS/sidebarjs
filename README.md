@@ -43,7 +43,7 @@ Classic
 
 ## Options
 ```js
-const sidebarjs = new SidebarElement({
+const sidebarjs = new SidebarJS.SidebarElement({
     component?: HTMLElement['sidebarjs'], // Sidebar DOM element
     documentMinSwipeX?: 10, // Minimum swipe in px required to trigger listener: open
     documentSwipeRange?: 40, // Range in px where document is listening for gesture: open
