@@ -64,8 +64,6 @@ declare namespace SidebarJS {
     public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
 
     public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;
-
-    public static readonly version: string;
   }
 
   export class SidebarService implements SidebarBase {
