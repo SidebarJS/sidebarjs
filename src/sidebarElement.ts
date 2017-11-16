@@ -219,8 +219,4 @@ export class SidebarElement implements SidebarBase {
   public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {
     return elem && (value === true || value === false) ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;
   }
-
-  static get version(): string {
-    return '3.0.0';
-  }
 }
