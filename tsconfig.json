@@ -5,7 +5,8 @@
     "noImplicitAny": false,
     "noEmitOnError": true,
     "sourceMap": true,
-    "declaration": false
+    "declaration": false,
+    "skipLibCheck": true
   },
   "include": [
     "src/*.ts"
