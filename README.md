@@ -42,9 +42,9 @@ Classic
 ```
 
 ## Options
-```js
+```typescript
 const sidebarjs = new SidebarJS.SidebarElement({
-    component?: HTMLElement['sidebarjs'], // Sidebar DOM element
+    component?: <HTMLElement>sidebarjs, // Sidebar DOM element
     documentMinSwipeX?: 10, // Minimum swipe in px required to trigger listener: open
     documentSwipeRange?: 40, // Range in px where document is listening for gesture: open
     nativeSwipe?: true, // Open and close sidebar with swipe gestures
