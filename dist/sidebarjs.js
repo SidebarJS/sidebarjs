@@ -5,7 +5,7 @@
 }(this, (function (exports) { 'use strict';
 
 function unwrapExports (x) {
-	return x && x.__esModule ? x['default'] : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
@@ -13,7 +13,6 @@ function createCommonjsModule(fn, module) {
 }
 
 var sidebarElement = createCommonjsModule(function (module, exports) {
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var sidebarjs = 'sidebarjs';
 var isVisible = sidebarjs + "--is-visible";
@@ -22,7 +21,7 @@ var LEFT_POSITION = 'left';
 var RIGHT_POSITION = 'right';
 var TRANSITION_DURATION = 400;
 var POSITIONS = [LEFT_POSITION, RIGHT_POSITION];
-var SidebarElement = (function () {
+var SidebarElement = /** @class */ (function () {
     function SidebarElement(config) {
         if (config === void 0) { config = {}; }
         var component = config.component, container = config.container, background = config.background, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c;
@@ -188,13 +187,6 @@ var SidebarElement = (function () {
     SidebarElement.elemHasListener = function (elem, value) {
         return elem && (value === true || value === false) ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;
     };
-    Object.defineProperty(SidebarElement, "version", {
-        get: function () {
-            return '3.0.0';
-        },
-        enumerable: true,
-        configurable: true
-    });
     return SidebarElement;
 }());
 exports.SidebarElement = SidebarElement;
@@ -202,12 +194,12 @@ exports.SidebarElement = SidebarElement;
 });
 
 unwrapExports(sidebarElement);
+var sidebarElement_1 = sidebarElement.SidebarElement;
 
 var sidebarService = createCommonjsModule(function (module, exports) {
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 
-var SidebarService = (function () {
+var SidebarService = /** @class */ (function () {
     function SidebarService() {
         this.instances = {};
     }
@@ -261,9 +253,9 @@ exports.SidebarService = SidebarService;
 });
 
 unwrapExports(sidebarService);
+var sidebarService_1 = sidebarService.SidebarService;
 
-var index = createCommonjsModule(function (module, exports) {
-"use strict";
+var src = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 
 exports.SidebarElement = sidebarElement.SidebarElement;
@@ -272,13 +264,13 @@ exports.SidebarService = sidebarService.SidebarService;
 
 });
 
-var index$1 = unwrapExports(index);
-var index_1 = index.SidebarElement;
-var index_2 = index.SidebarService;
+var index = unwrapExports(src);
+var src_1 = src.SidebarElement;
+var src_2 = src.SidebarService;
 
-exports['default'] = index$1;
-exports.SidebarElement = index_1;
-exports.SidebarService = index_2;
+exports['default'] = index;
+exports.SidebarElement = src_1;
+exports.SidebarService = src_2;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 

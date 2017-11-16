@@ -13,10 +13,12 @@
           transform: translate(100%, 0); }
 
 [sidebarjs].sidebarjs--left [sidebarjs-container] {
-  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2); }
+  -webkit-box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);
+          box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2); }
 
 [sidebarjs].sidebarjs--right [sidebarjs-container] {
-  box-shadow: -2px 0 4px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: -2px 0 4px rgba(0, 0, 0, 0.2);
+          box-shadow: -2px 0 4px rgba(0, 0, 0, 0.2);
   margin-left: auto; }
 
 [sidebarjs-background] {
