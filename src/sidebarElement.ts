@@ -157,13 +157,17 @@ export class SidebarElement implements SidebarBase {
   private moveSidebar(movement: number): void {
     this.component.classList.add(isMoving);
     SidebarElement.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
-    this.changeBackdropOpacity(movement);
+    this.updateBackdropOpacity(movement);
   }
 
-  private changeBackdropOpacity(movement: number): void {
+  private updateBackdropOpacity(movement: number): void {
     const swipeProgress = 1 - (Math.abs(movement) / this.container.clientWidth);
     const opacity = swipeProgress / this.backdropOpacityRatio;
     this.setBackdropOpacity(opacity);
+  }
+
+  private setBackdropOpacity(opacity: number): void {
+    this.backdrop.style.opacity = opacity.toString();
   }
 
   private onSwipeOpenStart(e: TouchEvent): void {
@@ -206,10 +210,6 @@ export class SidebarElement implements SidebarBase {
   private targetElementIsBackdrop(e: TouchEvent): boolean {
     const touchedElement = <HTMLElement> e.target;
     return touchedElement.hasAttribute(`${sidebarjs}-backdrop`);
-  }
-
-  private setBackdropOpacity(opacity: number): void {
-    this.backdrop.style.opacity = opacity.toString();
   }
 
   public static create(element: string): HTMLElement {
