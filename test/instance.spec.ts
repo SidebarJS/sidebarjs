@@ -113,4 +113,38 @@ describe('Instance creation', () => {
       expect(sidebarjs.nativeSwipeOpen).toBe(false);
     });
   });
+
+  describe('Backdrop opacity', () => {
+    it('Should has default opacity', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      const sidebarjs = new SidebarElement();
+      sidebarjs.open();
+      expect(sidebarjs.backdrop.style.opacity).toBe('0.3');
+      expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 0.3;');
+    });
+
+    it('Should has custom opacity', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      const sidebarjs = new SidebarElement({backdropOpacity: .8});
+      sidebarjs.open();
+      expect(sidebarjs.backdrop.style.opacity).toBe('0.8');
+      expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 0.8;');
+    });
+
+    it('Should has not opacity', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      const sidebarjs = new SidebarElement({backdropOpacity: 0});
+      sidebarjs.open();
+      expect(sidebarjs.backdrop.style.opacity).toBe('0');
+      expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 0;');
+    });
+
+    it('Should has full opacity', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      const sidebarjs = new SidebarElement({backdropOpacity: 1});
+      sidebarjs.open();
+      expect(sidebarjs.backdrop.style.opacity).toBe('1');
+      expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 1;');
+    });
+  });
 });
