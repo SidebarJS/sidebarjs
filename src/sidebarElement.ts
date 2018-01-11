@@ -72,7 +72,7 @@ export class SidebarElement implements SidebarBase {
 
   public open(): void {
     this.component.classList.add(isVisible);
-    this.backdrop.style.opacity = this.backdropOpacity.toString();
+    this.setBackdropOpacity(this.backdropOpacity);
   }
 
   public close(): void {
@@ -163,7 +163,7 @@ export class SidebarElement implements SidebarBase {
   private changeBackdropOpacity(movement: number): void {
     const swipeProgress = 1 - (Math.abs(movement) / this.container.clientWidth);
     const opacity = swipeProgress / this.backdropOpacityRatio;
-    this.backdrop.style.opacity = opacity.toString();
+    this.setBackdropOpacity(opacity);
   }
 
   private onSwipeOpenStart(e: TouchEvent): void {
@@ -206,6 +206,10 @@ export class SidebarElement implements SidebarBase {
   private targetElementIsBackdrop(e: TouchEvent): boolean {
     const touchedElement = <HTMLElement> e.target;
     return touchedElement.hasAttribute(`${sidebarjs}-backdrop`);
+  }
+
+  private setBackdropOpacity(opacity: number): void {
+    this.backdrop.style.opacity = opacity.toString();
   }
 
   public static create(element: string): HTMLElement {
