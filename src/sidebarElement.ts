@@ -11,7 +11,7 @@ const POSITIONS: SidebarPosition[] = [LEFT_POSITION, RIGHT_POSITION];
 export class SidebarElement implements SidebarBase {
   public component: HTMLElement;
   public container: HTMLElement;
-  public background: HTMLElement;
+  public backdrop: HTMLElement;
   public documentMinSwipeX: number;
   public documentSwipeRange: number;
   public nativeSwipe: boolean;
@@ -20,32 +20,32 @@ export class SidebarElement implements SidebarBase {
   private initialTouch: number;
   private touchMoveSidebar: number;
   private openMovement: number;
-  private backgroundOpacity: number;
-  private backgroundOpacityRatio: number;
+  private backdropOpacity: number;
+  private backdropOpacityRatio: number;
 
   constructor(config: SidebarConfig = {}) {
     const {
       component,
       container,
-      background,
+      backdrop,
       documentMinSwipeX = 10,
       documentSwipeRange = 40,
       nativeSwipe,
       nativeSwipeOpen,
       position = 'left',
-      backgroundOpacity = 0.3,
+      backdropOpacity = 0.3,
     } = config;
     this.component = component || document.querySelector(`[${sidebarjs}]`) as HTMLElement;
     this.container = container || SidebarElement.create(`${sidebarjs}-container`);
-    this.background = background || SidebarElement.create(`${sidebarjs}-background`);
+    this.backdrop = backdrop || SidebarElement.create(`${sidebarjs}-backdrop`);
     this.documentMinSwipeX = documentMinSwipeX;
     this.documentSwipeRange = documentSwipeRange;
     this.nativeSwipe = nativeSwipe !== false;
     this.nativeSwipeOpen = nativeSwipeOpen !== false;
-    this.backgroundOpacity = backgroundOpacity;
-    this.backgroundOpacityRatio = 1 / backgroundOpacity;
+    this.backdropOpacity = backdropOpacity;
+    this.backdropOpacityRatio = 1 / backdropOpacity;
 
-    const hasAllConfigDOMElements = component && container && background;
+    const hasAllConfigDOMElements = component && container && backdrop;
     if (!hasAllConfigDOMElements) {
       try {
         this.transcludeContent();
@@ -63,7 +63,7 @@ export class SidebarElement implements SidebarBase {
 
     this.setPosition(position);
     this.addAttrsEventsListeners(this.component.getAttribute(sidebarjs));
-    this.background.addEventListener('click', this.close.bind(this));
+    this.backdrop.addEventListener('click', this.close.bind(this));
   }
 
   public toggle(): void {
@@ -72,12 +72,12 @@ export class SidebarElement implements SidebarBase {
 
   public open(): void {
     this.component.classList.add(isVisible);
-    this.background.style.opacity = this.backgroundOpacity.toString();
+    this.backdrop.style.opacity = this.backdropOpacity.toString();
   }
 
   public close(): void {
     this.component.classList.remove(isVisible);
-    this.background.removeAttribute('style');
+    this.backdrop.removeAttribute('style');
   }
 
   public isVisible(): boolean {
@@ -117,7 +117,7 @@ export class SidebarElement implements SidebarBase {
     this.container.innerHTML = this.component.innerHTML;
     this.component.innerHTML = '';
     this.component.appendChild(this.container);
-    this.component.appendChild(this.background);
+    this.component.appendChild(this.backdrop);
   }
 
   private addNativeGestures(): void {
@@ -148,7 +148,7 @@ export class SidebarElement implements SidebarBase {
   private onTouchEnd(): void {
     this.component.classList.remove(isMoving);
     this.container.removeAttribute('style');
-    this.background.removeAttribute('style');
+    this.backdrop.removeAttribute('style');
     Math.abs(this.touchMoveSidebar) > (this.container.clientWidth / 3.5) ? this.close() : this.open();
     delete this.initialTouch;
     delete this.touchMoveSidebar;
@@ -157,17 +157,17 @@ export class SidebarElement implements SidebarBase {
   private moveSidebar(movement: number): void {
     this.component.classList.add(isMoving);
     SidebarElement.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
-    this.changeBackgroundOpacity(movement);
+    this.changeBackdropOpacity(movement);
   }
 
-  private changeBackgroundOpacity(movement: number): void {
+  private changeBackdropOpacity(movement: number): void {
     const swipeProgress = 1 - (Math.abs(movement) / this.container.clientWidth);
-    const opacity = swipeProgress / this.backgroundOpacityRatio;
-    this.background.style.opacity = opacity.toString();
+    const opacity = swipeProgress / this.backdropOpacityRatio;
+    this.backdrop.style.opacity = opacity.toString();
   }
 
   private onSwipeOpenStart(e: TouchEvent): void {
-    if (this.targetElementIsBackground(e)) {
+    if (this.targetElementIsBackdrop(e)) {
       return;
     }
     const {clientWidth} = document.body;
@@ -179,7 +179,7 @@ export class SidebarElement implements SidebarBase {
   }
 
   private onSwipeOpenMove(e: TouchEvent): void {
-    if (!this.targetElementIsBackground(e) && this.initialTouch && !this.isVisible()) {
+    if (!this.targetElementIsBackdrop(e) && this.initialTouch && !this.isVisible()) {
       const documentSwiped = e.touches[0].clientX - this.initialTouch;
       const sidebarMovement = this.getSidebarPosition(documentSwiped);
       if (sidebarMovement > 0) {
@@ -203,9 +203,9 @@ export class SidebarElement implements SidebarBase {
     return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
   }
 
-  private targetElementIsBackground(e: TouchEvent): boolean {
+  private targetElementIsBackdrop(e: TouchEvent): boolean {
     const touchedElement = <HTMLElement> e.target;
-    return touchedElement.hasAttribute(`${sidebarjs}-background`);
+    return touchedElement.hasAttribute(`${sidebarjs}-backdrop`);
   }
 
   public static create(element: string): HTMLElement {

@@ -43,7 +43,7 @@ $duration: .3s;
   }
 }
 
-[sidebarjs-background] {
+[sidebarjs-backdrop] {
   @extend %component--full-screen;
   position: absolute;
   background: #000;
@@ -79,7 +79,7 @@ $duration: .3s;
 
   &.sidebarjs--is-moving {
     transition: none;
-    [sidebarjs-container], [sidebarjs-background] {
+    [sidebarjs-container], [sidebarjs-backdrop] {
       transition: none;
     }
   }

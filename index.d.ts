@@ -7,7 +7,7 @@ declare namespace SidebarJS {
 
     public component: HTMLElement;
     public container: HTMLElement;
-    public background: HTMLElement;
+    public backdrop: HTMLElement;
     public documentMinSwipeX: number;
     public documentSwipeRange: number;
     public nativeSwipe: boolean;
@@ -47,7 +47,7 @@ declare namespace SidebarJS {
 
     private moveSidebar(movement: number);
 
-    private changeBackgroundOpacity(movement: number);
+    private changeBackdropOpacity(movement: number);
 
     private onSwipeOpenStart(e: TouchEvent);
 
@@ -57,7 +57,7 @@ declare namespace SidebarJS {
 
     private getSidebarPosition(swiped: number);
 
-    private targetElementIsBackground(e: TouchEvent);
+    private targetElementIsBackdrop(e: TouchEvent);
 
     public static create(element: string): HTMLElement;
 
@@ -99,13 +99,13 @@ declare namespace SidebarJS {
   export interface SidebarConfig {
     component?: HTMLElement;
     container?: HTMLElement;
-    background?: HTMLElement;
+    backdrop?: HTMLElement;
     documentMinSwipeX?: number;
     documentSwipeRange?: number;
     nativeSwipe?: boolean;
     nativeSwipeOpen?: boolean;
     position?: SidebarPosition;
-    backgroundOpacity?: number;
+    backdropOpacity?: number;
   }
 
   export interface HTMLSidebarElement extends HTMLElement {

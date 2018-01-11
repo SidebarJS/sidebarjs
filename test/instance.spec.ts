@@ -12,10 +12,10 @@ describe('Instance creation', () => {
     expect(sidebarjs).toBeDefined();
     expect(sidebarjs.component).toBeInstanceOf(HTMLDivElement);
     expect(sidebarjs.container).toBeInstanceOf(HTMLDivElement);
-    expect(sidebarjs.background).toBeInstanceOf(HTMLDivElement);
+    expect(sidebarjs.backdrop).toBeInstanceOf(HTMLDivElement);
     expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
     expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
-    expect(sidebarjs.background.attributes['sidebarjs-background']).toBeDefined();
+    expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeDefined();
   });
 
   test('Should not create instance', () => {
@@ -30,7 +30,7 @@ describe('Instance creation', () => {
       expect(sidebarjs.container.innerHTML).toBe('Hello');
       expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
       expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
-      expect(sidebarjs.background.attributes['sidebarjs-background']).toBeDefined();
+      expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeDefined();
       expect(spy.called).toBe(true);
       expect(spy.calledOnce).toBe(true);
       spy.restore();
@@ -41,22 +41,22 @@ describe('Instance creation', () => {
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
-          <section custom-background></section>
+          <section custom-backdrop></section>
         </div>`;
       const element = document.querySelector('[sidebarjs]');
       const sidebarjs = new SidebarElement({
         component: <HTMLElement> element,
         container: <HTMLElement> element.children[0],
-        background: <HTMLElement> element.children[1],
+        backdrop: <HTMLElement> element.children[1],
       });
       expect(sidebarjs.container.innerHTML).toBe('Hello');
       expect(sidebarjs.container.nodeName).toBe('SECTION');
-      expect(sidebarjs.background.nodeName).toBe('SECTION');
+      expect(sidebarjs.backdrop.nodeName).toBe('SECTION');
       expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
       expect(sidebarjs.container.attributes['custom-container']).toBeDefined();
-      expect(sidebarjs.background.attributes['custom-background']).toBeDefined();
+      expect(sidebarjs.backdrop.attributes['custom-backdrop']).toBeDefined();
       expect(sidebarjs.container.attributes['sidebarjs-container']).toBeUndefined();
-      expect(sidebarjs.background.attributes['sidebarjs-background']).toBeUndefined();
+      expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeUndefined();
       expect(spy.called).toBe(false);
       spy.restore();
     });
@@ -66,18 +66,18 @@ describe('Instance creation', () => {
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
-          <section custom-background></section> 
+          <section custom-backdrop></section> 
         </div>`;
       const element = document.querySelector('[sidebarjs]');
       const sidebarjs = new SidebarElement({
         component: <HTMLElement> element,
         container: <HTMLElement> element.children[0],
-        /* background: <HTMLElement>element.children[1], */
+        /* backdrop: <HTMLElement>element.children[1], */
       });
       expect(sidebarjs.container.innerText).not.toBe('Hello');
       expect(sidebarjs.container.innerText).toBeFalsy();
       expect(sidebarjs.container.children[0].outerHTML).toBe('<section custom-container="">Hello</section>');
-      expect(sidebarjs.container.children[1].outerHTML).toBe('<section custom-background=""></section>');
+      expect(sidebarjs.container.children[1].outerHTML).toBe('<section custom-backdrop=""></section>');
       expect(spy.called).toBe(true);
       expect(spy.calledOnce).toBe(true);
       spy.restore();
