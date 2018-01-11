@@ -50,6 +50,7 @@ const sidebarjs = new SidebarJS.SidebarElement({
     nativeSwipe?: true, // Open and close sidebar with swipe gestures
     nativeSwipeOpen?: true, // Enable/Disable open on swipe
     position?: 'left', // Sidebar position, accepted values: left|right
+    backdropOpacity?: 0.3, // Backdrop opacity on sidebar open
 })
 ```
 
