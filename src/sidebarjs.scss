@@ -75,9 +75,6 @@ $duration: .3s;
     [sidebarjs-container] {
       transform: translate(0, 0);
     }
-    [sidebarjs-background] {
-      opacity: .3;
-    }
   }
 
   &.sidebarjs--is-moving {

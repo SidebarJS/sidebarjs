@@ -105,6 +105,7 @@ declare namespace SidebarJS {
     nativeSwipe?: boolean;
     nativeSwipeOpen?: boolean;
     position?: SidebarPosition;
+    backgroundOpacity?: number;
   }
 
   export interface HTMLSidebarElement extends HTMLElement {
