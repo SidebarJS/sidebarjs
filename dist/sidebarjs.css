@@ -1,4 +1,4 @@
-[sidebarjs-background], [sidebarjs] {
+[sidebarjs-backdrop], [sidebarjs] {
   top: 0;
   left: 0;
   width: 100%;
@@ -21,7 +21,7 @@
           box-shadow: -2px 0 4px rgba(0, 0, 0, 0.2);
   margin-left: auto; }
 
-[sidebarjs-background] {
+[sidebarjs-backdrop] {
   position: absolute;
   background: #000;
   opacity: 0;
@@ -64,11 +64,9 @@
     [sidebarjs].sidebarjs--is-visible [sidebarjs-container] {
       -webkit-transform: translate(0, 0);
               transform: translate(0, 0); }
-    [sidebarjs].sidebarjs--is-visible [sidebarjs-background] {
-      opacity: .3; }
   [sidebarjs].sidebarjs--is-moving {
     -webkit-transition: none;
     transition: none; }
-    [sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-background] {
+    [sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-backdrop] {
       -webkit-transition: none;
       transition: none; }
