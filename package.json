@@ -1,7 +1,7 @@
 {
   "name": "sidebarjs",
   "library": "SidebarJS",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "Create mobile sidebar/sidenav experiance in pure javascript",
   "main": "index.js",
   "typings": "index.d.ts",
@@ -37,28 +37,28 @@
     "sidebarjs"
   ],
   "devDependencies": {
-    "@types/jest": "^22.0.1",
+    "@types/jest": "^22.1.1",
     "autoprefixer": "^7.2.5",
     "cssnano": "^3.10.0",
-    "eslint": "^4.15.0",
+    "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "jest": "^22.0.6",
+    "jest": "^22.1.4",
     "live-server": "^1.2.0",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.2",
     "onchange": "^3.3.0",
-    "postcss": "^6.0.16",
+    "postcss": "^6.0.17",
     "postcss-cli": "^4.1.1",
-    "rollup": "^0.54.0",
-    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup": "^0.54.1",
+    "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
-    "sinon": "^4.1.4",
+    "sinon": "^4.2.2",
     "speedracer": "^0.2.0",
-    "ts-jest": "^22.0.1",
+    "ts-jest": "^22.0.3",
     "tslint": "^5.9.1",
-    "typescript": "^2.6.2",
-    "uglify-js": "^3.3.5"
+    "typescript": "^2.7.1",
+    "uglify-js": "^3.3.9"
   },
   "jest": {
     "transform": {

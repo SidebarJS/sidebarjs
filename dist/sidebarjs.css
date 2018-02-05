@@ -26,7 +26,8 @@
   background: #000;
   opacity: 0;
   -webkit-transition: opacity 0.3s ease;
-  transition: opacity 0.3s ease; }
+  transition: opacity 0.3s ease;
+  will-change: opacity; }
 
 [sidebarjs-container] {
   position: relative;
@@ -45,7 +46,8 @@
   -webkit-transition: -webkit-transform ease 0.3s;
   transition: -webkit-transform ease 0.3s;
   transition: transform ease 0.3s;
-  transition: transform ease 0.3s, -webkit-transform ease 0.3s; }
+  transition: transform ease 0.3s, -webkit-transform ease 0.3s;
+  will-change: transform; }
 
 [sidebarjs] {
   position: fixed;

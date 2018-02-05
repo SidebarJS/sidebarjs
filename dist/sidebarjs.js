@@ -1,6 +1,6 @@
 /*
  * SidebarJS
- * Version 4.0.0
+ * Version 4.1.0
  * https://github.com/SidebarJS/sidebarjs#readme
  */
 
@@ -20,9 +20,9 @@ function createCommonjsModule(fn, module) {
 
 var sidebarElement = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
-var sidebarjs = 'sidebarjs';
-var isVisible = sidebarjs + "--is-visible";
-var isMoving = sidebarjs + "--is-moving";
+var SIDEBARJS = 'sidebarjs';
+var IS_VISIBLE = SIDEBARJS + "--is-visible";
+var IS_MOVING = SIDEBARJS + "--is-moving";
 var LEFT_POSITION = 'left';
 var RIGHT_POSITION = 'right';
 var TRANSITION_DURATION = 400;
@@ -31,9 +31,9 @@ var SidebarElement = /** @class */ (function () {
     function SidebarElement(config) {
         if (config === void 0) { config = {}; }
         var component = config.component, container = config.container, backdrop = config.backdrop, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c, _d = config.backdropOpacity, backdropOpacity = _d === void 0 ? 0.3 : _d;
-        this.component = component || document.querySelector("[" + sidebarjs + "]");
-        this.container = container || SidebarElement.create(sidebarjs + "-container");
-        this.backdrop = backdrop || SidebarElement.create(sidebarjs + "-backdrop");
+        this.component = component || document.querySelector("[" + SIDEBARJS + "]");
+        this.container = container || SidebarElement.create(SIDEBARJS + "-container");
+        this.backdrop = backdrop || SidebarElement.create(SIDEBARJS + "-backdrop");
         this.documentMinSwipeX = documentMinSwipeX;
         this.documentSwipeRange = documentSwipeRange;
         this.nativeSwipe = nativeSwipe !== false;
@@ -56,38 +56,40 @@ var SidebarElement = /** @class */ (function () {
             }
         }
         this.setPosition(position);
-        this.addAttrsEventsListeners(this.component.getAttribute(sidebarjs));
-        this.backdrop.addEventListener('click', this.close.bind(this));
+        this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
+        this.backdrop.addEventListener('click', this.close.bind(this), { passive: true });
     }
     SidebarElement.prototype.toggle = function () {
-        this.component.classList.contains(isVisible) ? this.close() : this.open();
+        this.isVisible() ? this.close() : this.open();
     };
     SidebarElement.prototype.open = function () {
-        this.component.classList.add(isVisible);
+        this.component.classList.add(IS_VISIBLE);
         this.setBackdropOpacity(this.backdropOpacity);
     };
     SidebarElement.prototype.close = function () {
-        this.component.classList.remove(isVisible);
+        this.component.classList.remove(IS_VISIBLE);
         this.backdrop.removeAttribute('style');
     };
     SidebarElement.prototype.isVisible = function () {
-        return this.component.classList.contains(isVisible);
+        return this.component.classList.contains(IS_VISIBLE);
     };
     SidebarElement.prototype.setPosition = function (position) {
         var _this = this;
-        this.component.classList.add(isMoving);
+        this.component.classList.add(IS_MOVING);
         this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
-        POSITIONS.forEach(function (POS) { return _this.component.classList.remove(sidebarjs + "--" + POS); });
-        this.component.classList.add(sidebarjs + "--" + (this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION));
-        setTimeout(function () { return _this.component.classList.remove(isMoving); }, TRANSITION_DURATION);
+        for (var i = 0; i < POSITIONS.length; i++) {
+            this.component.classList.remove(SIDEBARJS + "--" + POSITIONS[i]);
+        }
+        this.component.classList.add(SIDEBARJS + "--" + (this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION));
+        setTimeout(function () { return _this.component.classList.remove(IS_MOVING); }, TRANSITION_DURATION);
     };
     SidebarElement.prototype.addAttrsEventsListeners = function (sidebarName) {
         var actions = ['toggle', 'open', 'close'];
         for (var i = 0; i < actions.length; i++) {
-            var elements = document.querySelectorAll("[" + sidebarjs + "-" + actions[i] + "=\"" + sidebarName + "\"]");
+            var elements = document.querySelectorAll("[" + SIDEBARJS + "-" + actions[i] + "=\"" + sidebarName + "\"]");
             for (var j = 0; j < elements.length; j++) {
                 if (!SidebarElement.elemHasListener(elements[j])) {
-                    elements[j].addEventListener('click', this[actions[i]].bind(this));
+                    elements[j].addEventListener('click', this[actions[i]].bind(this), { passive: true });
                     SidebarElement.elemHasListener(elements[j], true);
                 }
             }
@@ -106,14 +108,14 @@ var SidebarElement = /** @class */ (function () {
         this.component.appendChild(this.backdrop);
     };
     SidebarElement.prototype.addNativeGestures = function () {
-        this.component.addEventListener('touchstart', this.onTouchStart.bind(this));
-        this.component.addEventListener('touchmove', this.onTouchMove.bind(this));
-        this.component.addEventListener('touchend', this.onTouchEnd.bind(this));
+        this.component.addEventListener('touchstart', this.onTouchStart.bind(this), { passive: true });
+        this.component.addEventListener('touchmove', this.onTouchMove.bind(this), { passive: true });
+        this.component.addEventListener('touchend', this.onTouchEnd.bind(this), { passive: true });
     };
     SidebarElement.prototype.addNativeOpenGestures = function () {
-        document.addEventListener('touchstart', this.onSwipeOpenStart.bind(this));
-        document.addEventListener('touchmove', this.onSwipeOpenMove.bind(this));
-        document.addEventListener('touchend', this.onSwipeOpenEnd.bind(this));
+        document.addEventListener('touchstart', this.onSwipeOpenStart.bind(this), { passive: true });
+        document.addEventListener('touchmove', this.onSwipeOpenMove.bind(this), { passive: true });
+        document.addEventListener('touchend', this.onSwipeOpenEnd.bind(this), { passive: true });
     };
     SidebarElement.prototype.onTouchStart = function (e) {
         this.initialTouch = e.touches[0].pageX;
@@ -127,15 +129,15 @@ var SidebarElement = /** @class */ (function () {
         }
     };
     SidebarElement.prototype.onTouchEnd = function () {
-        this.component.classList.remove(isMoving);
+        this.component.classList.remove(IS_MOVING);
         this.container.removeAttribute('style');
         this.backdrop.removeAttribute('style');
         Math.abs(this.touchMoveSidebar) > (this.container.clientWidth / 3.5) ? this.close() : this.open();
-        delete this.initialTouch;
-        delete this.touchMoveSidebar;
+        this.initialTouch = null;
+        this.touchMoveSidebar = null;
     };
     SidebarElement.prototype.moveSidebar = function (movement) {
-        this.component.classList.add(isMoving);
+        this.component.classList.add(IS_MOVING);
         SidebarElement.vendorify(this.container, 'transform', "translate(" + movement + "px, 0)");
         this.updateBackdropOpacity(movement);
     };
@@ -172,7 +174,7 @@ var SidebarElement = /** @class */ (function () {
     };
     SidebarElement.prototype.onSwipeOpenEnd = function () {
         if (this.openMovement) {
-            delete this.openMovement;
+            this.openMovement = null;
             this.component.removeAttribute('style');
             this.onTouchEnd();
         }
@@ -181,8 +183,7 @@ var SidebarElement = /** @class */ (function () {
         return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
     };
     SidebarElement.prototype.targetElementIsBackdrop = function (e) {
-        var touchedElement = e.target;
-        return touchedElement.hasAttribute(sidebarjs + "-backdrop");
+        return e.target.hasAttribute(SIDEBARJS + "-backdrop");
     };
     SidebarElement.create = function (element) {
         var el = document.createElement('div');
@@ -199,7 +200,7 @@ var SidebarElement = /** @class */ (function () {
         return el;
     };
     SidebarElement.elemHasListener = function (elem, value) {
-        return elem && (value === true || value === false) ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;
+        return elem && typeof value === 'boolean' ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;
     };
     return SidebarElement;
 }());
