@@ -13,6 +13,7 @@
     "no-angle-bracket-type-assertion": false,
     "interface-name": false,
     "max-classes-per-file": [2],
+    "variable-name": [0],
     "max-line-length": {
       "severity": "error",
       "options": 140
