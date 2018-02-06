@@ -48,6 +48,8 @@ export class SidebarService implements SidebarBase {
 
   public destroy(sidebarName: string = ''): void {
     if (this.instances[sidebarName]) {
+      this.instances[sidebarName].destroy();
+      this.instances[sidebarName] = null;
       delete this.instances[sidebarName];
     }
   }

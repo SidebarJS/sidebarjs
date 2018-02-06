@@ -13,21 +13,28 @@ declare namespace SidebarJS {
     public nativeSwipe: boolean;
     public nativeSwipeOpen: boolean;
     public position: SidebarPosition;
+    public toggle: () => void;
+    public open: () => void;
+    public close: () => void;
     private initialTouch;
     private touchMoveSidebar;
     private openMovement;
-
-    public toggle(): void;
-
-    public open(): void;
-
-    public close(): void;
+    private __onTouchStart: (e: TouchEvent) => void;
+    private __onTouchMove: (e: TouchEvent) => void;
+    private __onTouchEnd: () => void;
+    private __onSwipeOpenStart: (e: TouchEvent) => void;
+    private __onSwipeOpenMove: (e: TouchEvent) => void;
+    private __onSwipeOpenEnd: () => void;
 
     public isVisible(): boolean;
+
+    public destroy(): void;
 
     public setPosition(position: SidebarPosition): void;
 
     public addAttrsEventsListeners(sidebarName: string): void;
+
+    public removeAttrsEventsListeners(sidebarName: string): void;
 
     private hasLeftPosition();
 
@@ -39,25 +46,17 @@ declare namespace SidebarJS {
 
     private addNativeOpenGestures();
 
-    private onTouchStart(e: TouchEvent);
-
-    private onTouchMove(e: TouchEvent);
-
-    private onTouchEnd();
-
     private moveSidebar(movement: number);
 
     private changeBackdropOpacity(movement: number);
 
-    private onSwipeOpenStart(e: TouchEvent);
-
-    private onSwipeOpenMove(e: TouchEvent);
-
-    private onSwipeOpenEnd();
-
     private getSidebarPosition(swiped: number);
 
     private targetElementIsBackdrop(e: TouchEvent);
+
+    private removeComponentClassPosition(): void;
+
+    private forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: string) => void): void;
 
     public static create(element: string): HTMLElement;
 
@@ -89,10 +88,12 @@ declare namespace SidebarJS {
   }
 
   export interface SidebarBase {
-    open(): void;
-    close(): void;
-    toggle(): void;
+    open: () => void;
+    close: () => void;
+    toggle: () => void;
+
     isVisible(): boolean;
+
     setPosition(position: SidebarPosition): void;
   }
 
