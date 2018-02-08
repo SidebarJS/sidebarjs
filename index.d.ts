@@ -60,7 +60,7 @@ declare namespace SidebarJS {
 
     public static create(element: string): HTMLElement;
 
-    public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement;
+    public static vendorify(el: HTMLElement, prop: string, val: string): void;
 
     public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;
   }
