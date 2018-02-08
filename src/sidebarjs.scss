@@ -70,7 +70,6 @@ $duration: .3s;
   position: fixed;
   z-index: 9999;
   transition: transform 0s $timing $duration;
-  will-change: transform;
 
   &.sidebarjs--is-visible {
     transform: translate(0, 0);

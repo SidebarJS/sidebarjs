@@ -55,8 +55,7 @@
   -webkit-transition: -webkit-transform 0s ease 0.3s;
   transition: -webkit-transform 0s ease 0.3s;
   transition: transform 0s ease 0.3s;
-  transition: transform 0s ease 0.3s, -webkit-transform 0s ease 0.3s;
-  will-change: transform; }
+  transition: transform 0s ease 0.3s, -webkit-transform 0s ease 0.3s; }
   [sidebarjs].sidebarjs--is-visible {
     -webkit-transform: translate(0, 0);
             transform: translate(0, 0);
