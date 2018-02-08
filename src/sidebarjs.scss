@@ -81,6 +81,7 @@ $duration: .3s;
 
   &.sidebarjs--is-moving {
     transition: none;
+    transform: translate(0, 0);
     [sidebarjs-container], [sidebarjs-backdrop] {
       transition: none;
     }
