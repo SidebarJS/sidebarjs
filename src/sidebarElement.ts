@@ -254,12 +254,8 @@ export class SidebarElement implements SidebarBase {
   }
 
   public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement {
-    const Prop = prop.charAt(0).toUpperCase() + prop.slice(1);
-    const prefs = ['Moz', 'Webkit', 'O', 'ms'];
+    el.style['Webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)] = val;
     el.style[prop] = val;
-    for (let i = 0; i < prefs.length; i++) {
-      el.style[prefs[i] + Prop] = val;
-    }
     return el;
   }
 
