@@ -149,8 +149,11 @@ export class SidebarElement implements SidebarBase {
     document.removeEventListener('touchend', this.__onSwipeOpenEnd, <any> {passive: true});
     this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
     this.removeComponentClassPosition();
-    this.component.innerHTML = this.container.innerHTML;
-    this.container.innerHTML = null;
+    while (this.container.firstElementChild) {
+      this.component.appendChild(this.container.firstElementChild);
+    }
+    this.component.removeChild(this.container);
+    this.component.removeChild(this.backdrop);
     Object.keys(this).forEach((key) => this[key] = null);
   }
 
@@ -205,8 +208,12 @@ export class SidebarElement implements SidebarBase {
   }
 
   private transcludeContent(): void {
-    this.container.innerHTML = this.component.innerHTML;
-    this.component.innerHTML = '';
+    while (this.component.firstElementChild) {
+      this.container.appendChild(this.component.firstElementChild);
+    }
+    while (this.component.firstChild) {
+      this.component.removeChild(this.component.firstChild);
+    }
     this.component.appendChild(this.container);
     this.component.appendChild(this.backdrop);
   }
