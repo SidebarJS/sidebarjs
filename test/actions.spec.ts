@@ -57,4 +57,21 @@ describe('Actions', () => {
       expect(sidebarjs.isVisible()).toBe(false);
     });
   });
+
+  describe('destroy', () => {
+    it('Should destroy sidebarjs', () => {
+      document.body.innerHTML = '<div sidebarjs>foo</div>';
+      const sidebarjs = new SidebarElement();
+      expect(sidebarjs.component).toBeInstanceOf(HTMLDivElement);
+      expect(sidebarjs.container).toBeInstanceOf(HTMLDivElement);
+      expect(sidebarjs.backdrop).toBeInstanceOf(HTMLDivElement);
+      expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
+      expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
+      expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeDefined();
+      sidebarjs.destroy();
+      expect(sidebarjs.component).toBeNull();
+      expect(sidebarjs.container).toBeNull();
+      expect(sidebarjs.backdrop).toBeNull();
+    });
+  });
 });
