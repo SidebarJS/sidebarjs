@@ -68,10 +68,11 @@ describe('Instance creation', () => {
           <section custom-container>Hello</section>
           <section custom-backdrop></section> 
         </div>`;
-      const element = document.querySelector('[sidebarjs]');
+      const component = document.querySelector('[sidebarjs]');
+      const container = document.querySelector('[custom-container]');
       const sidebarjs = new SidebarElement({
-        component: <HTMLElement> element,
-        container: <HTMLElement> element.children[0],
+        component: <HTMLElement> component,
+        container: <HTMLElement> container,
         /* backdrop: <HTMLElement>element.children[1], */
       });
       expect(sidebarjs.container.innerText).not.toBe('Hello');

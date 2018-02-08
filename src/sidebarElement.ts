@@ -1,4 +1,4 @@
-import { HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition } from '../index';
+import {HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition} from '../index';
 
 const SIDEBARJS: string = 'sidebarjs';
 const IS_VISIBLE: string = `${SIDEBARJS}--is-visible`;
@@ -76,8 +76,6 @@ export class SidebarElement implements SidebarBase {
       const documentSwiped = e.touches[0].clientX - this.initialTouch;
       const sidebarMovement = this.getSidebarPosition(documentSwiped);
       if (sidebarMovement > 0) {
-        SidebarElement.vendorify(this.component, 'transform', 'translate(0, 0)');
-        SidebarElement.vendorify(this.component, 'transition', 'none');
         this.openMovement = sidebarMovement * (this.hasLeftPosition() ? -1 : 1);
         this.moveSidebar(this.openMovement);
       }
@@ -87,7 +85,6 @@ export class SidebarElement implements SidebarBase {
   private __onSwipeOpenEnd = (): void => {
     if (this.openMovement) {
       this.openMovement = null;
-      this.component.removeAttribute('style');
       this.__onTouchEnd();
     }
   }
@@ -104,9 +101,10 @@ export class SidebarElement implements SidebarBase {
       position = 'left',
       backdropOpacity = 0.3,
     } = config;
+    const hasCustomTransclude = container && backdrop;
     this.component = component || document.querySelector(`[${SIDEBARJS}]`) as HTMLElement;
-    this.container = container || SidebarElement.create(`${SIDEBARJS}-container`);
-    this.backdrop = backdrop || SidebarElement.create(`${SIDEBARJS}-backdrop`);
+    this.container = hasCustomTransclude ? container : SidebarElement.create(`${SIDEBARJS}-container`);
+    this.backdrop = hasCustomTransclude ? backdrop : SidebarElement.create(`${SIDEBARJS}-backdrop`);
     this.documentMinSwipeX = documentMinSwipeX;
     this.documentSwipeRange = documentSwipeRange;
     this.nativeSwipe = nativeSwipe !== false;
@@ -114,8 +112,7 @@ export class SidebarElement implements SidebarBase {
     this.backdropOpacity = backdropOpacity;
     this.backdropOpacityRatio = 1 / backdropOpacity;
 
-    const hasAllConfigDOMElements = component && container && backdrop;
-    if (!hasAllConfigDOMElements) {
+    if (!hasCustomTransclude) {
       try {
         this.transcludeContent();
       } catch (e) {
@@ -208,8 +205,8 @@ export class SidebarElement implements SidebarBase {
   }
 
   private transcludeContent(): void {
-    while (this.component.firstElementChild) {
-      this.container.appendChild(this.component.firstElementChild);
+    while (this.component.firstChild) {
+      this.container.appendChild(this.component.firstChild);
     }
     while (this.component.firstChild) {
       this.component.removeChild(this.component.firstChild);
@@ -260,10 +257,9 @@ export class SidebarElement implements SidebarBase {
     return el;
   }
 
-  public static vendorify(el: HTMLElement, prop: string, val: string): HTMLElement {
+  public static vendorify(el: HTMLElement, prop: string, val: string): void {
     el.style['Webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)] = val;
     el.style[prop] = val;
-    return el;
   }
 
   public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {

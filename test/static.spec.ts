@@ -19,14 +19,8 @@ describe('Static', () => {
     it('Should add css vendor prefixes', () => {
       const elem = document.createElement('div');
       SidebarElement.vendorify(elem, 'transform', `translate(0, 0)`);
-      expect(elem.style['MozTransform']).toBeDefined();
-      expect(elem.style['MozTransform']).toBe('translate(0, 0)');
       expect(elem.style['WebkitTransform']).toBeDefined();
       expect(elem.style['WebkitTransform']).toBe('translate(0, 0)');
-      expect(elem.style['OTransform']).toBeDefined();
-      expect(elem.style['OTransform']).toBe('translate(0, 0)');
-      expect(elem.style['msTransform']).toBeDefined();
-      expect(elem.style['msTransform']).toBe('translate(0, 0)');
       expect(elem.style['transform']).toBeDefined();
       expect(elem.style['transform']).toBe('translate(0, 0)');
     });
