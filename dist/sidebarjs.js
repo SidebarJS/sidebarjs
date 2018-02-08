@@ -77,8 +77,6 @@ var SidebarElement = /** @class */ (function () {
                 var documentSwiped = e.touches[0].clientX - _this.initialTouch;
                 var sidebarMovement = _this.getSidebarPosition(documentSwiped);
                 if (sidebarMovement > 0) {
-                    SidebarElement.vendorify(_this.component, 'transform', 'translate(0, 0)');
-                    SidebarElement.vendorify(_this.component, 'transition', 'none');
                     _this.openMovement = sidebarMovement * (_this.hasLeftPosition() ? -1 : 1);
                     _this.moveSidebar(_this.openMovement);
                 }
@@ -87,22 +85,21 @@ var SidebarElement = /** @class */ (function () {
         this.__onSwipeOpenEnd = function () {
             if (_this.openMovement) {
                 _this.openMovement = null;
-                _this.component.removeAttribute('style');
                 _this.__onTouchEnd();
             }
         };
         var component = config.component, container = config.container, backdrop = config.backdrop, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c, _d = config.backdropOpacity, backdropOpacity = _d === void 0 ? 0.3 : _d;
+        var hasCustomTransclude = container && backdrop;
         this.component = component || document.querySelector("[" + SIDEBARJS + "]");
-        this.container = container || SidebarElement.create(SIDEBARJS + "-container");
-        this.backdrop = backdrop || SidebarElement.create(SIDEBARJS + "-backdrop");
+        this.container = hasCustomTransclude ? container : SidebarElement.create(SIDEBARJS + "-container");
+        this.backdrop = hasCustomTransclude ? backdrop : SidebarElement.create(SIDEBARJS + "-backdrop");
         this.documentMinSwipeX = documentMinSwipeX;
         this.documentSwipeRange = documentSwipeRange;
         this.nativeSwipe = nativeSwipe !== false;
         this.nativeSwipeOpen = nativeSwipeOpen !== false;
         this.backdropOpacity = backdropOpacity;
         this.backdropOpacityRatio = 1 / backdropOpacity;
-        var hasAllConfigDOMElements = component && container && backdrop;
-        if (!hasAllConfigDOMElements) {
+        if (!hasCustomTransclude) {
             try {
                 this.transcludeContent();
             }
@@ -134,8 +131,11 @@ var SidebarElement = /** @class */ (function () {
         document.removeEventListener('touchend', this.__onSwipeOpenEnd, { passive: true });
         this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
         this.removeComponentClassPosition();
-        this.component.innerHTML = this.container.innerHTML;
-        this.container.innerHTML = null;
+        while (this.container.firstElementChild) {
+            this.component.appendChild(this.container.firstElementChild);
+        }
+        this.component.removeChild(this.container);
+        this.component.removeChild(this.backdrop);
         Object.keys(this).forEach(function (key) { return _this[key] = null; });
     };
     SidebarElement.prototype.setPosition = function (position) {
@@ -155,10 +155,14 @@ var SidebarElement = /** @class */ (function () {
             }
         });
     };
-    SidebarElement.prototype.removeComponentClassPosition = function () {
-        for (var i = 0; i < POSITIONS.length; i++) {
-            this.component.classList.remove(SIDEBARJS + "--" + POSITIONS[i]);
-        }
+    SidebarElement.prototype.removeAttrsEventsListeners = function (sidebarName) {
+        var _this = this;
+        this.forEachActionElement(sidebarName, function (element, action) {
+            if (SidebarElement.elemHasListener(element)) {
+                element.removeEventListener('click', _this[action]);
+                SidebarElement.elemHasListener(element, false);
+            }
+        });
     };
     SidebarElement.prototype.forEachActionElement = function (sidebarName, func) {
         var actions = ['toggle', 'open', 'close'];
@@ -169,14 +173,10 @@ var SidebarElement = /** @class */ (function () {
             }
         }
     };
-    SidebarElement.prototype.removeAttrsEventsListeners = function (sidebarName) {
-        var _this = this;
-        this.forEachActionElement(sidebarName, function (element, action) {
-            if (SidebarElement.elemHasListener(element)) {
-                element.removeEventListener('click', _this[action]);
-                SidebarElement.elemHasListener(element, false);
-            }
-        });
+    SidebarElement.prototype.removeComponentClassPosition = function () {
+        for (var i = 0; i < POSITIONS.length; i++) {
+            this.component.classList.remove(SIDEBARJS + "--" + POSITIONS[i]);
+        }
     };
     SidebarElement.prototype.hasLeftPosition = function () {
         return this.position === LEFT_POSITION;
@@ -185,8 +185,12 @@ var SidebarElement = /** @class */ (function () {
         return this.position === RIGHT_POSITION;
     };
     SidebarElement.prototype.transcludeContent = function () {
-        this.container.innerHTML = this.component.innerHTML;
-        this.component.innerHTML = '';
+        while (this.component.firstChild) {
+            this.container.appendChild(this.component.firstChild);
+        }
+        while (this.component.firstChild) {
+            this.component.removeChild(this.component.firstChild);
+        }
         this.component.appendChild(this.container);
         this.component.appendChild(this.backdrop);
     };
@@ -225,13 +229,8 @@ var SidebarElement = /** @class */ (function () {
         return el;
     };
     SidebarElement.vendorify = function (el, prop, val) {
-        var Prop = prop.charAt(0).toUpperCase() + prop.slice(1);
-        var prefs = ['Moz', 'Webkit', 'O', 'ms'];
+        el.style['Webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)] = val;
         el.style[prop] = val;
-        for (var i = 0; i < prefs.length; i++) {
-            el.style[prefs[i] + Prop] = val;
-        }
-        return el;
     };
     SidebarElement.elemHasListener = function (elem, value) {
         return elem && typeof value === 'boolean' ? elem.sidebarjsListener = value : !!elem.sidebarjsListener;

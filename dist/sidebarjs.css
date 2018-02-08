@@ -68,7 +68,9 @@
               transform: translate(0, 0); }
   [sidebarjs].sidebarjs--is-moving {
     -webkit-transition: none;
-    transition: none; }
+    transition: none;
+    -webkit-transform: translate(0, 0);
+            transform: translate(0, 0); }
     [sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-backdrop] {
       -webkit-transition: none;
       transition: none; }
