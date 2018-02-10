@@ -44,13 +44,35 @@ Classic
 ## Options
 ```typescript
 const sidebarjs = new SidebarJS.SidebarElement({
-    component?: <HTMLElement>sidebarjs, // Sidebar DOM element
-    documentMinSwipeX?: 10, // Minimum swipe in px required to trigger listener: open
-    documentSwipeRange?: 40, // Range in px where document is listening for gesture: open
-    nativeSwipe?: true, // Open and close sidebar with swipe gestures
-    nativeSwipeOpen?: true, // Enable/Disable open on swipe
-    position?: 'left', // Sidebar position, accepted values: left|right
-    backdropOpacity?: 0.3, // Backdrop opacity on sidebar open
+    // Sidebar DOM element
+    component?: <HTMLElement>sidebarjs,
+    
+    // Minimum swipe in px required to trigger listener: open
+    documentMinSwipeX?: 10,
+    
+    // Range in px where document is listening for gesture: open
+    documentSwipeRange?: 40,
+    
+    // Open and close sidebar with swipe gestures
+    nativeSwipe?: true,
+    
+    // Enable/Disable open on swipe
+    nativeSwipeOpen?: true,
+    
+    // Sidebar position, accepted values: left|right
+    position?: 'left',
+    
+    // Backdrop opacity on sidebar open
+    backdropOpacity?: 0.3,
+    
+    // Function called after sidebar is open
+    onOpen?: () => void,
+    
+    // Function called after sidebar is close
+    onClose?: () => void,
+    
+    // Function called when sidebar change visibility
+    onChangeVisibility?: (changes: { isVisible: boolean }) => void,
 })
 ```
 
