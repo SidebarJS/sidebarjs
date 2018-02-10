@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import { SidebarElement } from './../src/sidebarElement';
+import {SidebarElement} from '../src';
 
 describe('Instance creation', () => {
   beforeEach(() => {
@@ -23,7 +23,7 @@ describe('Instance creation', () => {
   });
 
   describe('Transclude', () => {
-    it('Should transclude content', () => {
+    test('Should transclude content', () => {
       const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement();
@@ -36,7 +36,7 @@ describe('Instance creation', () => {
       spy.restore();
     });
 
-    it('Should not transclude content with all custom HTMLElement params in config', () => {
+    test('Should not transclude content with all custom HTMLElement params in config', () => {
       const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
@@ -61,7 +61,7 @@ describe('Instance creation', () => {
       spy.restore();
     });
 
-    it('Should transclude content if has not all custom HTMLElement params in config', () => {
+    test('Should transclude content if has not all custom HTMLElement params in config', () => {
       const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
@@ -86,28 +86,28 @@ describe('Instance creation', () => {
   });
 
   describe('Native Swipe', () => {
-    it('Should has native gestures', () => {
+    test('Should has native gestures', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
       expect(sidebarjs.nativeSwipe).toBe(true);
       expect(sidebarjs.nativeSwipeOpen).toBe(true);
     });
 
-    it('Should not has nativeSwipe', () => {
+    test('Should not has nativeSwipe', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement({nativeSwipe: false});
       expect(sidebarjs.nativeSwipe).toBe(false);
       expect(sidebarjs.nativeSwipeOpen).toBe(true);
     });
 
-    it('Should not has nativeSwipeOpen', () => {
+    test('Should not has nativeSwipeOpen', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement({nativeSwipeOpen: false});
       expect(sidebarjs.nativeSwipe).toBe(true);
       expect(sidebarjs.nativeSwipeOpen).toBe(false);
     });
 
-    it('Should not has native gestures', () => {
+    test('Should not has native gestures', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement({nativeSwipe: false, nativeSwipeOpen: false});
       expect(sidebarjs.nativeSwipe).toBe(false);
@@ -116,7 +116,7 @@ describe('Instance creation', () => {
   });
 
   describe('Backdrop opacity', () => {
-    it('Should has default opacity', () => {
+    test('Should has default opacity', () => {
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement();
       sidebarjs.open();
@@ -124,7 +124,7 @@ describe('Instance creation', () => {
       expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 0.3;');
     });
 
-    it('Should has custom opacity', () => {
+    test('Should has custom opacity', () => {
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement({backdropOpacity: .8});
       sidebarjs.open();
@@ -132,7 +132,7 @@ describe('Instance creation', () => {
       expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 0.8;');
     });
 
-    it('Should has not opacity', () => {
+    test('Should has not opacity', () => {
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement({backdropOpacity: 0});
       sidebarjs.open();
@@ -140,12 +140,110 @@ describe('Instance creation', () => {
       expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 0;');
     });
 
-    it('Should has full opacity', () => {
+    test('Should has full opacity', () => {
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement({backdropOpacity: 1});
       sidebarjs.open();
       expect(sidebarjs.backdrop.style.opacity).toBe('1');
       expect(sidebarjs.backdrop.getAttribute('style')).toBe('opacity: 1;');
+    });
+  });
+
+  describe('OnChanges functions', () => {
+    test('Should trigger onOpen', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      let n = 0;
+      const sidebarjs = new SidebarElement(({
+        onOpen() {
+          n = 1;
+        },
+      }));
+      sidebarjs.open();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(1);
+    });
+
+    test('Should trigger onClose', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      let n = 0;
+      const sidebarjs = new SidebarElement(({
+        onClose() {
+          n = 1;
+        },
+      }));
+      sidebarjs.open();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      sidebarjs.close();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(1);
+    });
+
+    test('Should trigger onChangeVisibility', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      let n = 0;
+      let changes = null;
+      const sidebarjs = new SidebarElement(({
+        onChangeVisibility(changesEvent) {
+          changes = changesEvent;
+          ++n;
+        },
+      }));
+      sidebarjs.open();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(1);
+      expect(changes).toEqual({isVisible: true});
+      sidebarjs.close();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(2);
+      expect(changes).toEqual({isVisible: false});
+    });
+
+    test('Should trigger all onChanges functions', () => {
+      document.body.innerHTML = '<div sidebarjs>Hello</div>';
+      let n = 0;
+      let isOpenFired = false;
+      let isCloseFired = false;
+      let changes = null;
+      const sidebarjs = new SidebarElement(({
+        onOpen() {
+          isOpenFired = true;
+          isCloseFired = false;
+        },
+        onClose() {
+          isOpenFired = false;
+          isCloseFired = true;
+        },
+        onChangeVisibility(changesEvent) {
+          changes = changesEvent;
+          ++n;
+        },
+      }));
+      sidebarjs.open();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(1);
+      expect(isOpenFired).toBe(true);
+      expect(isCloseFired).toBe(false);
+      expect(changes).toEqual({isVisible: true});
+      sidebarjs.close();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(2);
+      expect(isOpenFired).toBe(false);
+      expect(isCloseFired).toBe(true);
+      expect(changes).toEqual({isVisible: false});
+      sidebarjs.toggle();
+      // emulate trigger transitionend event
+      sidebarjs['__onTransitionEnd']();
+      expect(n).toBe(3);
+      expect(isOpenFired).toBe(true);
+      expect(isCloseFired).toBe(false);
+      expect(changes).toEqual({isVisible: true});
     });
   });
 });
