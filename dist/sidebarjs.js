@@ -1,6 +1,6 @@
 /*
  * SidebarJS
- * Version 4.1.0
+ * Version 5.0.0
  * https://github.com/SidebarJS/sidebarjs#readme
  */
 
@@ -88,7 +88,25 @@ var SidebarElement = /** @class */ (function () {
                 _this.__onTouchEnd();
             }
         };
-        var component = config.component, container = config.container, backdrop = config.backdrop, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c, _d = config.backdropOpacity, backdropOpacity = _d === void 0 ? 0.3 : _d;
+        this.__onTransitionEnd = function () {
+            var isVisible = _this.isVisible();
+            if (isVisible && !_this.__wasVisible) {
+                _this.__wasVisible = true;
+                if (_this.__emitOnOpen) {
+                    _this.__emitOnOpen();
+                }
+            }
+            else if (!isVisible && _this.__wasVisible) {
+                _this.__wasVisible = false;
+                if (_this.__emitOnClose) {
+                    _this.__emitOnClose();
+                }
+            }
+            if (_this.__emitOnChangeVisibility) {
+                _this.__emitOnChangeVisibility({ isVisible: isVisible });
+            }
+        };
+        var component = config.component, container = config.container, backdrop = config.backdrop, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c, _d = config.backdropOpacity, backdropOpacity = _d === void 0 ? 0.3 : _d, onOpen = config.onOpen, onClose = config.onClose, onChangeVisibility = config.onChangeVisibility;
         var hasCustomTransclude = container && backdrop;
         this.component = component || document.querySelector("[" + SIDEBARJS + "]");
         this.container = hasCustomTransclude ? container : SidebarElement.create(SIDEBARJS + "-container");
@@ -99,6 +117,9 @@ var SidebarElement = /** @class */ (function () {
         this.nativeSwipeOpen = nativeSwipeOpen !== false;
         this.backdropOpacity = backdropOpacity;
         this.backdropOpacityRatio = 1 / backdropOpacity;
+        this.__emitOnOpen = onOpen;
+        this.__emitOnClose = onClose;
+        this.__emitOnChangeVisibility = onChangeVisibility;
         if (!hasCustomTransclude) {
             try {
                 this.transcludeContent();
@@ -115,6 +136,7 @@ var SidebarElement = /** @class */ (function () {
         }
         this.setPosition(position);
         this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
+        this.addTransitionListener();
         this.backdrop.addEventListener('click', this.close, { passive: true });
     }
     SidebarElement.prototype.isVisible = function () {
@@ -125,6 +147,7 @@ var SidebarElement = /** @class */ (function () {
         this.component.removeEventListener('touchstart', this.__onTouchStart, { passive: true });
         this.component.removeEventListener('touchmove', this.__onTouchMove, { passive: true });
         this.component.removeEventListener('touchend', this.__onTouchEnd, { passive: true });
+        this.container.removeEventListener('transitionend', this.__onTransitionEnd, { passive: true });
         this.backdrop.removeEventListener('click', this.close, { passive: true });
         document.removeEventListener('touchstart', this.__onSwipeOpenStart, { passive: true });
         document.removeEventListener('touchmove', this.__onSwipeOpenMove, { passive: true });
@@ -163,6 +186,10 @@ var SidebarElement = /** @class */ (function () {
                 SidebarElement.elemHasListener(element, false);
             }
         });
+    };
+    SidebarElement.prototype.addTransitionListener = function () {
+        this.__wasVisible = this.isVisible();
+        this.container.addEventListener('transitionend', this.__onTransitionEnd, { passive: true });
     };
     SidebarElement.prototype.forEachActionElement = function (sidebarName, func) {
         var actions = ['toggle', 'open', 'close'];
