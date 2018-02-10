@@ -1,4 +1,4 @@
-import { SidebarElement } from './../src/sidebarElement';
+import { SidebarElement } from '../src';
 
 describe('Actions', () => {
   const isVisibleClassName = 'sidebarjs--is-visible';
@@ -7,7 +7,7 @@ describe('Actions', () => {
   });
 
   describe('Open', () => {
-    it('Should add sidebarjs--is-visible class to [sidebarjs] component', () => {
+    test('Should add sidebarjs--is-visible class to [sidebarjs] component', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
       const componentClassList = sidebarjs.component.classList;
@@ -15,10 +15,27 @@ describe('Actions', () => {
       sidebarjs.open();
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
     });
+
+    test('Should make sidebarjs visible', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      expect(sidebarjs.isVisible()).toBe(false);
+      sidebarjs.open();
+      expect(sidebarjs.isVisible()).toBe(true);
+    });
+
+    test('Should open sidebarjs from element with [sidebarjs-open]', () => {
+      document.body.innerHTML = '<div sidebarjs-open>open</div><div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const elementOpen = <HTMLElement> document.querySelector('[sidebarjs-open]');
+      expect(sidebarjs.isVisible()).toBe(false);
+      elementOpen.click();
+      expect(sidebarjs.isVisible()).toBe(true);
+    });
   });
 
   describe('Close', () => {
-    it('Should remove sidebarjs--is-visible class to [sidebarjs] component', () => {
+    test('Should remove sidebarjs--is-visible class to [sidebarjs] component', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
       const componentClassList = sidebarjs.component.classList;
@@ -28,10 +45,29 @@ describe('Actions', () => {
       sidebarjs.close();
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
     });
+
+    test('Should make sidebarjs invisible', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      sidebarjs.open();
+      expect(sidebarjs.isVisible()).toBe(true);
+      sidebarjs.close();
+      expect(sidebarjs.isVisible()).toBe(false);
+    });
+
+    test('Should open sidebarjs from element with [sidebarjs-open]', () => {
+      document.body.innerHTML = '<div sidebarjs-close>open</div><div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const elementClose = <HTMLElement> document.querySelector('[sidebarjs-close]');
+      sidebarjs.open();
+      expect(sidebarjs.isVisible()).toBe(true);
+      elementClose.click();
+      expect(sidebarjs.isVisible()).toBe(false);
+    });
   });
 
   describe('Toggle', () => {
-    it('Should toggle sidebarjs--is-visible class to [sidebarjs] component', () => {
+    test('Should toggle sidebarjs--is-visible class to [sidebarjs] component', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
       const componentClassList = sidebarjs.component.classList;
@@ -44,10 +80,29 @@ describe('Actions', () => {
       sidebarjs.toggle();
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
     });
+
+    test('Should make sidebarjs visible/invisible', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      sidebarjs.toggle();
+      expect(sidebarjs.isVisible()).toBe(true);
+      sidebarjs.toggle();
+      expect(sidebarjs.isVisible()).toBe(false);
+    });
+
+    test('Should open sidebarjs from element with [sidebarjs-open]', () => {
+      document.body.innerHTML = '<div sidebarjs-toggle>open</div><div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const elementToggle = <HTMLElement> document.querySelector('[sidebarjs-toggle]');
+      elementToggle.click();
+      expect(sidebarjs.isVisible()).toBe(true);
+      elementToggle.click();
+      expect(sidebarjs.isVisible()).toBe(false);
+    });
   });
 
   describe('isVisible', () => {
-    it('Should return a boolean value that describe the visibility of sidebar', () => {
+    test('Should return a boolean value that describe the visibility of sidebar', () => {
       document.body.innerHTML = '<div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
       expect(sidebarjs.isVisible()).toBe(false);
@@ -59,7 +114,7 @@ describe('Actions', () => {
   });
 
   describe('destroy', () => {
-    it('Should destroy sidebarjs', () => {
+    test('Should destroy sidebarjs', () => {
       document.body.innerHTML = '<div sidebarjs>foo</div>';
       const sidebarjs = new SidebarElement();
       expect(sidebarjs.component).toBeInstanceOf(HTMLDivElement);
