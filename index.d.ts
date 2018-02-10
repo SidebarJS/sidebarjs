@@ -25,6 +25,10 @@ declare namespace SidebarJS {
     private __onSwipeOpenStart: (e: TouchEvent) => void;
     private __onSwipeOpenMove: (e: TouchEvent) => void;
     private __onSwipeOpenEnd: () => void;
+    private __wasVisible: boolean;
+    private __emitOnOpen: () => void;
+    private __emitOnClose: () => void;
+    private __emitOnChangeVisibility: (changes: { isVisible: boolean }) => void;
 
     public isVisible(): boolean;
 
@@ -107,6 +111,9 @@ declare namespace SidebarJS {
     nativeSwipeOpen?: boolean;
     position?: SidebarPosition;
     backdropOpacity?: number;
+    onOpen?: () => void;
+    onClose?: () => void;
+    onChangeVisibility?: (changes: { isVisible: boolean }) => void;
   }
 
   export interface HTMLSidebarElement extends HTMLElement {
