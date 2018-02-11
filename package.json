@@ -11,12 +11,12 @@
     "dist/js:minify": "uglifyjs --c --m -o dist/sidebarjs.min.js -- dist/sidebarjs.js",
     "dist/js": "npm-run-all dist/js:*",
     "dist/css:compile": "node-sass --include-path scss src/sidebarjs.scss dist/sidebarjs.css",
-    "dist/css:autoprefixer": "postcss --no-map --use autoprefixer -b 'last 4 versions' -o dist/sidebarjs.css dist/sidebarjs.css",
+    "dist/css:autoprefixer": "postcss --no-map --use autoprefixer -o dist/sidebarjs.css dist/sidebarjs.css",
     "dist/css:nano": "postcss --no-map --use cssnano -o dist/sidebarjs.min.css dist/sidebarjs.css",
     "dist/css": "npm-run-all dist/css:*",
     "server": "live-server --open=demo",
     "start": "npm run prod && npm run server",
-    "watch": "onchange 'src/*.scss' -- npm run dist/css:compile | onchange 'src/*.ts' -e 'src/*.d.ts'  -- npm run dist/js:bundle",
+    "watch": "onchange 'src/*.scss' -- npm run dist/css:compile | onchange 'src/*.ts' -e 'src/*.d.ts' -- npm run dist/js:bundle",
     "dev": "npm run dist/css:compile & npm run dist/js:bundle && npm run watch | npm run server",
     "prod": "npm run dist/js & npm run dist/css"
   },
@@ -37,29 +37,34 @@
     "sidebarjs"
   ],
   "devDependencies": {
-    "@types/jest": "^22.1.1",
-    "autoprefixer": "^7.2.5",
+    "@types/jest": "^22.1.2",
+    "autoprefixer": "^7.2.6",
     "cssnano": "^3.10.0",
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "jest": "^22.1.4",
+    "jest": "^22.2.2",
     "live-server": "^1.2.0",
     "node-sass": "^4.7.2",
     "npm-run-all": "^4.1.2",
     "onchange": "^3.3.0",
     "postcss": "^6.0.17",
-    "postcss-cli": "^4.1.1",
-    "rollup": "^0.54.1",
+    "postcss-cli": "^5.0.0",
+    "rollup": "^0.55.5",
     "rollup-plugin-commonjs": "^8.3.0",
     "rollup-plugin-node-resolve": "^3.0.2",
-    "sinon": "^4.2.2",
+    "sinon": "^4.3.0",
     "speedracer": "^0.2.0",
     "ts-jest": "^22.0.3",
     "tslint": "^5.9.1",
     "typescript": "^2.7.1",
-    "uglify-js": "^3.3.9"
+    "uglify-js": "^3.3.10"
   },
+  "browserslist": [
+    "iOS 6",
+    "Android 4",
+    "last 2 versions"
+  ],
   "jest": {
     "transform": {
       ".(ts|tsx)": "<rootDir>/node_modules/ts-jest/preprocessor.js"

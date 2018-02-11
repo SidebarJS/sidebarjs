@@ -345,7 +345,7 @@ var index = unwrapExports(src);
 var src_1 = src.SidebarElement;
 var src_2 = src.SidebarService;
 
-exports['default'] = index;
+exports.default = index;
 exports.SidebarElement = src_1;
 exports.SidebarService = src_2;
 
