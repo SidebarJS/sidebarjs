@@ -147,58 +147,11 @@ const sidebarjs = new SidebarJS.SidebarElement({
 </body>
 ```
 
-## Implementation step by step
-### Download files
-Download and save all files
-```ssh
-$ npm install sidebarjs --save
-```
-
-Insert _sidebarjs.min.css_ and _sidebarjs.min.js_ in your index.html.
-
+## Trigger onOpen/onClose/onChangeVisibility
 ```html
 <head>
 
-  <link rel="stylesheet" href="your/path/sidebarjs.min.css">
-
-</head>
-<body>
-
-  <script src="your/path/sidebarjs.min.js"></script>
-
-</body>
-```
-
-### Create SidebarJS element
-Write **[sidebarjs]** attribute inside a tag (div, aside, or whatever you want).
-```html
-<div sidebarjs>
-  <div>Title</div>
-  <nav>
-    <a href="link">Home</a>
-    <a href="link">About</a>
-    <a href="link">Contacts</a>
-  </nav>
-</div>
-```
-
-### Trigger button
-Do you need a trigger button for open/close SidebarJS? Just put **[sidebarjs-toggle]** attribute inside a tag and it's done!
-```html
-<div sidebarjs-toggle>Open/Close</div>
-```
-
-### Init
-When you have files, [sidebarjs] and [sidebarjs-toggle] you can init your SidebarJS Module like:
-```js
-const sidebarjs = new SidebarJS.SidebarElement()
-```
-
-### Full file example
-```html
-<head>
-
-  <link rel="stylesheet" href="your/path/sidebarjs.min.css">
+  <link rel="stylesheet" href="sidebarjs.min.css">
 
 </head>
 <body>
@@ -206,7 +159,6 @@ const sidebarjs = new SidebarJS.SidebarElement()
   <div sidebarjs-toggle>Open/Close</div>
 
   <div sidebarjs>
-    <div>Title</div>
     <nav>
       <a href="link">Home</a>
       <a href="link">About</a>
@@ -214,10 +166,56 @@ const sidebarjs = new SidebarJS.SidebarElement()
     </nav>
   </div>
 
-  <script src="your/path/sidebarjs.min.js"></script>
+  <script src="sidebarjs.min.js"></script>
   <script>
-    // Init SidebarJS
-    const sidebarjs = new SidebarJS.SidebarElement();
+  // Init SidebarJS
+  var sidebarjs = new SidebarJS.SidebarElement({
+    onOpen: function() {
+      console.log('sidebarjs is open');
+    },
+    onClose: function() {
+      console.log('sidebarjs is close');
+    },
+    onChangeVisibility: function(changes) {
+      console.log('sidebarjs is visible?', changes.isVisible);
+    }
+  });
+  </script>
+
+</body>
+```
+
+## Destroy Sidebar
+```html
+<head>
+
+  <link rel="stylesheet" href="sidebarjs.min.css">
+
+</head>
+<body>
+
+  <div sidebarjs-toggle>Open/Close</div>
+
+  <div sidebarjs>
+    <nav>
+      <a href="link">Home</a>
+      <a href="link">About</a>
+      <a href="link">Contacts</a>
+    </nav>
+  </div>
+
+  <script src="sidebarjs.min.js"></script>
+  <script>
+  // Init SidebarJS
+  var sidebarjs = new SidebarJS.SidebarElement();
+  
+  // After 4 seconds
+  setTimeout(function() {
+    
+    // Destroy sidebarjs
+    sidebarjs.destroy();
+    
+  }, 4000);
   </script>
 
 </body>
