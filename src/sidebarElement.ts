@@ -5,7 +5,6 @@ const IS_VISIBLE: string = `${SIDEBARJS}--is-visible`;
 const IS_MOVING: string = `${SIDEBARJS}--is-moving`;
 const LEFT_POSITION: SidebarPosition = 'left';
 const RIGHT_POSITION: SidebarPosition = 'right';
-const TRANSITION_DURATION: number = 400;
 const POSITIONS: SidebarPosition[] = [LEFT_POSITION, RIGHT_POSITION];
 
 export class SidebarElement implements SidebarBase {
@@ -46,11 +45,11 @@ export class SidebarElement implements SidebarBase {
   }
 
   private __onTouchMove = (e: TouchEvent): void => {
-    const documentSwiped = this.initialTouch - e.touches[0].clientX;
-    const sidebarMovement = this.getSidebarPosition(documentSwiped);
-    this.touchMoveSidebar = -documentSwiped;
+    const documentSwiped = Math.abs(this.initialTouch - e.touches[0].clientX);
+    const sidebarMovement = this.container.clientWidth - documentSwiped;
     if (sidebarMovement <= this.container.clientWidth) {
-      this.moveSidebar(this.touchMoveSidebar);
+      this.touchMoveSidebar = documentSwiped;
+      this.moveSidebar(this.hasLeftPosition() ? -documentSwiped : documentSwiped);
     }
   }
 
@@ -58,7 +57,7 @@ export class SidebarElement implements SidebarBase {
     this.component.classList.remove(IS_MOVING);
     this.container.removeAttribute('style');
     this.backdrop.removeAttribute('style');
-    Math.abs(this.touchMoveSidebar) > (this.container.clientWidth / 3.5) ? this.close() : this.open();
+    this.touchMoveSidebar > (this.container.clientWidth / 3.5) ? this.close() : this.open();
     this.initialTouch = null;
     this.touchMoveSidebar = null;
   }
@@ -67,9 +66,8 @@ export class SidebarElement implements SidebarBase {
     if (this.targetElementIsBackdrop(e)) {
       return;
     }
-    const {clientWidth} = document.body;
     const touchPositionX = e.touches[0].clientX;
-    const documentTouch = this.hasLeftPosition() ? touchPositionX : clientWidth - touchPositionX;
+    const documentTouch = this.hasLeftPosition() ? touchPositionX : document.body.clientWidth - touchPositionX;
     if (documentTouch < this.documentSwipeRange) {
       this.__onTouchStart(e);
     }
@@ -78,9 +76,10 @@ export class SidebarElement implements SidebarBase {
   private __onSwipeOpenMove = (e: TouchEvent): void => {
     if (!this.targetElementIsBackdrop(e) && this.initialTouch && !this.isVisible()) {
       const documentSwiped = e.touches[0].clientX - this.initialTouch;
-      const sidebarMovement = this.getSidebarPosition(documentSwiped);
+      const hasLeftPosition = this.hasLeftPosition();
+      const sidebarMovement = this.container.clientWidth - (hasLeftPosition ? documentSwiped : -documentSwiped);
       if (sidebarMovement > 0) {
-        this.openMovement = sidebarMovement * (this.hasLeftPosition() ? -1 : 1);
+        this.openMovement = hasLeftPosition ? -sidebarMovement : sidebarMovement;
         this.moveSidebar(this.openMovement);
       }
     }
@@ -189,7 +188,7 @@ export class SidebarElement implements SidebarBase {
     this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
     this.removeComponentClassPosition();
     this.component.classList.add(`${SIDEBARJS}--${this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION}`);
-    setTimeout(() => this.component.classList.remove(IS_MOVING), TRANSITION_DURATION);
+    setTimeout(() => this.component.classList.remove(IS_MOVING), 200);
   }
 
   public addAttrsEventsListeners(sidebarName: string): void {
@@ -276,10 +275,6 @@ export class SidebarElement implements SidebarBase {
 
   private setBackdropOpacity(opacity: number): void {
     this.backdrop.style.opacity = opacity.toString();
-  }
-
-  private getSidebarPosition(swiped: number): number {
-    return (this.container.clientWidth - (this.hasLeftPosition() ? swiped : -swiped));
   }
 
   private targetElementIsBackdrop(e: TouchEvent): boolean {

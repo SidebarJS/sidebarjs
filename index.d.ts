@@ -54,8 +54,6 @@ declare namespace SidebarJS {
 
     private changeBackdropOpacity(movement: number);
 
-    private getSidebarPosition(swiped: number);
-
     private targetElementIsBackdrop(e: TouchEvent);
 
     private removeComponentClassPosition(): void;
