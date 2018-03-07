@@ -1,4 +1,4 @@
-import {HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition} from '../index';
+import { HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition } from '../index';
 
 const SIDEBARJS: string = 'sidebarjs';
 const IS_VISIBLE: string = `${SIDEBARJS}--is-visible`;
@@ -25,6 +25,56 @@ export class SidebarElement implements SidebarBase {
   private __emitOnOpen: () => void;
   private __emitOnClose: () => void;
   private __emitOnChangeVisibility: (changes: { isVisible: boolean }) => void;
+
+  constructor(config: SidebarConfig = {}) {
+    const {
+      component,
+      container,
+      backdrop,
+      documentMinSwipeX = 10,
+      documentSwipeRange = 40,
+      nativeSwipe,
+      nativeSwipeOpen,
+      position = 'left',
+      backdropOpacity = 0.3,
+      onOpen,
+      onClose,
+      onChangeVisibility,
+    } = config;
+    const hasCustomTransclude = container && backdrop;
+    this.component = component || document.querySelector(`[${SIDEBARJS}]`) as HTMLElement;
+    this.container = hasCustomTransclude ? container : SidebarElement.create(`${SIDEBARJS}-container`);
+    this.backdrop = hasCustomTransclude ? backdrop : SidebarElement.create(`${SIDEBARJS}-backdrop`);
+    this.documentMinSwipeX = documentMinSwipeX;
+    this.documentSwipeRange = documentSwipeRange;
+    this.nativeSwipe = nativeSwipe !== false;
+    this.nativeSwipeOpen = nativeSwipeOpen !== false;
+    this.backdropOpacity = backdropOpacity;
+    this.backdropOpacityRatio = 1 / backdropOpacity;
+    this.__emitOnOpen = onOpen;
+    this.__emitOnClose = onClose;
+    this.__emitOnChangeVisibility = onChangeVisibility;
+
+    if (!hasCustomTransclude) {
+      try {
+        this.transcludeContent();
+      } catch (e) {
+        throw new Error('You must define an element with [sidebarjs] attribute');
+      }
+    }
+
+    if (this.nativeSwipe) {
+      this.addNativeGestures();
+      if (this.nativeSwipeOpen) {
+        this.addNativeOpenGestures();
+      }
+    }
+
+    this.setPosition(position);
+    this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
+    this.addTransitionListener();
+    this.backdrop.addEventListener('click', this.close, {passive: true});
+  }
 
   public toggle = (): void => {
     this.isVisible() ? this.close() : this.open();
@@ -77,8 +127,9 @@ export class SidebarElement implements SidebarBase {
     if (!this.targetElementIsBackdrop(e) && this.initialTouch && !this.isVisible()) {
       const documentSwiped = e.touches[0].clientX - this.initialTouch;
       const hasLeftPosition = this.hasLeftPosition();
-      const sidebarMovement = this.container.clientWidth - (hasLeftPosition ? documentSwiped : -documentSwiped);
-      if (sidebarMovement > 0) {
+      const swipeX = hasLeftPosition ? documentSwiped : -documentSwiped;
+      const sidebarMovement = this.container.clientWidth - swipeX;
+      if (sidebarMovement > 0 && swipeX >= this.documentMinSwipeX) {
         this.openMovement = hasLeftPosition ? -sidebarMovement : sidebarMovement;
         this.moveSidebar(this.openMovement);
       }
@@ -110,56 +161,6 @@ export class SidebarElement implements SidebarBase {
     }
   }
 
-  constructor(config: SidebarConfig = {}) {
-    const {
-      component,
-      container,
-      backdrop,
-      documentMinSwipeX = 10,
-      documentSwipeRange = 40,
-      nativeSwipe,
-      nativeSwipeOpen,
-      position = 'left',
-      backdropOpacity = 0.3,
-      onOpen,
-      onClose,
-      onChangeVisibility,
-    } = config;
-    const hasCustomTransclude = container && backdrop;
-    this.component = component || document.querySelector(`[${SIDEBARJS}]`) as HTMLElement;
-    this.container = hasCustomTransclude ? container : SidebarElement.create(`${SIDEBARJS}-container`);
-    this.backdrop = hasCustomTransclude ? backdrop : SidebarElement.create(`${SIDEBARJS}-backdrop`);
-    this.documentMinSwipeX = documentMinSwipeX;
-    this.documentSwipeRange = documentSwipeRange;
-    this.nativeSwipe = nativeSwipe !== false;
-    this.nativeSwipeOpen = nativeSwipeOpen !== false;
-    this.backdropOpacity = backdropOpacity;
-    this.backdropOpacityRatio = 1 / backdropOpacity;
-    this.__emitOnOpen = onOpen;
-    this.__emitOnClose = onClose;
-    this.__emitOnChangeVisibility = onChangeVisibility;
-
-    if (!hasCustomTransclude) {
-      try {
-        this.transcludeContent();
-      } catch (e) {
-        throw new Error('You must define an element with [sidebarjs] attribute');
-      }
-    }
-
-    if (this.nativeSwipe) {
-      this.addNativeGestures();
-      if (this.nativeSwipeOpen) {
-        this.addNativeOpenGestures();
-      }
-    }
-
-    this.setPosition(position);
-    this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
-    this.addTransitionListener();
-    this.backdrop.addEventListener('click', this.close, {passive: true});
-  }
-
   public isVisible(): boolean {
     return this.component.classList.contains(IS_VISIBLE);
   }
@@ -188,7 +189,7 @@ export class SidebarElement implements SidebarBase {
     this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
     this.removeComponentClassPosition();
     this.component.classList.add(`${SIDEBARJS}--${this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION}`);
-    setTimeout(() => this.component.classList.remove(IS_MOVING), 200);
+    setTimeout(() => this.component && this.component.classList.remove(IS_MOVING), 200);
   }
 
   public addAttrsEventsListeners(sidebarName: string): void {

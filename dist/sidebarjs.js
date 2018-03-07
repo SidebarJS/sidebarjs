@@ -74,8 +74,9 @@ var SidebarElement = /** @class */ (function () {
             if (!_this.targetElementIsBackdrop(e) && _this.initialTouch && !_this.isVisible()) {
                 var documentSwiped = e.touches[0].clientX - _this.initialTouch;
                 var hasLeftPosition = _this.hasLeftPosition();
-                var sidebarMovement = _this.container.clientWidth - (hasLeftPosition ? documentSwiped : -documentSwiped);
-                if (sidebarMovement > 0) {
+                var swipeX = hasLeftPosition ? documentSwiped : -documentSwiped;
+                var sidebarMovement = _this.container.clientWidth - swipeX;
+                if (sidebarMovement > 0 && swipeX >= _this.documentMinSwipeX) {
                     _this.openMovement = hasLeftPosition ? -sidebarMovement : sidebarMovement;
                     _this.moveSidebar(_this.openMovement);
                 }
@@ -166,7 +167,7 @@ var SidebarElement = /** @class */ (function () {
         this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
         this.removeComponentClassPosition();
         this.component.classList.add(SIDEBARJS + "--" + (this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION));
-        setTimeout(function () { return _this.component.classList.remove(IS_MOVING); }, 200);
+        setTimeout(function () { return _this.component && _this.component.classList.remove(IS_MOVING); }, 200);
     };
     SidebarElement.prototype.addAttrsEventsListeners = function (sidebarName) {
         var _this = this;
