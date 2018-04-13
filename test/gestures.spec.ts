@@ -1,5 +1,5 @@
+import { swipe } from 'gesture-events';
 import { SidebarElement } from '../src';
-import { Gesture } from './gesture';
 
 const mock = (el) => {
   return {
@@ -28,7 +28,7 @@ describe('Gestures', () => {
       mock(sidebarjs.container).prop('clientWidth', 200);
       expect(sidebarjs.isVisible()).toBe(false);
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
-      Gesture.swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
+      swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
       expect(sidebarjs.isVisible()).toBe(true);
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
     });
@@ -39,7 +39,7 @@ describe('Gestures', () => {
       mock(sidebarjs.container).prop('clientWidth', 200);
       sidebarjs.open();
       expect(sidebarjs.isVisible()).toBe(true);
-      Gesture.swipe(sidebarjs.component, {x: 300, y: 10}, {x: 200, y: 10});
+      swipe(sidebarjs.component, {x: 300, y: 10}, {x: 200, y: 10});
       expect(sidebarjs.isVisible()).toBe(false);
     });
 
@@ -48,11 +48,11 @@ describe('Gestures', () => {
       const sidebarjs = new SidebarElement({nativeSwipeOpen: false});
       mock(sidebarjs.container).prop('clientWidth', 200);
       expect(sidebarjs.isVisible()).toBe(false);
-      Gesture.swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
+      swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
       expect(sidebarjs.isVisible()).toBe(false);
       sidebarjs.open();
       expect(sidebarjs.isVisible()).toBe(true);
-      Gesture.swipe(sidebarjs.backdrop, {x: 300, y: 10}, {x: 200, y: 10});
+      swipe(sidebarjs.backdrop, {x: 300, y: 10}, {x: 200, y: 10});
       expect(sidebarjs.isVisible()).toBe(false);
     });
 
@@ -63,10 +63,10 @@ describe('Gestures', () => {
       mock(sidebarjs.container).prop('clientWidth', 200);
       expect(sidebarjs.isVisible()).toBe(false);
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
-      Gesture.swipe(document.body, {x: 1, y: 10}, {x: 30, y: 10});
+      swipe(document.body, {x: 1, y: 10}, {x: 30, y: 10});
       expect(sidebarjs.isVisible()).toBe(false);
       expect(componentClassList.contains(isVisibleClassName)).toBe(false);
-      Gesture.swipe(document.body, {x: 1, y: 10}, {x: 31, y: 10});
+      swipe(document.body, {x: 1, y: 10}, {x: 31, y: 10});
       expect(sidebarjs.isVisible()).toBe(true);
       expect(componentClassList.contains(isVisibleClassName)).toBe(true);
     });
@@ -77,9 +77,9 @@ describe('Gestures', () => {
       mock(sidebarjs.container).prop('clientWidth', 200);
       sidebarjs.open();
       expect(sidebarjs.isVisible()).toBe(true);
-      Gesture.swipe(sidebarjs.component, {x: 300, y: 10}, {x: 250, y: 10});
+      swipe(sidebarjs.component, {x: 300, y: 10}, {x: 250, y: 10});
       expect(sidebarjs.isVisible()).toBe(true);
-      Gesture.swipe(sidebarjs.component, {x: 300, y: 10}, {x: 200, y: 10});
+      swipe(sidebarjs.component, {x: 300, y: 10}, {x: 200, y: 10});
       expect(sidebarjs.isVisible()).toBe(false);
     });
   });

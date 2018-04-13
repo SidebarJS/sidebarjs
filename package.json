@@ -45,6 +45,7 @@
     "eslint": "^4.17.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
+    "gesture-events": "^1.0.0",
     "jest": "^22.2.2",
     "live-server": "^1.2.0",
     "node-sass": "^4.7.2",
