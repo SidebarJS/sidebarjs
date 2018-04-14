@@ -1,6 +1,6 @@
 /*
  * SidebarJS
- * Version 5.1.0
+ * Version 5.1.1
  * https://github.com/SidebarJS/sidebarjs#readme
  */
 
@@ -21,6 +21,7 @@ function createCommonjsModule(fn, module) {
 var sidebarElement = createCommonjsModule(function (module, exports) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var SIDEBARJS = 'sidebarjs';
+var SIDEBARJS_CONTENT = 'sidebarjs-content';
 var IS_VISIBLE = SIDEBARJS + "--is-visible";
 var IS_MOVING = SIDEBARJS + "--is-moving";
 var LEFT_POSITION = 'left';
@@ -106,7 +107,7 @@ var SidebarElement = /** @class */ (function () {
                 _this.__emitOnChangeVisibility({ isVisible: isVisible });
             }
         };
-        var component = config.component, container = config.container, backdrop = config.backdrop, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.position, position = _c === void 0 ? 'left' : _c, _d = config.backdropOpacity, backdropOpacity = _d === void 0 ? 0.3 : _d, onOpen = config.onOpen, onClose = config.onClose, onChangeVisibility = config.onChangeVisibility;
+        var component = config.component, container = config.container, backdrop = config.backdrop, _a = config.documentMinSwipeX, documentMinSwipeX = _a === void 0 ? 10 : _a, _b = config.documentSwipeRange, documentSwipeRange = _b === void 0 ? 40 : _b, nativeSwipe = config.nativeSwipe, nativeSwipeOpen = config.nativeSwipeOpen, _c = config.responsive, responsive = _c === void 0 ? false : _c, mainContent = config.mainContent, _d = config.position, position = _d === void 0 ? 'left' : _d, _e = config.backdropOpacity, backdropOpacity = _e === void 0 ? 0.3 : _e, onOpen = config.onOpen, onClose = config.onClose, onChangeVisibility = config.onChangeVisibility;
         var hasCustomTransclude = container && backdrop;
         this.component = component || document.querySelector("[" + SIDEBARJS + "]");
         this.container = hasCustomTransclude ? container : SidebarElement.create(SIDEBARJS + "-container");
@@ -115,6 +116,8 @@ var SidebarElement = /** @class */ (function () {
         this.documentSwipeRange = documentSwipeRange;
         this.nativeSwipe = nativeSwipe !== false;
         this.nativeSwipeOpen = nativeSwipeOpen !== false;
+        this.responsive = Boolean(responsive);
+        this.mainContent = this.shouldDefineMainContent(mainContent);
         this.backdropOpacity = backdropOpacity;
         this.backdropOpacityRatio = 1 / backdropOpacity;
         this.__emitOnOpen = onOpen;
@@ -133,6 +136,9 @@ var SidebarElement = /** @class */ (function () {
             if (this.nativeSwipeOpen) {
                 this.addNativeOpenGestures();
             }
+        }
+        if (this.responsive || this.mainContent) {
+            this.setResponsive(this.responsive);
         }
         this.setPosition(position);
         this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
@@ -165,8 +171,12 @@ var SidebarElement = /** @class */ (function () {
         var _this = this;
         this.component.classList.add(IS_MOVING);
         this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
-        this.removeComponentClassPosition();
-        this.component.classList.add(SIDEBARJS + "--" + (this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION));
+        var resetMainContent = (document.querySelectorAll("[" + SIDEBARJS + "]") || []).length === 1;
+        this.removeComponentClassPosition(resetMainContent);
+        this.component.classList.add(SIDEBARJS + "--" + this.position);
+        if (this.responsive && this.mainContent) {
+            this.mainContent.classList.add(SIDEBARJS_CONTENT + "--" + this.position);
+        }
         setTimeout(function () { return _this.component && _this.component.classList.remove(IS_MOVING); }, 200);
     };
     SidebarElement.prototype.addAttrsEventsListeners = function (sidebarName) {
@@ -200,9 +210,12 @@ var SidebarElement = /** @class */ (function () {
             }
         }
     };
-    SidebarElement.prototype.removeComponentClassPosition = function () {
+    SidebarElement.prototype.removeComponentClassPosition = function (resetMainContent) {
         for (var i = 0; i < POSITIONS.length; i++) {
             this.component.classList.remove(SIDEBARJS + "--" + POSITIONS[i]);
+            if (resetMainContent && this.mainContent) {
+                this.mainContent.classList.remove(SIDEBARJS_CONTENT + "--" + POSITIONS[i]);
+            }
         }
     };
     SidebarElement.prototype.hasLeftPosition = function () {
@@ -246,6 +259,25 @@ var SidebarElement = /** @class */ (function () {
     };
     SidebarElement.prototype.targetElementIsBackdrop = function (e) {
         return e.target.hasAttribute(SIDEBARJS + "-backdrop");
+    };
+    SidebarElement.prototype.setResponsive = function (value) {
+        var pageHasMainContent = document.querySelector("[" + SIDEBARJS_CONTENT + "]");
+        if (!this.responsive && !pageHasMainContent) {
+            throw new Error("You provide a [" + SIDEBARJS_CONTENT + "] element without set {responsive: true}");
+        }
+        if (!this.mainContent && !pageHasMainContent) {
+            throw new Error("You have set {responsive: true} without provide a [" + SIDEBARJS_CONTENT + "] element");
+        }
+        this.component.classList.toggle('sidebarjs--responsive', value);
+    };
+    SidebarElement.prototype.shouldDefineMainContent = function (mainContent) {
+        if (mainContent) {
+            mainContent.setAttribute(SIDEBARJS_CONTENT, '');
+            return mainContent;
+        }
+        else {
+            return document.querySelector("[" + SIDEBARJS_CONTENT + "]");
+        }
     };
     SidebarElement.create = function (element) {
         var el = document.createElement('div');

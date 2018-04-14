@@ -56,7 +56,11 @@ declare namespace SidebarJS {
 
     private targetElementIsBackdrop(e: TouchEvent);
 
-    private removeComponentClassPosition(): void;
+    private removeComponentClassPosition(resetMainContent?: boolean): void;
+
+    private shouldDefineMainContent(mainContent?: HTMLElement): HTMLElement;
+
+    private setResponsive(value: boolean): void;
 
     private forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: string) => void): void;
 
@@ -107,6 +111,8 @@ declare namespace SidebarJS {
     documentSwipeRange?: number;
     nativeSwipe?: boolean;
     nativeSwipeOpen?: boolean;
+    responsive?: boolean;
+    mainContent?: HTMLElement;
     position?: SidebarPosition;
     backdropOpacity?: number;
     onOpen?: () => void;

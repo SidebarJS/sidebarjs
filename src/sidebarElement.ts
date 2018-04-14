@@ -1,6 +1,7 @@
 import { HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition } from '../index';
 
 const SIDEBARJS: string = 'sidebarjs';
+const SIDEBARJS_CONTENT: string = 'sidebarjs-content';
 const IS_VISIBLE: string = `${SIDEBARJS}--is-visible`;
 const IS_MOVING: string = `${SIDEBARJS}--is-moving`;
 const LEFT_POSITION: SidebarPosition = 'left';
@@ -8,23 +9,25 @@ const RIGHT_POSITION: SidebarPosition = 'right';
 const POSITIONS: SidebarPosition[] = [LEFT_POSITION, RIGHT_POSITION];
 
 export class SidebarElement implements SidebarBase {
-  public component: HTMLElement;
-  public container: HTMLElement;
-  public backdrop: HTMLElement;
-  public documentMinSwipeX: number;
-  public documentSwipeRange: number;
-  public nativeSwipe: boolean;
-  public nativeSwipeOpen: boolean;
   public position: SidebarPosition;
+  public readonly component: HTMLElement;
+  public readonly container: HTMLElement;
+  public readonly backdrop: HTMLElement;
+  public readonly documentMinSwipeX: number;
+  public readonly documentSwipeRange: number;
+  public readonly nativeSwipe: boolean;
+  public readonly nativeSwipeOpen: boolean;
+  public readonly responsive: boolean;
   private initialTouch: number;
   private touchMoveSidebar: number;
   private openMovement: number;
-  private backdropOpacity: number;
-  private backdropOpacityRatio: number;
   private __wasVisible: boolean;
-  private __emitOnOpen: () => void;
-  private __emitOnClose: () => void;
-  private __emitOnChangeVisibility: (changes: { isVisible: boolean }) => void;
+  private readonly backdropOpacity: number;
+  private readonly backdropOpacityRatio: number;
+  private readonly mainContent: HTMLElement;
+  private readonly __emitOnOpen: () => void;
+  private readonly __emitOnClose: () => void;
+  private readonly __emitOnChangeVisibility: (changes: { isVisible: boolean }) => void;
 
   constructor(config: SidebarConfig = {}) {
     const {
@@ -35,6 +38,8 @@ export class SidebarElement implements SidebarBase {
       documentSwipeRange = 40,
       nativeSwipe,
       nativeSwipeOpen,
+      responsive = false,
+      mainContent,
       position = 'left',
       backdropOpacity = 0.3,
       onOpen,
@@ -49,6 +54,8 @@ export class SidebarElement implements SidebarBase {
     this.documentSwipeRange = documentSwipeRange;
     this.nativeSwipe = nativeSwipe !== false;
     this.nativeSwipeOpen = nativeSwipeOpen !== false;
+    this.responsive = Boolean(responsive);
+    this.mainContent = this.shouldDefineMainContent(mainContent);
     this.backdropOpacity = backdropOpacity;
     this.backdropOpacityRatio = 1 / backdropOpacity;
     this.__emitOnOpen = onOpen;
@@ -68,6 +75,10 @@ export class SidebarElement implements SidebarBase {
       if (this.nativeSwipeOpen) {
         this.addNativeOpenGestures();
       }
+    }
+
+    if (this.responsive || this.mainContent) {
+      this.setResponsive(this.responsive);
     }
 
     this.setPosition(position);
@@ -187,8 +198,12 @@ export class SidebarElement implements SidebarBase {
   public setPosition(position: SidebarPosition): void {
     this.component.classList.add(IS_MOVING);
     this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
-    this.removeComponentClassPosition();
-    this.component.classList.add(`${SIDEBARJS}--${this.hasRightPosition() ? RIGHT_POSITION : LEFT_POSITION}`);
+    const resetMainContent = (document.querySelectorAll(`[${SIDEBARJS}]`) || []).length === 1;
+    this.removeComponentClassPosition(resetMainContent);
+    this.component.classList.add(`${SIDEBARJS}--${this.position}`);
+    if (this.responsive && this.mainContent) {
+      this.mainContent.classList.add(`${SIDEBARJS_CONTENT}--${this.position}`);
+    }
     setTimeout(() => this.component && this.component.classList.remove(IS_MOVING), 200);
   }
 
@@ -225,9 +240,12 @@ export class SidebarElement implements SidebarBase {
     }
   }
 
-  private removeComponentClassPosition(): void {
+  private removeComponentClassPosition(resetMainContent?: boolean): void {
     for (let i = 0; i < POSITIONS.length; i++) {
       this.component.classList.remove(`${SIDEBARJS}--${POSITIONS[i]}`);
+      if (resetMainContent && this.mainContent) {
+        this.mainContent.classList.remove(`${SIDEBARJS_CONTENT}--${POSITIONS[i]}`);
+      }
     }
   }
 
@@ -280,6 +298,26 @@ export class SidebarElement implements SidebarBase {
 
   private targetElementIsBackdrop(e: TouchEvent): boolean {
     return (<HTMLElement> e.target).hasAttribute(`${SIDEBARJS}-backdrop`);
+  }
+
+  private setResponsive(value: boolean): void {
+    const pageHasMainContent = document.querySelector(`[${SIDEBARJS_CONTENT}]`);
+    if (!this.responsive && !pageHasMainContent) {
+      throw new Error(`You provide a [${SIDEBARJS_CONTENT}] element without set {responsive: true}`);
+    }
+    if (!this.mainContent && !pageHasMainContent) {
+      throw new Error(`You have set {responsive: true} without provide a [${SIDEBARJS_CONTENT}] element`);
+    }
+    this.component.classList.toggle('sidebarjs--responsive', value);
+  }
+
+  private shouldDefineMainContent(mainContent?: HTMLElement): HTMLElement {
+    if (mainContent) {
+      mainContent.setAttribute(SIDEBARJS_CONTENT, '');
+      return mainContent;
+    } else {
+      return document.querySelector(`[${SIDEBARJS_CONTENT}]`) as HTMLElement;
+    }
   }
 
   public static create(element: string): HTMLElement {

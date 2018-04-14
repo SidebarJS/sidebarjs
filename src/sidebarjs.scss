@@ -1,5 +1,6 @@
 $timing: ease;
 $duration: .3s;
+$width: 300px;
 
 @mixin shadow($position) {
   $x: 0;
@@ -16,6 +17,14 @@ $duration: .3s;
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+@mixin component--is-visible($important: null) {
+  transform: translate(0, 0) $important;
+  transition: transform 0s $timing 0s;
+  [sidebarjs-container] {
+    transform: translate(0, 0) $important;
+  }
 }
 
 %component--left {
@@ -58,7 +67,7 @@ $duration: .3s;
   display: flex;
   flex-direction: column;
   width: 90%;
-  max-width: 300px;
+  max-width: $width;
   height: 100%;
   background: #fff;
   transition: transform $timing $duration;
@@ -72,11 +81,7 @@ $duration: .3s;
   transition: transform 0s $timing $duration;
 
   &.sidebarjs--is-visible {
-    transform: translate(0, 0);
-    transition: transform 0s $timing 0s;
-    [sidebarjs-container] {
-      transform: translate(0, 0);
-    }
+    @include component--is-visible;
   }
 
   &.sidebarjs--is-moving {
@@ -84,6 +89,55 @@ $duration: .3s;
     transform: translate(0, 0);
     [sidebarjs-container], [sidebarjs-backdrop] {
       transition: none;
+    }
+  }
+}
+
+[sidebarjs-content] {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  transition: width $duration $timing;
+  &.sidebarjs-content--left {
+    margin-left: auto;
+    margin-right: 0;
+  }
+  &.sidebarjs-content--right {
+    margin-left: 0;
+    margin-right: auto;
+  }
+}
+
+@media (min-width: 1025px) {
+  [sidebarjs].sidebarjs--responsive {
+    @include component--is-visible(!important);
+    width: $width;
+    &.sidebarjs--left {
+      left: 0;
+      right: auto;
+      [sidebarjs-container] {
+        box-shadow: 1px 0 0 rgba(black, .1);
+      }
+    }
+    &.sidebarjs--right {
+      right: 0;
+      left: auto;
+      [sidebarjs-container] {
+        box-shadow: -1px 0 0 rgba(black, .1);
+      }
+    }
+    [sidebarjs-container] {
+      max-width: none;
+      width: 100%;
+      box-shadow: none;
+    }
+  }
+
+  [sidebarjs-content] {
+    width: calc(100% - #{$width});
+    &.sidebarjs-content--left.sidebarjs-content--right {
+      width: calc(100% - #{$width*2});
+      margin: 0 auto;
     }
   }
 }

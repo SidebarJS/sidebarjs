@@ -74,3 +74,53 @@
     [sidebarjs].sidebarjs--is-moving [sidebarjs-container], [sidebarjs].sidebarjs--is-moving [sidebarjs-backdrop] {
       -webkit-transition: none;
       transition: none; }
+
+[sidebarjs-content] {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  -webkit-transition: width 0.3s ease;
+  transition: width 0.3s ease; }
+  [sidebarjs-content].sidebarjs-content--left {
+    margin-left: auto;
+    margin-right: 0; }
+  [sidebarjs-content].sidebarjs-content--right {
+    margin-left: 0;
+    margin-right: auto; }
+
+@media (min-width: 1025px) {
+  [sidebarjs].sidebarjs--responsive {
+    -webkit-transform: translate(0, 0) !important;
+            transform: translate(0, 0) !important;
+    -webkit-transition: -webkit-transform 0s ease 0s;
+    transition: -webkit-transform 0s ease 0s;
+    transition: transform 0s ease 0s;
+    transition: transform 0s ease 0s, -webkit-transform 0s ease 0s;
+    width: 300px; }
+    [sidebarjs].sidebarjs--responsive [sidebarjs-container] {
+      -webkit-transform: translate(0, 0) !important;
+              transform: translate(0, 0) !important; }
+    [sidebarjs].sidebarjs--responsive.sidebarjs--left {
+      left: 0;
+      right: auto; }
+      [sidebarjs].sidebarjs--responsive.sidebarjs--left [sidebarjs-container] {
+        -webkit-box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1);
+                box-shadow: 1px 0 0 rgba(0, 0, 0, 0.1); }
+    [sidebarjs].sidebarjs--responsive.sidebarjs--right {
+      right: 0;
+      left: auto; }
+      [sidebarjs].sidebarjs--responsive.sidebarjs--right [sidebarjs-container] {
+        -webkit-box-shadow: -1px 0 0 rgba(0, 0, 0, 0.1);
+                box-shadow: -1px 0 0 rgba(0, 0, 0, 0.1); }
+    [sidebarjs].sidebarjs--responsive [sidebarjs-container] {
+      max-width: none;
+      width: 100%;
+      -webkit-box-shadow: none;
+              box-shadow: none; }
+  [sidebarjs-content] {
+    width: -webkit-calc(100% - 300px);
+    width: calc(100% - 300px); }
+    [sidebarjs-content].sidebarjs-content--left.sidebarjs-content--right {
+      width: -webkit-calc(100% - 600px);
+      width: calc(100% - 600px);
+      margin: 0 auto; } }
