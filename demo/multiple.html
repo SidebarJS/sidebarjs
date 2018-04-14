@@ -11,15 +11,9 @@
     <link rel="stylesheet" href="./demo.css">
 
     <!-- SidebarJS Styles -->
-    <link rel="stylesheet" href="../dist/sidebarjs.min.css">
+    <link rel="stylesheet" href="../dist/sidebarjs.css">
   </head>
   <body>
-
-    <header>
-      <div class="icon hamburger-icon" sidebarjs-toggle="leftSidebarName"></div>
-      <h1>SidebarJS</h1>
-      <div class="icon hamburger-icon" sidebarjs-toggle="rightSidebarName"></div>
-    </header>
 
     <div sidebarjs="leftSidebarName">
       <h3>Left SidebarJS</h3>
@@ -42,13 +36,23 @@
       </nav>
     </div>
 
+    <div sidebarjs-content>
+      <header>
+        <div class="icon hamburger-icon" sidebarjs-toggle="leftSidebarName"></div>
+        <h1>SidebarJS</h1>
+        <div class="icon hamburger-icon" sidebarjs-toggle="rightSidebarName"></div>
+      </header>
+      prova
+    </div>
+
     <!-- SidebarJS Scripts -->
-    <script src="../dist/sidebarjs.min.js"></script>
+    <script src="../dist/sidebarjs.js"></script>
 
     <script type="text/javascript">
       // SidebarJS Init
       var leftSidebarjs = new SidebarJS.SidebarElement({
         component: document.querySelector('[sidebarjs="leftSidebarName"]'),
+        responsive: true,
       });
       var rightSidebarjs = new SidebarJS.SidebarElement({
         component: document.querySelector('[sidebarjs="rightSidebarName"]'),

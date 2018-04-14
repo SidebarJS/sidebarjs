@@ -13,12 +13,6 @@
     <link rel="stylesheet" href="../dist/sidebarjs.css">
   </head>
   <body>
-
-    <header>
-      <div class="icon hamburger-icon" sidebarjs-toggle></div>
-      <h1>SidebarJS</h1>
-    </header>
-
     <div sidebarjs>
       <h3>SidebarJS</h3>
       <nav>
@@ -34,27 +28,32 @@
       </nav>
     </div>
 
-    <a target="_blank" id="selected">
-      <div class="img"></div>
-      <div class="label"></div>
-    </a>
+    <main>
+      <header>
+        <div class="icon hamburger-icon" sidebarjs-toggle></div>
+        <h1>SidebarJS</h1>
+      </header>
 
-    <section>
-      <h2>Position</h2>
-      <input type="radio" id="position-left" name="position" value="left" checked>
-      <label for="position-left">Left</label>
-      <input type="radio" id="position-right" name="position" value="right">
-      <label for="position-right">Right</label>
-    </section>
+      <a target="_blank" id="selected">
+        <div class="img"></div>
+        <div class="label"></div>
+      </a>
 
-    <a class="basic" href="https://rawgit.com/SidebarJS/sidebarjs/master/demo/basic.html">Too much complex?<br>Try the simplest version</a>
+      <section>
+        <h2>Position</h2>
+        <input type="radio" id="position-left" name="position" value="left" checked>
+        <label for="position-left">Left</label>
+        <input type="radio" id="position-right" name="position" value="right">
+        <label for="position-right">Right</label>
+      </section>
+    </main>
 
     <!-- SidebarJS Scripts -->
     <script src="../dist/sidebarjs.js"></script>
 
     <script type="text/javascript">
       // SidebarJS Init
-      var sidebarjs = new SidebarJS.SidebarElement();
+      var sidebarjs = new SidebarJS.SidebarElement({responsive: true, mainContent: document.querySelector('main')});
     </script>
 
     <!-- –––––––––––––––––
