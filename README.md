@@ -65,6 +65,12 @@ const sidebarjs = new SidebarJS.SidebarElement({
     // Backdrop opacity on sidebar open
     backdropOpacity?: 0.3,
     
+    // Show sidebar on screen > 1024px
+    responsive?: false,
+    
+    // Page content if sidebar has option responsive
+    mainContent?: <HTMLElement>
+    
     // Function called after sidebar is open
     onOpen?: () => void,
     
@@ -142,6 +148,37 @@ const sidebarjs = new SidebarJS.SidebarElement({
     component: document.querySelector('[sidebarjs="rightSidebarName"]'),
     position: 'right',
   });
+  </script>
+
+</body>
+```
+
+## Responsive Sidebar
+```html
+<head>
+
+  <link rel="stylesheet" href="sidebarjs.min.css">
+
+</head>
+<body>
+
+  <div sidebarjs>
+    <nav>
+      <a href="link">Home</a>
+      <a href="link">About</a>
+      <a href="link">Contacts</a>
+    </nav>
+  </div>
+  
+  <div sidebarjs-content>
+    your content
+    <div sidebarjs-toggle>Open/Close</div>
+  </div>
+
+  <script src="sidebarjs.min.js"></script>
+  <script>
+  // Init SidebarJS
+  var sidebarjs = new SidebarJS.SidebarElement({responsive: true});
   </script>
 
 </body>
