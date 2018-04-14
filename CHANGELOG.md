@@ -1,3 +1,13 @@
+<a name="5.2.0"></a>
+# [5.2.0](https://github.com/SidebarJS/sidebarjs/compare/5.1.0...5.2.0) (2018-04-14)
+
+
+### Features
+
+* **SidebarElement:** responsive option ([3dc8d15](https://github.com/SidebarJS/sidebarjs/commit/3dc8d15))
+
+
+
 <a name="5.0.0"></a>
 # [5.0.0](https://github.com/SidebarJS/sidebarjs/compare/4.1.0...5.0.0) (2018-02-11)
 

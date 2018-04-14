@@ -1,6 +1,6 @@
 /*
  * SidebarJS
- * Version 5.1.1
+ * Version 5.2.0
  * https://github.com/SidebarJS/sidebarjs#readme
  */
 
