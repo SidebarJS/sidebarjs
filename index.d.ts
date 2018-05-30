@@ -19,6 +19,7 @@ declare namespace SidebarJS {
     private initialTouch;
     private touchMoveSidebar;
     private openMovement;
+    private isStyleMapSupported: boolean;
     private __onTouchStart: (e: TouchEvent) => void;
     private __onTouchMove: (e: TouchEvent) => void;
     private __onTouchEnd: () => void;
@@ -64,9 +65,13 @@ declare namespace SidebarJS {
 
     private forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: string) => void): void;
 
+    private applyStyle(el: HTMLElement, prop: string, val: string, vendorify?: boolean): void;
+
+    private clearStyle(el: HTMLElement): void;
+
     public static create(element: string): HTMLElement;
 
-    public static vendorify(el: HTMLElement, prop: string, val: string): void;
+    public static isStyleMapSupported(): boolean;
 
     public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;
   }

@@ -21,6 +21,7 @@ export class SidebarElement implements SidebarBase {
   private initialTouch: number;
   private touchMoveSidebar: number;
   private openMovement: number;
+  private isStyleMapSupported: boolean;
   private __wasVisible: boolean;
   private readonly backdropOpacity: number;
   private readonly backdropOpacityRatio: number;
@@ -54,6 +55,7 @@ export class SidebarElement implements SidebarBase {
     this.documentSwipeRange = documentSwipeRange;
     this.nativeSwipe = nativeSwipe !== false;
     this.nativeSwipeOpen = nativeSwipeOpen !== false;
+    this.isStyleMapSupported = SidebarElement.isStyleMapSupported();
     this.responsive = Boolean(responsive);
     this.mainContent = this.shouldDefineMainContent(mainContent);
     this.backdropOpacity = backdropOpacity;
@@ -98,7 +100,7 @@ export class SidebarElement implements SidebarBase {
 
   public close = (): void => {
     this.component.classList.remove(IS_VISIBLE);
-    this.backdrop.removeAttribute('style');
+    this.clearStyle(this.backdrop);
   }
 
   private __onTouchStart = (e: TouchEvent): void => {
@@ -116,8 +118,8 @@ export class SidebarElement implements SidebarBase {
 
   private __onTouchEnd = (): void => {
     this.component.classList.remove(IS_MOVING);
-    this.container.removeAttribute('style');
-    this.backdrop.removeAttribute('style');
+    this.clearStyle(this.container);
+    this.clearStyle(this.backdrop);
     this.touchMoveSidebar > (this.container.clientWidth / 3.5) ? this.close() : this.open();
     this.initialTouch = null;
     this.touchMoveSidebar = null;
@@ -282,7 +284,7 @@ export class SidebarElement implements SidebarBase {
 
   private moveSidebar(movement: number): void {
     this.component.classList.add(IS_MOVING);
-    SidebarElement.vendorify(this.container, 'transform', `translate(${movement}px, 0)`);
+    this.applyStyle(this.container, 'transform', `translate(${movement}px, 0)`, true);
     this.updateBackdropOpacity(movement);
   }
 
@@ -293,7 +295,7 @@ export class SidebarElement implements SidebarBase {
   }
 
   private setBackdropOpacity(opacity: number): void {
-    this.backdrop.style.opacity = opacity.toString();
+    this.applyStyle(this.backdrop, 'opacity', opacity.toString());
   }
 
   private targetElementIsBackdrop(e: TouchEvent): boolean {
@@ -320,15 +322,33 @@ export class SidebarElement implements SidebarBase {
     }
   }
 
+  private applyStyle(el: HTMLElement, prop: string, val: string, vendorify?: boolean): void {
+    if (this.isStyleMapSupported) {
+      (el as any).attributeStyleMap.set(prop, val);
+    } else {
+      el.style[prop] = val;
+      if (vendorify) {
+        el.style['Webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)] = val;
+      }
+    }
+  }
+
+  private clearStyle(el: HTMLElement): void {
+    if (this.isStyleMapSupported) {
+      (el as any).attributeStyleMap.clear();
+    } else {
+      el.removeAttribute('style');
+    }
+  }
+
+  public static isStyleMapSupported(): boolean {
+    return (window as any).CSS && (CSS as any).number;
+  }
+
   public static create(element: string): HTMLElement {
     const el = document.createElement('div');
     el.setAttribute(element, '');
     return el;
-  }
-
-  public static vendorify(el: HTMLElement, prop: string, val: string): void {
-    el.style['Webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)] = val;
-    el.style[prop] = val;
   }
 
   public static elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {
