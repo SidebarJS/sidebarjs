@@ -106,11 +106,11 @@ export class SidebarElement implements SidebarBase {
   }
 
   private __onTouchMove = (e: TouchEvent): void => {
-    const documentSwiped = Math.abs(this.initialTouch - e.touches[0].clientX);
-    const sidebarMovement = this.container.clientWidth - documentSwiped;
+    const swipeDirection = -(this.initialTouch - e.touches[0].clientX);
+    const sidebarMovement = this.container.clientWidth + (this.hasLeftPosition() ? swipeDirection : -swipeDirection);
     if (sidebarMovement <= this.container.clientWidth) {
-      this.touchMoveSidebar = documentSwiped;
-      this.moveSidebar(this.hasLeftPosition() ? -documentSwiped : documentSwiped);
+      this.touchMoveSidebar = Math.abs(swipeDirection);
+      this.moveSidebar(swipeDirection);
     }
   }
 
