@@ -4,11 +4,11 @@
   width: 100%;
   height: 100%; }
 
-[sidebarjs].sidebarjs--left, [sidebarjs].sidebarjs--left [sidebarjs-container] {
+.sidebarjs--left[sidebarjs], [sidebarjs].sidebarjs--left [sidebarjs-container] {
   -webkit-transform: translate(-100%, 0);
           transform: translate(-100%, 0); }
 
-[sidebarjs].sidebarjs--right, [sidebarjs].sidebarjs--right [sidebarjs-container] {
+.sidebarjs--right[sidebarjs], [sidebarjs].sidebarjs--right [sidebarjs-container] {
   -webkit-transform: translate(100%, 0);
           transform: translate(100%, 0); }
 
