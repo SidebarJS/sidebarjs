@@ -342,7 +342,7 @@ export class SidebarElement implements SidebarBase {
   }
 
   public static isStyleMapSupported(): boolean {
-    return (window as any).CSS && (CSS as any).number;
+    return Boolean((window as any).CSS && (CSS as any).number);
   }
 
   public static create(element: string): HTMLElement {

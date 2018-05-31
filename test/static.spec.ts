@@ -1,5 +1,5 @@
-import {HTMLSidebarElement} from '../index';
-import {SidebarElement} from '../src';
+import { HTMLSidebarElement } from '../index';
+import { SidebarElement } from '../src';
 
 describe('Static', () => {
   beforeEach(() => {
@@ -15,14 +15,12 @@ describe('Static', () => {
     });
   });
 
-  describe('SidebarElement.vendorify', () => {
-    test('Should add css vendor prefixes', () => {
-      const elem = document.createElement('div');
-      SidebarElement.vendorify(elem, 'transform', `translate(0, 0)`);
-      expect(elem.style['WebkitTransform']).toBeDefined();
-      expect(elem.style['WebkitTransform']).toBe('translate(0, 0)');
-      expect(elem.style['transform']).toBeDefined();
-      expect(elem.style['transform']).toBe('translate(0, 0)');
+  describe('SidebarElement.isStyleMapSupported', () => {
+    test('Should check styleMap support', () => {
+      (window as any).CSS = null;
+      expect(SidebarElement.isStyleMapSupported()).toBe(false);
+      (window as any).CSS = {number: true};
+      expect(SidebarElement.isStyleMapSupported()).toBe(true);
     });
   });
 

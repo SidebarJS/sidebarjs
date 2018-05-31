@@ -1,5 +1,5 @@
 import * as sinon from 'sinon';
-import {SidebarElement} from '../src';
+import { SidebarElement } from '../src';
 
 describe('Instance creation', () => {
   beforeEach(() => {
@@ -244,6 +244,40 @@ describe('Instance creation', () => {
       expect(isOpenFired).toBe(true);
       expect(isCloseFired).toBe(false);
       expect(changes).toEqual({isVisible: true});
+    });
+  });
+
+  describe('Style manipulation', () => {
+    test('Should add styles', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const elem = document.createElement('div');
+      sidebarjs['applyStyle'](elem, 'transform', `translate(0, 0)`);
+      expect(elem.style['WebkitTransform']).not.toBeDefined();
+      expect(elem.style['transform']).toBeDefined();
+      expect(elem.style['transform']).toBe('translate(0, 0)');
+    });
+
+    test('Should add styles vendor prefix', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const elem = document.createElement('div');
+      sidebarjs['applyStyle'](elem, 'transform', `translate(0, 0)`, true);
+      expect(elem.style['WebkitTransform']).toBeDefined();
+      expect(elem.style['WebkitTransform']).toBe('translate(0, 0)');
+      expect(elem.style['transform']).toBeDefined();
+      expect(elem.style['transform']).toBe('translate(0, 0)');
+    });
+
+    test('Should remove styles ', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const elem = document.createElement('div');
+      sidebarjs['applyStyle'](elem, 'transform', `translate(0, 0)`);
+      expect(elem.style['transform']).toBeDefined();
+      expect(elem.style['transform']).toBe('translate(0, 0)');
+      sidebarjs['clearStyle'](elem);
+      expect(elem.style['transform']).toBe('');
     });
   });
 });
