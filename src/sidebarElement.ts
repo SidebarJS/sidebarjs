@@ -80,7 +80,7 @@ export class SidebarElement implements SidebarBase {
     }
 
     if (this.responsive || this.mainContent) {
-      this.setResponsive(this.responsive);
+      this.setResponsive();
     }
 
     this.setPosition(position);
@@ -302,15 +302,14 @@ export class SidebarElement implements SidebarBase {
     return (<HTMLElement> e.target).hasAttribute(`${SIDEBARJS}-backdrop`);
   }
 
-  private setResponsive(value: boolean): void {
-    const pageHasMainContent = document.querySelector(`[${SIDEBARJS_CONTENT}]`);
-    if (!this.responsive && !pageHasMainContent) {
+  private setResponsive(): void {
+    if (!this.responsive && this.mainContent) {
       throw new Error(`You provide a [${SIDEBARJS_CONTENT}] element without set {responsive: true}`);
     }
-    if (!this.mainContent && !pageHasMainContent) {
+    if (this.responsive && !this.mainContent) {
       throw new Error(`You have set {responsive: true} without provide a [${SIDEBARJS_CONTENT}] element`);
     }
-    this.component.classList.toggle('sidebarjs--responsive', value);
+    this.component.classList.add('sidebarjs--responsive');
   }
 
   private shouldDefineMainContent(mainContent?: HTMLElement): HTMLElement {

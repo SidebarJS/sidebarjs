@@ -61,7 +61,7 @@ declare namespace SidebarJS {
 
     private shouldDefineMainContent(mainContent?: HTMLElement): HTMLElement;
 
-    private setResponsive(value: boolean): void;
+    private setResponsive(): void;
 
     private forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: string) => void): void;
 
