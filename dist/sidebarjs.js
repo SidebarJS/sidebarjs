@@ -1,6 +1,6 @@
 /*
  * SidebarJS
- * Version 5.2.1
+ * Version 5.3.0
  * https://github.com/SidebarJS/sidebarjs#readme
  */
 
@@ -139,7 +139,7 @@
 	            }
 	        }
 	        if (this.responsive || this.mainContent) {
-	            this.setResponsive(this.responsive);
+	            this.setResponsive();
 	        }
 	        this.setPosition(position);
 	        this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
@@ -261,15 +261,14 @@
 	    SidebarElement.prototype.targetElementIsBackdrop = function (e) {
 	        return e.target.hasAttribute(SIDEBARJS + "-backdrop");
 	    };
-	    SidebarElement.prototype.setResponsive = function (value) {
-	        var pageHasMainContent = document.querySelector("[" + SIDEBARJS_CONTENT + "]");
-	        if (!this.responsive && !pageHasMainContent) {
+	    SidebarElement.prototype.setResponsive = function () {
+	        if (!this.responsive && this.mainContent) {
 	            throw new Error("You provide a [" + SIDEBARJS_CONTENT + "] element without set {responsive: true}");
 	        }
-	        if (!this.mainContent && !pageHasMainContent) {
+	        if (this.responsive && !this.mainContent) {
 	            throw new Error("You have set {responsive: true} without provide a [" + SIDEBARJS_CONTENT + "] element");
 	        }
-	        this.component.classList.toggle('sidebarjs--responsive', value);
+	        this.component.classList.add('sidebarjs--responsive');
 	    };
 	    SidebarElement.prototype.shouldDefineMainContent = function (mainContent) {
 	        if (mainContent) {
