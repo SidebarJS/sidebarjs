@@ -72,12 +72,7 @@ export class SidebarElement implements SidebarBase {
       }
     }
 
-    if (this.nativeSwipe) {
-      this.addNativeGestures();
-      if (this.nativeSwipeOpen) {
-        this.addNativeOpenGestures();
-      }
-    }
+    this.setSwipeGestures(true);
 
     if (this.responsive || this.mainContent) {
       this.setResponsive();
@@ -179,14 +174,10 @@ export class SidebarElement implements SidebarBase {
   }
 
   public destroy(): void {
-    this.component.removeEventListener('touchstart', this.__onTouchStart, <any> {passive: true});
-    this.component.removeEventListener('touchmove', this.__onTouchMove, <any> {passive: true});
-    this.component.removeEventListener('touchend', this.__onTouchEnd, <any> {passive: true});
+    this.removeNativeGestures();
     this.container.removeEventListener('transitionend', this.__onTransitionEnd, <any> {passive: true});
     this.backdrop.removeEventListener('click', this.close, <any> {passive: true});
-    document.removeEventListener('touchstart', this.__onSwipeOpenStart, <any> {passive: true});
-    document.removeEventListener('touchmove', this.__onSwipeOpenMove, <any> {passive: true});
-    document.removeEventListener('touchend', this.__onSwipeOpenEnd, <any> {passive: true});
+    this.removeNativeOpenGestures();
     this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
     this.removeComponentClassPosition();
     while (this.container.firstElementChild) {
@@ -225,6 +216,18 @@ export class SidebarElement implements SidebarBase {
         SidebarElement.elemHasListener(element, false);
       }
     });
+  }
+
+  public setSwipeGestures(value: boolean): void {
+    if (typeof value !== 'boolean') {
+      throw new Error(`You provided a ${typeof value} but setSwipeGestures needs a boolean value.`);
+    }
+    if (this.nativeSwipe) {
+      value ? this.addNativeGestures() : this.removeNativeGestures();
+      if (this.nativeSwipeOpen) {
+        value ? this.addNativeOpenGestures() : this.removeNativeOpenGestures();
+      }
+    }
   }
 
   private addTransitionListener(): void {
@@ -276,10 +279,22 @@ export class SidebarElement implements SidebarBase {
     this.component.addEventListener('touchend', this.__onTouchEnd, {passive: true});
   }
 
+  private removeNativeGestures(): void {
+    this.component.removeEventListener('touchstart', this.__onTouchStart, <any> {passive: true});
+    this.component.removeEventListener('touchmove', this.__onTouchMove, <any> {passive: true});
+    this.component.removeEventListener('touchend', this.__onTouchEnd, <any> {passive: true});
+  }
+
   private addNativeOpenGestures(): void {
     document.addEventListener('touchstart', this.__onSwipeOpenStart, {passive: true});
     document.addEventListener('touchmove', this.__onSwipeOpenMove, {passive: true});
     document.addEventListener('touchend', this.__onSwipeOpenEnd, {passive: true});
+  }
+
+  private removeNativeOpenGestures(): void {
+    document.removeEventListener('touchstart', this.__onSwipeOpenStart, <any> {passive: true});
+    document.removeEventListener('touchmove', this.__onSwipeOpenMove, <any> {passive: true});
+    document.removeEventListener('touchend', this.__onSwipeOpenEnd, <any> {passive: true});
   }
 
   private moveSidebar(movement: number): void {

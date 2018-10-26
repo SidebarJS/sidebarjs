@@ -41,6 +41,8 @@ declare namespace SidebarJS {
 
     public removeAttrsEventsListeners(sidebarName: string): void;
 
+    public setSwipeGestures(value: boolean): void;
+
     private hasLeftPosition();
 
     private hasRightPosition();
@@ -49,7 +51,11 @@ declare namespace SidebarJS {
 
     private addNativeGestures();
 
+    private removeNativeGestures();
+
     private addNativeOpenGestures();
+
+    private removeNativeOpenGestures();
 
     private moveSidebar(movement: number);
 
