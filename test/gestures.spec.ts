@@ -82,5 +82,26 @@ describe('Gestures', () => {
       swipe(sidebarjs.component, {x: 300, y: 10}, {x: 200, y: 10});
       expect(sidebarjs.isVisible()).toBe(false);
     });
+
+    test('Should change swipe gesture settings', () => {
+      document.body.innerHTML = '<div sidebarjs></div>';
+      const sidebarjs = new SidebarElement();
+      const componentClassList = sidebarjs.component.classList;
+      mock(sidebarjs.container).prop('clientWidth', 200);
+      expect(sidebarjs.isVisible()).toBe(false);
+      expect(componentClassList.contains(isVisibleClassName)).toBe(false);
+      swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
+      expect(sidebarjs.isVisible()).toBe(true);
+      expect(componentClassList.contains(isVisibleClassName)).toBe(true);
+      sidebarjs.close();
+      sidebarjs.setSwipeGestures(false);
+      swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
+      expect(sidebarjs.isVisible()).toBe(false);
+      expect(componentClassList.contains(isVisibleClassName)).toBe(false);
+      sidebarjs.setSwipeGestures(true);
+      swipe(document.body, {x: 1, y: 10}, {x: 50, y: 10});
+      expect(sidebarjs.isVisible()).toBe(true);
+      expect(componentClassList.contains(isVisibleClassName)).toBe(true);
+    });
   });
 });

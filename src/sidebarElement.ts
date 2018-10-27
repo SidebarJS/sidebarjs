@@ -220,7 +220,7 @@ export class SidebarElement implements SidebarBase {
 
   public setSwipeGestures(value: boolean): void {
     if (typeof value !== 'boolean') {
-      throw new Error(`You provided a ${typeof value} but setSwipeGestures needs a boolean value.`);
+      throw new Error(`You provided a ${typeof value} value but setSwipeGestures needs a boolean value.`);
     }
     if (this.nativeSwipe) {
       value ? this.addNativeGestures() : this.removeNativeGestures();
