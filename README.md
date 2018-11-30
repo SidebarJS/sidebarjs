@@ -82,6 +82,66 @@ const sidebarjs = new SidebarJS.SidebarElement({
 })
 ```
 
+## Instance methods
+### .open(): void
+> Open sidebar
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement();
+sidebarjs.open();
+```
+
+### .close(): void
+> Close sidebar
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement();
+sidebarjs.open();
+setTimeout(() => {
+  sidebarjs.close();
+}, 3000);
+```
+
+### .toggle(): void
+> Toggle sidebar
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement();
+sidebarjs.toggle();
+```
+
+### .isVisible(): boolean
+> Check if sidebar is visible
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement();
+sidebarjs.isVisible(); // false
+sidebarjs.open();
+sidebarjs.isVisible(); // true
+```
+
+### .destroy(): void
+> Destroy sidebar and all listeners
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement();
+sidebarjs.destroy();
+```
+
+### .setPosition(position: 'left'|'right'): void
+> Set sidebar position
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement();
+sidebarjs.setPosition('right'); // sidebar move to the right side
+```
+
+### .setSwipeGestures(value: boolean): void
+> Check nativeSwipe and nativeSwipeOpen props and enable/disable gestures only if prop is true
+```typescript
+const sidebarjs = new SidebarJS.SidebarElement({
+  nativeSwipe: true,
+  nativeSwipeOpen: false,
+});
+sidebarjs.setSwipeGestures(false); // disable only nativeSwipe listeners
+sidebarjs.nativeSwipeOpen = true;
+sidebarjs.setSwipeGestures(true); // enable nativeSwipe and nativeSwipeOpen listeners
+```
+
 ## Single Sidebar
 ```html
 <head>
