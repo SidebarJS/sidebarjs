@@ -1,6 +1,6 @@
 /*
  * SidebarJS
- * Version 5.3.0
+ * Version 5.4.0
  * https://github.com/SidebarJS/sidebarjs#readme
  */
 
@@ -132,12 +132,7 @@
 	                throw new Error('You must define an element with [sidebarjs] attribute');
 	            }
 	        }
-	        if (this.nativeSwipe) {
-	            this.addNativeGestures();
-	            if (this.nativeSwipeOpen) {
-	                this.addNativeOpenGestures();
-	            }
-	        }
+	        this.setSwipeGestures(true);
 	        if (this.responsive || this.mainContent) {
 	            this.setResponsive();
 	        }
@@ -151,14 +146,10 @@
 	    };
 	    SidebarElement.prototype.destroy = function () {
 	        var _this = this;
-	        this.component.removeEventListener('touchstart', this.__onTouchStart, { passive: true });
-	        this.component.removeEventListener('touchmove', this.__onTouchMove, { passive: true });
-	        this.component.removeEventListener('touchend', this.__onTouchEnd, { passive: true });
+	        this.removeNativeGestures();
 	        this.container.removeEventListener('transitionend', this.__onTransitionEnd, { passive: true });
 	        this.backdrop.removeEventListener('click', this.close, { passive: true });
-	        document.removeEventListener('touchstart', this.__onSwipeOpenStart, { passive: true });
-	        document.removeEventListener('touchmove', this.__onSwipeOpenMove, { passive: true });
-	        document.removeEventListener('touchend', this.__onSwipeOpenEnd, { passive: true });
+	        this.removeNativeOpenGestures();
 	        this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
 	        this.removeComponentClassPosition();
 	        while (this.container.firstElementChild) {
@@ -197,6 +188,17 @@
 	                SidebarElement.elemHasListener(element, false);
 	            }
 	        });
+	    };
+	    SidebarElement.prototype.setSwipeGestures = function (value) {
+	        if (typeof value !== 'boolean') {
+	            throw new Error("You provided a " + typeof value + " value but setSwipeGestures needs a boolean value.");
+	        }
+	        if (this.nativeSwipe) {
+	            value ? this.addNativeGestures() : this.removeNativeGestures();
+	            if (this.nativeSwipeOpen) {
+	                value ? this.addNativeOpenGestures() : this.removeNativeOpenGestures();
+	            }
+	        }
 	    };
 	    SidebarElement.prototype.addTransitionListener = function () {
 	        this.__wasVisible = this.isVisible();
@@ -240,10 +242,20 @@
 	        this.component.addEventListener('touchmove', this.__onTouchMove, { passive: true });
 	        this.component.addEventListener('touchend', this.__onTouchEnd, { passive: true });
 	    };
+	    SidebarElement.prototype.removeNativeGestures = function () {
+	        this.component.removeEventListener('touchstart', this.__onTouchStart, { passive: true });
+	        this.component.removeEventListener('touchmove', this.__onTouchMove, { passive: true });
+	        this.component.removeEventListener('touchend', this.__onTouchEnd, { passive: true });
+	    };
 	    SidebarElement.prototype.addNativeOpenGestures = function () {
 	        document.addEventListener('touchstart', this.__onSwipeOpenStart, { passive: true });
 	        document.addEventListener('touchmove', this.__onSwipeOpenMove, { passive: true });
 	        document.addEventListener('touchend', this.__onSwipeOpenEnd, { passive: true });
+	    };
+	    SidebarElement.prototype.removeNativeOpenGestures = function () {
+	        document.removeEventListener('touchstart', this.__onSwipeOpenStart, { passive: true });
+	        document.removeEventListener('touchmove', this.__onSwipeOpenMove, { passive: true });
+	        document.removeEventListener('touchend', this.__onSwipeOpenEnd, { passive: true });
 	    };
 	    SidebarElement.prototype.moveSidebar = function (movement) {
 	        this.component.classList.add(IS_MOVING);

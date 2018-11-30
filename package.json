@@ -1,8 +1,8 @@
 {
   "name": "sidebarjs",
   "library": "SidebarJS",
-  "version": "5.3.0",
-  "description": "Create mobile sidebar/sidenav experiance in pure javascript",
+  "version": "5.4.0",
+  "description": "Create mobile sidebar/sidenav experience in pure javascript",
   "main": "index.js",
   "typings": "index.d.ts",
   "scripts": {

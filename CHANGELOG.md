@@ -1,3 +1,13 @@
+<a name="5.4.0"></a>
+# [5.4.0](https://github.com/SidebarJS/sidebarjs/compare/5.3.0...5.4.0) (2018-11-30)
+
+
+### Features
+
+* **SidebarElement:** setSwipeGestures [#13](https://github.com/SidebarJS/sidebarjs/issues/13) ([2f37fab](https://github.com/SidebarJS/sidebarjs/commit/2f37fab))
+
+
+
 <a name="5.3.0"></a>
 # [5.3.0](https://github.com/SidebarJS/sidebarjs/compare/5.2.1...5.3.0) (2018-09-03)
 
