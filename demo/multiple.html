@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="./demo.css">
 
     <!-- SidebarJS Styles -->
-    <link rel="stylesheet" href="../dist/sidebarjs.css">
+    <link rel="stylesheet" href="../lib/sidebarjs.css">
   </head>
   <body>
 
@@ -46,7 +46,7 @@
     </div>
 
     <!-- SidebarJS Scripts -->
-    <script src="../dist/sidebarjs.js"></script>
+    <script src="../lib/umd/sidebarjs.js"></script>
 
     <script type="text/javascript">
       // SidebarJS Init
@@ -57,6 +57,7 @@
       var rightSidebarjs = new SidebarJS.SidebarElement({
         component: document.querySelector('[sidebarjs="rightSidebarName"]'),
         position: 'right',
+        responsive: true,
       });
     </script>
 
