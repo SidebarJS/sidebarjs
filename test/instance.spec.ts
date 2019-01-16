@@ -1,5 +1,7 @@
+// @ts-ignore
 import * as sinon from 'sinon';
-import { SidebarElement } from '../src';
+// @ts-ignore
+import {SidebarElement} from '../src';
 
 describe('Instance creation', () => {
   beforeEach(() => {
@@ -13,9 +15,9 @@ describe('Instance creation', () => {
     expect(sidebarjs.component).toBeInstanceOf(HTMLDivElement);
     expect(sidebarjs.container).toBeInstanceOf(HTMLDivElement);
     expect(sidebarjs.backdrop).toBeInstanceOf(HTMLDivElement);
-    expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
-    expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
-    expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeDefined();
+    expect(sidebarjs.component.hasAttribute('sidebarjs')).toBe(true);
+    expect(sidebarjs.container.hasAttribute('sidebarjs-container')).toBe(true);
+    expect(sidebarjs.backdrop.hasAttribute('sidebarjs-backdrop')).toBe(true);
   });
 
   test('Should not create instance', () => {
@@ -28,9 +30,9 @@ describe('Instance creation', () => {
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement();
       expect(sidebarjs.container.innerHTML).toBe('Hello');
-      expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
-      expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
-      expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeDefined();
+      expect(sidebarjs.component.hasAttribute('sidebarjs')).toBe(true);
+      expect(sidebarjs.container.hasAttribute('sidebarjs-container')).toBe(true);
+      expect(sidebarjs.backdrop.hasAttribute('sidebarjs-backdrop')).toBe(true);
       expect(spy.called).toBe(true);
       expect(spy.calledOnce).toBe(true);
       spy.restore();
@@ -45,18 +47,18 @@ describe('Instance creation', () => {
         </div>`;
       const element = document.querySelector('[sidebarjs]');
       const sidebarjs = new SidebarElement({
-        component: <HTMLElement> element,
-        container: <HTMLElement> element.children[0],
-        backdrop: <HTMLElement> element.children[1],
+        backdrop: element.children[1] as HTMLElement,
+        component: element as HTMLElement,
+        container: element.children[0] as HTMLElement,
       });
       expect(sidebarjs.container.innerHTML).toBe('Hello');
       expect(sidebarjs.container.nodeName).toBe('SECTION');
       expect(sidebarjs.backdrop.nodeName).toBe('SECTION');
-      expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
-      expect(sidebarjs.container.attributes['custom-container']).toBeDefined();
-      expect(sidebarjs.backdrop.attributes['custom-backdrop']).toBeDefined();
-      expect(sidebarjs.container.attributes['sidebarjs-container']).toBeUndefined();
-      expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeUndefined();
+      expect(sidebarjs.component.hasAttribute('sidebarjs')).toBe(true);
+      expect(sidebarjs.container.hasAttribute('custom-container')).toBe(true);
+      expect(sidebarjs.backdrop.hasAttribute('custom-backdrop')).toBe(true);
+      expect(sidebarjs.container.hasAttribute('sidebarjs-container')).toBe(false);
+      expect(sidebarjs.backdrop.hasAttribute('sidebarjs-backdrop')).toBe(false);
       expect(spy.called).toBe(false);
       spy.restore();
     });
@@ -71,8 +73,8 @@ describe('Instance creation', () => {
       const component = document.querySelector('[sidebarjs]');
       const container = document.querySelector('[custom-container]');
       const sidebarjs = new SidebarElement({
-        component: <HTMLElement> component,
-        container: <HTMLElement> container,
+        component: component as HTMLElement,
+        container: container as HTMLElement,
         /* backdrop: <HTMLElement>element.children[1], */
       });
       expect(sidebarjs.container.innerText).not.toBe('Hello');
@@ -160,7 +162,7 @@ describe('Instance creation', () => {
       }));
       sidebarjs.open();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(1);
     });
 
@@ -174,10 +176,10 @@ describe('Instance creation', () => {
       }));
       sidebarjs.open();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       sidebarjs.close();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(1);
     });
 
@@ -193,12 +195,12 @@ describe('Instance creation', () => {
       }));
       sidebarjs.open();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(1);
       expect(changes).toEqual({isVisible: true});
       sidebarjs.close();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(2);
       expect(changes).toEqual({isVisible: false});
     });
@@ -225,21 +227,21 @@ describe('Instance creation', () => {
       }));
       sidebarjs.open();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(1);
       expect(isOpenFired).toBe(true);
       expect(isCloseFired).toBe(false);
       expect(changes).toEqual({isVisible: true});
       sidebarjs.close();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(2);
       expect(isOpenFired).toBe(false);
       expect(isCloseFired).toBe(true);
       expect(changes).toEqual({isVisible: false});
       sidebarjs.toggle();
       // emulate trigger transitionend event
-      sidebarjs['__onTransitionEnd']();
+      sidebarjs['_onTransitionEnd']();
       expect(n).toBe(3);
       expect(isOpenFired).toBe(true);
       expect(isCloseFired).toBe(false);
@@ -253,9 +255,9 @@ describe('Instance creation', () => {
       const sidebarjs = new SidebarElement();
       const elem = document.createElement('div');
       sidebarjs['applyStyle'](elem, 'transform', `translate(0, 0)`);
-      expect(elem.style['WebkitTransform']).not.toBeDefined();
-      expect(elem.style['transform']).toBeDefined();
-      expect(elem.style['transform']).toBe('translate(0, 0)');
+      expect(elem.style.webkitTransform).toBe('');
+      expect(elem.style.transform).toBeDefined();
+      expect(elem.style.transform).toBe('translate(0, 0)');
     });
 
     test('Should add styles vendor prefix', () => {
@@ -263,10 +265,10 @@ describe('Instance creation', () => {
       const sidebarjs = new SidebarElement();
       const elem = document.createElement('div');
       sidebarjs['applyStyle'](elem, 'transform', `translate(0, 0)`, true);
-      expect(elem.style['WebkitTransform']).toBeDefined();
-      expect(elem.style['WebkitTransform']).toBe('translate(0, 0)');
-      expect(elem.style['transform']).toBeDefined();
-      expect(elem.style['transform']).toBe('translate(0, 0)');
+      expect(elem.style.webkitTransform).toBeDefined();
+      expect(elem.style.webkitTransform).toBe('translate(0, 0)');
+      expect(elem.style.transform).toBeDefined();
+      expect(elem.style.transform).toBe('translate(0, 0)');
     });
 
     test('Should remove styles ', () => {
@@ -274,10 +276,10 @@ describe('Instance creation', () => {
       const sidebarjs = new SidebarElement();
       const elem = document.createElement('div');
       sidebarjs['applyStyle'](elem, 'transform', `translate(0, 0)`);
-      expect(elem.style['transform']).toBeDefined();
-      expect(elem.style['transform']).toBe('translate(0, 0)');
+      expect(elem.style.transform).toBeDefined();
+      expect(elem.style.transform).toBe('translate(0, 0)');
       sidebarjs['clearStyle'](elem);
-      expect(elem.style['transform']).toBe('');
+      expect(elem.style.transform).toBe('');
     });
   });
 });

@@ -1,15 +1,15 @@
-import { HTMLSidebarElement, SidebarBase, SidebarConfig } from '../index';
-import { SidebarElement } from './sidebarElement';
+import {HTMLSidebarElement, SidebarBase, SidebarConfig} from './index';
+import {SidebarElement} from './sidebarElement';
 
 export class SidebarService implements SidebarBase {
-  private instances: any;
+  private readonly instances: any;
 
   constructor() {
     this.instances = {};
   }
 
   public create(options: SidebarConfig = {}): SidebarElement {
-    const name: string = options.component && options.component.getAttribute('sidebarjs') || '';
+    const name: string = (options.component && options.component.getAttribute('sidebarjs')) || '';
     this.instances[name] = new SidebarElement(options);
     return this.instances[name];
   }

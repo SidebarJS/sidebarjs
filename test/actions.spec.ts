@@ -1,4 +1,5 @@
-import { SidebarElement } from '../src';
+// @ts-ignore
+import {SidebarElement} from '../src';
 
 describe('Actions', () => {
   const isVisibleClassName = 'sidebarjs--is-visible';
@@ -27,7 +28,7 @@ describe('Actions', () => {
     test('Should open sidebarjs from element with [sidebarjs-open]', () => {
       document.body.innerHTML = '<div sidebarjs-open>open</div><div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
-      const elementOpen = <HTMLElement> document.querySelector('[sidebarjs-open]');
+      const elementOpen = document.querySelector('[sidebarjs-open]') as HTMLElement;
       expect(sidebarjs.isVisible()).toBe(false);
       elementOpen.click();
       expect(sidebarjs.isVisible()).toBe(true);
@@ -58,7 +59,7 @@ describe('Actions', () => {
     test('Should open sidebarjs from element with [sidebarjs-open]', () => {
       document.body.innerHTML = '<div sidebarjs-close>open</div><div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
-      const elementClose = <HTMLElement> document.querySelector('[sidebarjs-close]');
+      const elementClose = document.querySelector('[sidebarjs-close]') as HTMLElement;
       sidebarjs.open();
       expect(sidebarjs.isVisible()).toBe(true);
       elementClose.click();
@@ -93,7 +94,7 @@ describe('Actions', () => {
     test('Should open sidebarjs from element with [sidebarjs-open]', () => {
       document.body.innerHTML = '<div sidebarjs-toggle>open</div><div sidebarjs></div>';
       const sidebarjs = new SidebarElement();
-      const elementToggle = <HTMLElement> document.querySelector('[sidebarjs-toggle]');
+      const elementToggle = document.querySelector('[sidebarjs-toggle]') as HTMLElement;
       elementToggle.click();
       expect(sidebarjs.isVisible()).toBe(true);
       elementToggle.click();
@@ -120,9 +121,9 @@ describe('Actions', () => {
       expect(sidebarjs.component).toBeInstanceOf(HTMLDivElement);
       expect(sidebarjs.container).toBeInstanceOf(HTMLDivElement);
       expect(sidebarjs.backdrop).toBeInstanceOf(HTMLDivElement);
-      expect(sidebarjs.component.attributes['sidebarjs']).toBeDefined();
-      expect(sidebarjs.container.attributes['sidebarjs-container']).toBeDefined();
-      expect(sidebarjs.backdrop.attributes['sidebarjs-backdrop']).toBeDefined();
+      expect(sidebarjs.component.hasAttribute('sidebarjs')).toBe(true);
+      expect(sidebarjs.container.hasAttribute('sidebarjs-container')).toBe(true);
+      expect(sidebarjs.backdrop.hasAttribute('sidebarjs-backdrop')).toBe(true);
       sidebarjs.destroy();
       expect(sidebarjs.component).toBeNull();
       expect(sidebarjs.container).toBeNull();

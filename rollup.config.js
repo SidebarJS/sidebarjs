@@ -1,5 +1,7 @@
 import commonjs from 'rollup-plugin-commonjs';
-import npm from 'rollup-plugin-node-resolve';
+import resolve from 'rollup-plugin-node-resolve';
+import babel from 'rollup-plugin-babel';
+import {terser} from 'rollup-plugin-terser';
 import * as packageJson from './package.json';
 
 const info = `/*
@@ -9,21 +11,26 @@ const info = `/*
  */
 `;
 
-export default {
-  input: 'src/index.js',
-  output: {
+const config = (options = {}) => ({
+  input: 'lib/src/index.js',
+  output: options.output.map(type => ({
     name: 'SidebarJS',
-    file: 'dist/sidebarjs.js',
-    format: 'umd',
+    file: `lib/${type}/sidebarjs${options.minify ? '.min' : ''}.js`,
+    format: type,
     exports: 'named',
     banner: info,
-  },
-  plugins: [
-    npm({
-      main: true,
-      jsnext: true,
-      browser: true,
-    }),
-    commonjs(),
-  ],
-};
+  })),
+  plugins: [...(options.plugins || []), options.minify ? terser() : false].filter(Boolean),
+});
+
+const plugins = [
+  resolve({main: true, jsnext: true, browser: true}),
+  babel({exclude: 'node_modules/**'}),
+  commonjs(),
+];
+
+export default [
+  config({output: ['umd', 'amd', 'cjs'], plugins}),
+  config({output: ['umd', 'amd', 'cjs'], plugins, minify: true}),
+  config({output: ['esm']}),
+];

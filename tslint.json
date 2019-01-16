@@ -1,23 +1,18 @@
 {
-  "extends": "tslint:latest",
-  "defaultSeverity": "warning",
+  "extends": [
+    "tslint:recommended",
+    "tslint-config-prettier"
+  ],
   "rules": {
-    "curly": true,
-    "quotemark": [true, "single"],
     "prefer-for-of": false,
-    "no-implicit-dependencies": [true, "dev"],
-    "member-ordering": false,
-    "no-trailing-whitespace": false,
-    "no-string-literal": false,
-    "no-namespace": false,
-    "object-literal-sort-keys": false,
-    "no-angle-bracket-type-assertion": false,
-    "interface-name": false,
-    "max-classes-per-file": [2],
-    "variable-name": [0],
-    "max-line-length": {
-      "severity": "error",
-      "options": 140
-    }
+    "variable-name": [
+      true,
+      "allow-leading-underscore"
+    ],
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
+    "no-string-literal": false
   }
 }

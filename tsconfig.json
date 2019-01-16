@@ -1,14 +1,20 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
+    "module": "es6",
+    "target": "es6",
     "noImplicitAny": false,
     "noEmitOnError": true,
     "sourceMap": true,
-    "declaration": false,
-    "skipLibCheck": true
+    "rootDir": ".",
+    "outDir": "lib",
+    "declaration": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
   },
   "include": [
     "src/*.ts"
+  ],
+  "exclude": [
+    "test"
   ]
 }

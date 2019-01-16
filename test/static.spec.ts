@@ -1,5 +1,5 @@
-import { HTMLSidebarElement } from '../index';
-import { SidebarElement } from '../src';
+// @ts-ignore
+import {HTMLSidebarElement, SidebarElement} from '../src';
 
 describe('Static', () => {
   beforeEach(() => {
@@ -30,7 +30,7 @@ describe('Static', () => {
         <button sidebarjs-toggle></button>
         <div sidebarjs></div>
       `;
-      const elem = <HTMLSidebarElement> document.querySelector('button[sidebarjs-toggle]');
+      const elem = <HTMLSidebarElement>document.querySelector('button[sidebarjs-toggle]');
       const hasFalseListener = SidebarElement.elemHasListener(elem);
       expect(hasFalseListener).toBe(false);
       const sidebarjs = new SidebarElement();
@@ -43,7 +43,7 @@ describe('Static', () => {
         <button sidebarjs-toggle></button>
         <div sidebarjs></div>
       `;
-      const elem = <HTMLSidebarElement> document.querySelector('button[sidebarjs-toggle]');
+      const elem = <HTMLSidebarElement>document.querySelector('button[sidebarjs-toggle]');
       const hasFalseListener = SidebarElement.elemHasListener(elem);
       expect(hasFalseListener).toBe(false);
       const isSetToTrueListener = SidebarElement.elemHasListener(elem, true);
