@@ -21,24 +21,16 @@ npm install sidebarjs --save
 
 ## Import
 
-Typescript
+Typescript / ES6
 ```js
 import {SidebarElement, SidebarService} from 'sidebarjs';
-```
-
-ES6
-```js
-import {SidebarElement, SidebarService} from 'sidebarjs';
-```
-
-Require
-```js
-const {SidebarElement, SidebarService} = require('sidebarjs');
+import 'sidebarjs/lib/sidebarjs.css';
 ```
 
 Classic
 ```html
 <script src="your/path/sidebarjs.js"></script>
+<link rel="stylesheet" href="your/path/sidebarjs.css">
 ```
 
 ## Options
