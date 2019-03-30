@@ -14,7 +14,10 @@
     "demo": "npm run build && npm run server",
     "start": "npm run build:watch | npm run server",
     "format": "prettier --config .prettierrc --write src/*.ts && tslint -p tsconfig.json",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "commit:version": "git add . && git commit -am 'chore(version): $npm_package_version'",
+    "prerelease": "npm run build && npm run changelog && npm run commit:version",
+    "release": "git tag $npm_package_version && git push --tags && npm publish"
   },
   "repository": {
     "type": "git",
