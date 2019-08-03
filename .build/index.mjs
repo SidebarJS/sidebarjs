@@ -1,7 +1,7 @@
 import EventEmitter from 'events';
-import {Rollup} from './rollup';
-import {Typescript} from './typescript';
-import {Styles} from './styles';
+import {Rollup} from './rollup.mjs';
+import {Typescript} from './typescript.mjs';
+import {Styles} from './styles.mjs';
 import yargs from 'yargs';
 import fs from 'fs-extra';
 

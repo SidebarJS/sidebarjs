@@ -24,7 +24,7 @@ const config = (options = {}) => ({
 });
 
 const plugins = [
-  resolve({main: true, jsnext: true, browser: true}),
+  resolve({mainFields: ['module', 'main'], browser: true}),
   babel({exclude: 'node_modules/**'}),
   commonjs(),
 ];
