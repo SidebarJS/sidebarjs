@@ -1,6 +1,6 @@
-import commonjs from 'rollup-plugin-commonjs';
-import resolve from 'rollup-plugin-node-resolve';
-import babel from 'rollup-plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
 import {terser} from 'rollup-plugin-terser';
 import * as packageJson from './package.json';
 
@@ -25,7 +25,7 @@ const config = (options = {}) => ({
 
 const plugins = [
   resolve({mainFields: ['module', 'main'], browser: true}),
-  babel({exclude: 'node_modules/**'}),
+  babel({babelHelpers: 'bundled', exclude: 'node_modules/**'}),
   commonjs(),
 ];
 

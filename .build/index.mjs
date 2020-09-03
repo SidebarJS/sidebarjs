@@ -2,7 +2,6 @@ import EventEmitter from 'events';
 import {Rollup} from './rollup.mjs';
 import {Typescript} from './typescript.mjs';
 import {Styles} from './styles.mjs';
-import yargs from 'yargs';
 import fs from 'fs-extra';
 
 const trim = data => typeof data === 'string' ? data.trim() : data.toString().trim();
@@ -13,7 +12,7 @@ const styles = new Styles();
 
 fs.emptyDirSync('./lib');
 
-if (yargs.argv.watch) {
+if (process.argv.includes('--watch')) {
   ts.watch(() => rollup.watch());
   styles.watch();
 } else {
