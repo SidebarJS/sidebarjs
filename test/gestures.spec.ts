@@ -1,6 +1,4 @@
-// @ts-ignore
 import {swipe} from 'gesture-events';
-// @ts-ignore
 import {SidebarElement} from '../src';
 
 const mock = (el) => {

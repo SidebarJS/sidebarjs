@@ -1,4 +1,3 @@
-// @ts-ignore
 import {SidebarElement} from '../src';
 
 describe('Actions', () => {

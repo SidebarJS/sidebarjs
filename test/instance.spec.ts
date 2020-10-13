@@ -1,6 +1,4 @@
-// @ts-ignore
 import * as sinon from 'sinon';
-// @ts-ignore
 import {SidebarElement} from '../src';
 
 describe('Instance creation', () => {
@@ -68,7 +66,7 @@ describe('Instance creation', () => {
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
-          <section custom-backdrop></section> 
+          <section custom-backdrop></section>
         </div>`;
       const component = document.querySelector('[sidebarjs]');
       const container = document.querySelector('[custom-container]');

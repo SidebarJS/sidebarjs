@@ -1,4 +1,3 @@
-// @ts-ignore
 import {HTMLSidebarElement, SidebarElement} from '../src';
 
 describe('Static', () => {

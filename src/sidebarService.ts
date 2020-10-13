@@ -1,8 +1,8 @@
-import {HTMLSidebarElement, SidebarBase, SidebarConfig} from './index';
+import {HTMLSidebarElement, SidebarBase, SidebarConfig} from './sidebar.types';
 import {SidebarElement} from './sidebarElement';
 
 export class SidebarService implements SidebarBase {
-  private readonly instances: any;
+  private readonly instances: {[key: string]: SidebarElement};
 
   constructor() {
     this.instances = {};
@@ -14,29 +14,29 @@ export class SidebarService implements SidebarBase {
     return this.instances[name];
   }
 
-  public open(sidebarName: string = ''): void {
+  public open(sidebarName = ''): void {
     if (this.instances[sidebarName]) {
       this.instances[sidebarName].open();
     }
   }
 
-  public close(sidebarName: string = ''): void {
+  public close(sidebarName = ''): void {
     if (this.instances[sidebarName]) {
       this.instances[sidebarName].close();
     }
   }
 
-  public toggle(sidebarName: string = ''): void {
+  public toggle(sidebarName = ''): void {
     if (this.instances[sidebarName]) {
       this.instances[sidebarName].toggle();
     }
   }
 
-  public isVisible(sidebarName: string = ''): boolean {
+  public isVisible(sidebarName = ''): boolean {
     return !!this.instances[sidebarName] && this.instances[sidebarName].isVisible();
   }
 
-  public setPosition(position: 'left' | 'right', sidebarName: string = ''): void {
+  public setPosition(position: 'left' | 'right', sidebarName = ''): void {
     if (this.instances[sidebarName]) {
       this.instances[sidebarName].setPosition(position);
     }
@@ -46,7 +46,7 @@ export class SidebarService implements SidebarBase {
     return SidebarElement.elemHasListener(elem, value);
   }
 
-  public destroy(sidebarName: string = ''): void {
+  public destroy(sidebarName = ''): void {
     if (this.instances[sidebarName]) {
       this.instances[sidebarName].destroy();
       this.instances[sidebarName] = null;

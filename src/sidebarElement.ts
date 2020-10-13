@@ -1,9 +1,9 @@
-import {HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition} from './index';
+import {HTMLSidebarElement, SidebarBase, SidebarConfig, SidebarPosition} from './sidebar.types';
 
-const SIDEBARJS: string = 'sidebarjs';
-const SIDEBARJS_CONTENT: string = 'sidebarjs-content';
-const IS_VISIBLE: string = `${SIDEBARJS}--is-visible`;
-const IS_MOVING: string = `${SIDEBARJS}--is-moving`;
+const SIDEBARJS = 'sidebarjs';
+const SIDEBARJS_CONTENT = 'sidebarjs-content';
+const IS_VISIBLE = `${SIDEBARJS}--is-visible`;
+const IS_MOVING = `${SIDEBARJS}--is-moving`;
 const LEFT_POSITION: SidebarPosition = 'left';
 const RIGHT_POSITION: SidebarPosition = 'right';
 const POSITIONS: SidebarPosition[] = [LEFT_POSITION, RIGHT_POSITION];
