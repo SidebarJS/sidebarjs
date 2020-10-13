@@ -9,7 +9,6 @@ export class Typescript {
   constructor(emitter, trim) {
     this.emitter = emitter;
     this.trim = trim;
-    debugger;
     this.logger = new signale.Signale({interactive: false, scope: 'typescript'});
   }
 

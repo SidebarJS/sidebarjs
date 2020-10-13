@@ -1,13 +1,13 @@
 import {
-  create, DEFAULT_CONFIG,
-  elemHasListener, EVENT_LISTENER_OPTIONS,
+  create,
+  DEFAULT_CONFIG,
+  elemHasListener,
+  EVENT_LISTENER_OPTIONS,
   forEachActionElement,
   IS_MOVING,
   IS_VISIBLE,
   isStyleMapSupported,
-  LEFT_POSITION,
   POSITIONS,
-  RIGHT_POSITION,
   shouldDefineMainContent,
   SidebarBase,
   SidebarConfig,
@@ -15,6 +15,9 @@ import {
   SIDEBARJS_CONTENT,
   SidebarPosition,
   targetElementIsBackdrop,
+  TOUCH_END,
+  TOUCH_MOVE,
+  TOUCH_START,
 } from './sidebar.core';
 
 export class SidebarElement implements SidebarBase {
@@ -98,8 +101,8 @@ export class SidebarElement implements SidebarBase {
 
   public destroy(): void {
     this.removeNativeGestures();
-    this.container.removeEventListener('transitionend', this._onTransitionEnd, EVENT_LISTENER_OPTIONS);
-    this.backdrop.removeEventListener('click', this.close, EVENT_LISTENER_OPTIONS);
+    this.container.removeEventListener('transitionend', this._onTransitionEnd);
+    this.backdrop.removeEventListener('click', this.close);
     this.removeNativeOpenGestures();
     this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
     this.removeComponentClassPosition();
@@ -113,7 +116,7 @@ export class SidebarElement implements SidebarBase {
 
   public setPosition(position: SidebarPosition): void {
     this.component.classList.add(IS_MOVING);
-    this.position = POSITIONS.indexOf(position) >= 0 ? position : LEFT_POSITION;
+    this.position = POSITIONS.indexOf(position) >= 0 ? position : SidebarPosition.Left;
     const resetMainContent = (document.querySelectorAll(`[${SIDEBARJS}]`) || []).length === 1;
     this.removeComponentClassPosition(resetMainContent);
     this.component.classList.add(`${SIDEBARJS}--${this.position}`);
@@ -239,11 +242,11 @@ export class SidebarElement implements SidebarBase {
   }
 
   private hasLeftPosition(): boolean {
-    return this.position === LEFT_POSITION;
+    return this.position === SidebarPosition.Left;
   }
 
   private hasRightPosition(): boolean {
-    return this.position === RIGHT_POSITION;
+    return this.position === SidebarPosition.Right;
   }
 
   private transcludeContent(): void {
@@ -257,28 +260,40 @@ export class SidebarElement implements SidebarBase {
     this.component.appendChild(this.backdrop);
   }
 
+  private nativeGestures = new Map([
+    [TOUCH_START, this._onTouchStart],
+    [TOUCH_MOVE, this._onTouchMove],
+    [TOUCH_END, this._onTouchEnd],
+  ]);
+
+  private nativeOpenGestures = new Map([
+    [TOUCH_START, this._onSwipeOpenStart],
+    [TOUCH_MOVE, this._onSwipeOpenMove],
+    [TOUCH_END, this._onSwipeOpenEnd],
+  ]);
+
   private addNativeGestures(): void {
-    this.component.addEventListener('touchstart', this._onTouchStart, EVENT_LISTENER_OPTIONS);
-    this.component.addEventListener('touchmove', this._onTouchMove, EVENT_LISTENER_OPTIONS);
-    this.component.addEventListener('touchend', this._onTouchEnd, EVENT_LISTENER_OPTIONS);
+    this.nativeGestures.forEach((action, event) => {
+      this.component.addEventListener(event, action, EVENT_LISTENER_OPTIONS);
+    });
   }
 
   private removeNativeGestures(): void {
-    this.component.removeEventListener('touchstart', this._onTouchStart, EVENT_LISTENER_OPTIONS);
-    this.component.removeEventListener('touchmove', this._onTouchMove, EVENT_LISTENER_OPTIONS);
-    this.component.removeEventListener('touchend', this._onTouchEnd, EVENT_LISTENER_OPTIONS);
+    this.nativeGestures.forEach((action, event) => {
+      this.component.removeEventListener(event, action);
+    });
   }
 
   private addNativeOpenGestures(): void {
-    document.addEventListener('touchstart', this._onSwipeOpenStart, EVENT_LISTENER_OPTIONS);
-    document.addEventListener('touchmove', this._onSwipeOpenMove, EVENT_LISTENER_OPTIONS);
-    document.addEventListener('touchend', this._onSwipeOpenEnd, EVENT_LISTENER_OPTIONS);
+    this.nativeOpenGestures.forEach((action, event) => {
+      document.addEventListener(event, action, EVENT_LISTENER_OPTIONS);
+    });
   }
 
   private removeNativeOpenGestures(): void {
-    document.removeEventListener('touchstart', this._onSwipeOpenStart, EVENT_LISTENER_OPTIONS);
-    document.removeEventListener('touchmove', this._onSwipeOpenMove, EVENT_LISTENER_OPTIONS);
-    document.removeEventListener('touchend', this._onSwipeOpenEnd, EVENT_LISTENER_OPTIONS);
+    this.nativeOpenGestures.forEach((action, event) => {
+      document.removeEventListener(event, action);
+    });
   }
 
   private moveSidebar(movement: number): void {

@@ -2,18 +2,25 @@ export const SIDEBARJS = 'sidebarjs';
 export const SIDEBARJS_CONTENT = 'sidebarjs-content';
 export const IS_VISIBLE = `${SIDEBARJS}--is-visible`;
 export const IS_MOVING = `${SIDEBARJS}--is-moving`;
-export const LEFT_POSITION: SidebarPosition = 'left';
-export const RIGHT_POSITION: SidebarPosition = 'right';
-export const POSITIONS: SidebarPosition[] = [LEFT_POSITION, RIGHT_POSITION];
-export const EVENT_LISTENER_OPTIONS = {passive: true} as EventListenerOptions;
+export const POSITIONS: SidebarPosition[] = [SidebarPosition.Left, SidebarPosition.Right];
+export const EVENT_LISTENER_OPTIONS: AddEventListenerOptions = {passive: true};
+
+export const enum SidebarPosition {
+  Left = 'left',
+  Right = 'right',
+}
+
+export const TOUCH_START = 'touchstart';
+export const TOUCH_MOVE = 'touchmove';
+export const TOUCH_END = 'touchend';
 
 export const DEFAULT_CONFIG: SidebarConfig = {
   documentMinSwipeX: 10,
   documentSwipeRange: 40,
   responsive: false,
-  position: 'left',
+  position: SidebarPosition.Left,
   backdropOpacity: 0.3,
-}
+};
 
 export interface SidebarBase {
   open: () => void;
@@ -45,8 +52,6 @@ export interface SidebarConfig {
 export interface HTMLSidebarElement extends HTMLElement {
   sidebarjsListener?: boolean;
 }
-
-export type SidebarPosition = 'left' | 'right';
 
 export function isStyleMapSupported(): boolean {
   return Boolean(window.CSS && (window.CSS as any).number);
