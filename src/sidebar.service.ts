@@ -1,5 +1,5 @@
-import {HTMLSidebarElement, SidebarBase, SidebarConfig} from './sidebar.types';
-import {SidebarElement} from './sidebarElement';
+import {elemHasListener, HTMLSidebarElement, SidebarBase, SidebarConfig} from './sidebar.core';
+import {SidebarElement} from './sidebar.element';
 
 export class SidebarService implements SidebarBase {
   private readonly instances: {[key: string]: SidebarElement};
@@ -43,7 +43,7 @@ export class SidebarService implements SidebarBase {
   }
 
   public elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean {
-    return SidebarElement.elemHasListener(elem, value);
+    return elemHasListener(elem, value);
   }
 
   public destroy(sidebarName = ''): void {
