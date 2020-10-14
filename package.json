@@ -15,7 +15,6 @@
     "start": "npm run build:watch | npm run server",
     "format": "prettier --config .prettierrc --write src/*.ts && eslint --fix",
     "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0",
-    "commit:version": "git add . && git commit -am 'chore(version): $npm_package_version'",
     "prerelease": "npm run build && npm run changelog && npm run commit:version"
   },
   "engines": {

@@ -43,7 +43,7 @@ describe('Instance creation', () => {
           <section custom-container>Hello</section>
           <section custom-backdrop></section>
         </div>`;
-      const element = document.querySelector('[sidebarjs]');
+      const element = document.querySelector('[sidebarjs]')!;
       const sidebarjs = new SidebarElement({
         backdrop: element.children[1] as HTMLElement,
         component: element as HTMLElement,
@@ -184,7 +184,7 @@ describe('Instance creation', () => {
     test('Should trigger onChangeVisibility', () => {
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       let n = 0;
-      let changes = null;
+      let changes: any = null;
       const sidebarjs = new SidebarElement(({
         onChangeVisibility(changesEvent) {
           changes = changesEvent;
@@ -208,7 +208,7 @@ describe('Instance creation', () => {
       let n = 0;
       let isOpenFired = false;
       let isCloseFired = false;
-      let changes = null;
+      let changes: any = null;
       const sidebarjs = new SidebarElement(({
         onOpen() {
           isOpenFired = true;

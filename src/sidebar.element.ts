@@ -6,7 +6,7 @@ import {
   forEachActionElement,
   IS_MOVING,
   IS_VISIBLE,
-  isStyleMapSupported,
+  isStyleMapSupported, MapGestureEvent,
   POSITIONS,
   shouldDefineMainContent,
   SidebarBase,
@@ -21,7 +21,7 @@ import {
 } from './sidebar.core';
 
 export class SidebarElement implements SidebarBase {
-  public position: SidebarPosition;
+  public position?: SidebarPosition;
   public readonly component: HTMLElement;
   public readonly container: HTMLElement;
   public readonly backdrop: HTMLElement;
@@ -30,33 +30,33 @@ export class SidebarElement implements SidebarBase {
   public readonly nativeSwipe: boolean;
   public readonly nativeSwipeOpen: boolean;
   public readonly responsive: boolean;
-  private initialTouch: number;
-  private touchMoveSidebar: number;
-  private openMovement: number;
-  private _wasVisible: boolean;
+  private initialTouch?: number | null;
+  private touchMoveSidebar?: number | null;
+  private openMovement?: number | null;
+  private _wasVisible?: boolean;
   private readonly isStyleMapSupported: boolean;
   private readonly backdropOpacity: number;
   private readonly backdropOpacityRatio: number;
   private readonly mainContent: HTMLElement;
-  private readonly _emitOnOpen: () => void;
-  private readonly _emitOnClose: () => void;
-  private readonly _emitOnChangeVisibility: (changes: {isVisible: boolean}) => void;
+  private readonly _emitOnOpen?: () => void;
+  private readonly _emitOnClose?: () => void;
+  private readonly _emitOnChangeVisibility?: (changes: {isVisible: boolean}) => void;
 
   constructor(options: SidebarConfig = {}) {
     const config = {...DEFAULT_CONFIG, ...options};
     const hasCustomTransclude = config.container && config.backdrop;
     this.component = config.component || (document.querySelector(`[${SIDEBARJS}]`) as HTMLElement);
-    this.container = hasCustomTransclude ? config.container : create(`${SIDEBARJS}-container`);
-    this.backdrop = hasCustomTransclude ? config.backdrop : create(`${SIDEBARJS}-backdrop`);
-    this.documentMinSwipeX = config.documentMinSwipeX;
-    this.documentSwipeRange = config.documentSwipeRange;
+    this.container = hasCustomTransclude ? config.container! : create(`${SIDEBARJS}-container`);
+    this.backdrop = hasCustomTransclude ? config.backdrop! : create(`${SIDEBARJS}-backdrop`);
+    this.documentMinSwipeX = config.documentMinSwipeX!;
+    this.documentSwipeRange = config.documentSwipeRange!;
     this.nativeSwipe = config.nativeSwipe !== false;
     this.nativeSwipeOpen = config.nativeSwipeOpen !== false;
     this.isStyleMapSupported = isStyleMapSupported();
     this.responsive = Boolean(config.responsive);
     this.mainContent = shouldDefineMainContent(config.mainContent);
-    this.backdropOpacity = config.backdropOpacity;
-    this.backdropOpacityRatio = 1 / config.backdropOpacity;
+    this.backdropOpacity = config.backdropOpacity!;
+    this.backdropOpacityRatio = 1 / config.backdropOpacity!;
     this._emitOnOpen = config.onOpen;
     this._emitOnClose = config.onClose;
     this._emitOnChangeVisibility = config.onChangeVisibility;
@@ -75,8 +75,8 @@ export class SidebarElement implements SidebarBase {
       this.setResponsive();
     }
 
-    this.setPosition(config.position);
-    this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
+    this.setPosition(config.position!);
+    this.addAttrsEventsListeners(this.component.getAttribute(SIDEBARJS)!);
     this.addTransitionListener();
     this.backdrop.addEventListener('click', this.close, EVENT_LISTENER_OPTIONS);
   }
@@ -104,7 +104,7 @@ export class SidebarElement implements SidebarBase {
     this.container.removeEventListener('transitionend', this._onTransitionEnd);
     this.backdrop.removeEventListener('click', this.close);
     this.removeNativeOpenGestures();
-    this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS));
+    this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS)!);
     this.removeComponentClassPosition();
     while (this.container.firstElementChild) {
       this.component.appendChild(this.container.firstElementChild);
@@ -161,7 +161,7 @@ export class SidebarElement implements SidebarBase {
   };
 
   private _onTouchMove = (e: TouchEvent): void => {
-    const swipeDirection = -(this.initialTouch - e.touches[0].clientX);
+    const swipeDirection = -(this.initialTouch! - e.touches[0].clientX);
     const sidebarMovement = this.container.clientWidth + (this.hasLeftPosition() ? swipeDirection : -swipeDirection);
     if (sidebarMovement <= this.container.clientWidth) {
       this.touchMoveSidebar = Math.abs(swipeDirection);
@@ -173,7 +173,7 @@ export class SidebarElement implements SidebarBase {
     this.component.classList.remove(IS_MOVING);
     this.clearStyle(this.container);
     this.clearStyle(this.backdrop);
-    this.touchMoveSidebar > this.container.clientWidth / 3.5 ? this.close() : this.open();
+    this.touchMoveSidebar! > this.container.clientWidth / 3.5 ? this.close() : this.open();
     this.initialTouch = null;
     this.touchMoveSidebar = null;
   };
@@ -260,13 +260,13 @@ export class SidebarElement implements SidebarBase {
     this.component.appendChild(this.backdrop);
   }
 
-  private nativeGestures = new Map([
+  private nativeGestures: MapGestureEvent = new Map([
     [TOUCH_START, this._onTouchStart],
     [TOUCH_MOVE, this._onTouchMove],
     [TOUCH_END, this._onTouchEnd],
   ]);
 
-  private nativeOpenGestures = new Map([
+  private nativeOpenGestures: MapGestureEvent = new Map([
     [TOUCH_START, this._onSwipeOpenStart],
     [TOUCH_MOVE, this._onSwipeOpenMove],
     [TOUCH_END, this._onSwipeOpenEnd],

@@ -1,4 +1,5 @@
 export const SIDEBARJS = 'sidebarjs';
+export const SIDEBARJS_FALLBACK_NAME = '';
 export const SIDEBARJS_CONTENT = 'sidebarjs-content';
 export const IS_VISIBLE = `${SIDEBARJS}--is-visible`;
 export const IS_MOVING = `${SIDEBARJS}--is-moving`;
@@ -13,6 +14,8 @@ export const enum SidebarPosition {
 export const TOUCH_START = 'touchstart';
 export const TOUCH_MOVE = 'touchmove';
 export const TOUCH_END = 'touchend';
+
+export type MapGestureEvent = Map<keyof GlobalEventHandlersEventMap, any>;
 
 export const DEFAULT_CONFIG: SidebarConfig = {
   documentMinSwipeX: 10,
