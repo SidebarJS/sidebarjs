@@ -14,8 +14,8 @@
     "demo": "npm run build && npm run server",
     "start": "npm run build:watch | npm run server",
     "format": "prettier --config .prettierrc --write src/*.ts && eslint --fix",
-    "changelog": "conventional-changelog -i CHANGELOG.md -s -r 0",
-    "prerelease": "npm run build && npm run changelog && npm run commit:version"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
+    "prerelease": "npm run build && npm run changelog && git add ."
   },
   "engines": {
     "npm": ">=6.10.0",
