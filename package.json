@@ -1,7 +1,7 @@
 {
   "name": "sidebarjs",
   "library": "SidebarJS",
-  "version": "6.1.0",
+  "version": "7.0.0",
   "description": "Create mobile sidebar/sidenav experience in pure javascript",
   "main": "./lib/umd/sidebarjs.js",
   "module": "./lib/esm/sidebarjs.js",
@@ -15,7 +15,7 @@
     "start": "npm run build:watch | npm run server",
     "format": "prettier --config .prettierrc --write src/*.ts && eslint --fix",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
-    "prerelease": "npm run build && npm run changelog && git add ."
+    "prerelease": "npm run build && npm run changelog"
   },
   "engines": {
     "npm": ">=6.10.0",
