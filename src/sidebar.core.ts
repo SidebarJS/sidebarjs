@@ -1,6 +1,8 @@
 export const SIDEBARJS = 'sidebarjs';
 export const SIDEBARJS_FALLBACK_NAME = '';
 export const SIDEBARJS_CONTENT = 'sidebarjs-content';
+export const SIDEBARJS_TRANSITION_START = 'sidebarjs--transition-start';
+export const SIDEBARJS_TRANSITION_END = 'sidebarjs--transition-end';
 export const IS_VISIBLE = `${SIDEBARJS}--is-visible`;
 export const IS_MOVING = `${SIDEBARJS}--is-moving`;
 export const POSITIONS: SidebarPosition[] = [SidebarPosition.Left, SidebarPosition.Right];
@@ -91,4 +93,10 @@ export function forEachActionElement(sidebarName: string, func: (element: HTMLEl
 
 export function targetElementIsBackdrop(e: TouchEvent): boolean {
   return (e.target as HTMLElement).hasAttribute(`${SIDEBARJS}-backdrop`);
+}
+
+export function shouldInvokeFunction(fn?: CallableFunction) {
+  if (fn) {
+    fn();
+  }
 }

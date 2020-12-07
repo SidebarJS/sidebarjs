@@ -6,13 +6,17 @@ import {
   forEachActionElement,
   IS_MOVING,
   IS_VISIBLE,
-  isStyleMapSupported, MapGestureEvent,
+  isStyleMapSupported,
+  MapGestureEvent,
   POSITIONS,
   shouldDefineMainContent,
+  shouldInvokeFunction,
   SidebarBase,
   SidebarConfig,
   SIDEBARJS,
   SIDEBARJS_CONTENT,
+  SIDEBARJS_TRANSITION_END,
+  SIDEBARJS_TRANSITION_START,
   SidebarPosition,
   targetElementIsBackdrop,
   TOUCH_END,
@@ -38,8 +42,8 @@ export class SidebarElement implements SidebarBase {
   private readonly backdropOpacity: number;
   private readonly backdropOpacityRatio: number;
   private readonly mainContent: HTMLElement;
-  private readonly _emitOnOpen?: () => void;
-  private readonly _emitOnClose?: () => void;
+  private readonly _emitOnOpen?: CallableFunction;
+  private readonly _emitOnClose?: CallableFunction;
   private readonly _emitOnChangeVisibility?: (changes: {isVisible: boolean}) => void;
 
   constructor(options: SidebarConfig = {}) {
@@ -86,12 +90,12 @@ export class SidebarElement implements SidebarBase {
   };
 
   public open = (): void => {
-    this.component.classList.add(IS_VISIBLE);
+    this.addComponentClass(IS_VISIBLE);
     this.setBackdropOpacity(this.backdropOpacity);
   };
 
   public close = (): void => {
-    this.component.classList.remove(IS_VISIBLE);
+    this.removeComponentClass(IS_VISIBLE);
     this.clearStyle(this.backdrop);
   };
 
@@ -101,6 +105,7 @@ export class SidebarElement implements SidebarBase {
 
   public destroy(): void {
     this.removeNativeGestures();
+    this.container.removeEventListener('transitionstart', this._onTransitionStart);
     this.container.removeEventListener('transitionend', this._onTransitionEnd);
     this.backdrop.removeEventListener('click', this.close);
     this.removeNativeOpenGestures();
@@ -115,15 +120,15 @@ export class SidebarElement implements SidebarBase {
   }
 
   public setPosition(position: SidebarPosition): void {
-    this.component.classList.add(IS_MOVING);
+    this.addComponentClass(IS_MOVING);
     this.position = POSITIONS.indexOf(position) >= 0 ? position : SidebarPosition.Left;
     const resetMainContent = (document.querySelectorAll(`[${SIDEBARJS}]`) || []).length === 1;
     this.removeComponentClassPosition(resetMainContent);
-    this.component.classList.add(`${SIDEBARJS}--${this.position}`);
+    this.addComponentClass(`${SIDEBARJS}--${this.position}`);
     if (this.responsive && this.mainContent) {
       this.mainContent.classList.add(`${SIDEBARJS_CONTENT}--${this.position}`);
     }
-    setTimeout(() => this.component && this.component.classList.remove(IS_MOVING), 200);
+    setTimeout(() => this.component && this.removeComponentClass(IS_MOVING), 200);
   }
 
   public addAttrsEventsListeners(sidebarName: string): void {
@@ -170,7 +175,7 @@ export class SidebarElement implements SidebarBase {
   };
 
   private _onTouchEnd = (): void => {
-    this.component.classList.remove(IS_MOVING);
+    this.removeComponentClass(IS_MOVING);
     this.clearStyle(this.container);
     this.clearStyle(this.backdrop);
     this.touchMoveSidebar! > this.container.clientWidth / 3.5 ? this.close() : this.open();
@@ -209,32 +214,51 @@ export class SidebarElement implements SidebarBase {
     }
   };
 
+  private _onTransitionStart = (): void => {
+    const {open, close} = this.getTransitionType();
+    if (open || close) {
+      this.toggleTransitionClass(true);
+    }
+  };
+
   private _onTransitionEnd = (): void => {
-    const isVisible = this.isVisible();
-    if (isVisible && !this._wasVisible) {
+    const {open, close, isVisible} = this.getTransitionType();
+    if (open || close) {
+      this.toggleTransitionClass(false);
+    }
+    if (open) {
       this._wasVisible = true;
-      if (this._emitOnOpen) {
-        this._emitOnOpen();
-      }
-    } else if (!isVisible && this._wasVisible) {
+      shouldInvokeFunction(this._emitOnOpen);
+    } else if (close) {
       this._wasVisible = false;
-      if (this._emitOnClose) {
-        this._emitOnClose();
-      }
+      shouldInvokeFunction(this._emitOnClose);
     }
     if (this._emitOnChangeVisibility) {
       this._emitOnChangeVisibility({isVisible});
     }
   };
 
+  private getTransitionType() {
+    const isVisible = this.isVisible();
+    const open = isVisible && !this._wasVisible;
+    const close = !isVisible && this._wasVisible;
+    return {open, close, isVisible};
+  }
+
+  private toggleTransitionClass(isStart: boolean) {
+    this.toggleComponentClass(SIDEBARJS_TRANSITION_END, !isStart);
+    this.toggleComponentClass(SIDEBARJS_TRANSITION_START, isStart);
+  }
+
   private addTransitionListener(): void {
     this._wasVisible = this.isVisible();
+    this.container.addEventListener('transitionstart', this._onTransitionStart, EVENT_LISTENER_OPTIONS);
     this.container.addEventListener('transitionend', this._onTransitionEnd, EVENT_LISTENER_OPTIONS);
   }
 
   private removeComponentClassPosition(resetMainContent?: boolean): void {
     for (let i = 0; i < POSITIONS.length; i++) {
-      this.component.classList.remove(`${SIDEBARJS}--${POSITIONS[i]}`);
+      this.removeComponentClass(`${SIDEBARJS}--${POSITIONS[i]}`);
       if (resetMainContent && this.mainContent) {
         this.mainContent.classList.remove(`${SIDEBARJS_CONTENT}--${POSITIONS[i]}`);
       }
@@ -297,7 +321,7 @@ export class SidebarElement implements SidebarBase {
   }
 
   private moveSidebar(movement: number): void {
-    this.component.classList.add(IS_MOVING);
+    this.addComponentClass(IS_MOVING);
     this.applyStyle(this.container, 'transform', `translate(${movement}px, 0)`, true);
     this.updateBackdropOpacity(movement);
   }
@@ -319,7 +343,7 @@ export class SidebarElement implements SidebarBase {
     if (this.responsive && !this.mainContent) {
       throw new Error(`You have set {responsive: true} without provide a [${SIDEBARJS_CONTENT}] element`);
     }
-    this.component.classList.add('sidebarjs--responsive');
+    this.addComponentClass('sidebarjs--responsive');
   }
 
   private applyStyle(el: HTMLElement, prop: string, val: string, vendorify?: boolean): void {
@@ -339,5 +363,17 @@ export class SidebarElement implements SidebarBase {
     } else {
       el.removeAttribute('style');
     }
+  }
+
+  private addComponentClass(className: string) {
+    this.component.classList.add(className);
+  }
+
+  private removeComponentClass(className: string) {
+    this.component.classList.remove(className);
+  }
+
+  private toggleComponentClass(className: string, force?: boolean) {
+    this.component.classList.toggle(className, force);
   }
 }
