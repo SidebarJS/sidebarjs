@@ -12,7 +12,7 @@ npm install sidebarjs --save
 ## Demo
 *Open the demo on your device and try the touch gestures!*
 
-* [CodePen](http://codepen.io/lorenzodianni/full/VaqZJL/)
+* [StackBlitz](https://stackblitz.com/edit/sidebarjs)
 * [RawGit](https://rawgit.com/SidebarJS/sidebarjs/master/demo/index.html)
 
 ## Libraries
