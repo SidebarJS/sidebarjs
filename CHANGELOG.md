@@ -1,3 +1,12 @@
+# [8.0.0](https://github.com/SidebarJS/sidebarjs/compare/7.0.0...8.0.0) (2021-05-14)
+
+
+### Features
+
+* update deps + export SidebarPosition as value ([30cb894](https://github.com/SidebarJS/sidebarjs/commit/30cb894bf5bb7b651ba56a0b7353817066b58cfa))
+
+
+
 # [7.0.0](https://github.com/SidebarJS/sidebarjs/compare/5.4.0...7.0.0) (2020-12-07)
 
 

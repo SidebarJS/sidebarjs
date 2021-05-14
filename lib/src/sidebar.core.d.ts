@@ -14,6 +14,10 @@ export declare const enum SidebarPosition {
 export declare const TOUCH_START = "touchstart";
 export declare const TOUCH_MOVE = "touchmove";
 export declare const TOUCH_END = "touchend";
+declare const ELEMENT_ACTIONS: readonly ["toggle", "open", "close"];
+export interface SidebarChangeEvent {
+    isVisible: boolean;
+}
 export declare type MapGestureEvent = Map<keyof GlobalEventHandlersEventMap, any>;
 export declare const DEFAULT_CONFIG: SidebarConfig;
 export interface SidebarBase {
@@ -48,6 +52,7 @@ export declare function isStyleMapSupported(): boolean;
 export declare function create(element: string): HTMLElement;
 export declare function elemHasListener(elem: HTMLSidebarElement, value?: boolean): boolean;
 export declare function shouldDefineMainContent(mainContent?: HTMLElement): HTMLElement;
-export declare function forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: string) => void): void;
+export declare function forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: typeof ELEMENT_ACTIONS[number]) => void): void;
 export declare function targetElementIsBackdrop(e: TouchEvent): boolean;
 export declare function shouldInvokeFunction(fn?: CallableFunction): void;
+export {};
