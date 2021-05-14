@@ -17,6 +17,12 @@ export const TOUCH_START = 'touchstart';
 export const TOUCH_MOVE = 'touchmove';
 export const TOUCH_END = 'touchend';
 
+const ELEMENT_ACTIONS = ['toggle', 'open', 'close'] as const;
+
+export interface SidebarChangeEvent {
+  isVisible: boolean;
+}
+
 export type MapGestureEvent = Map<keyof GlobalEventHandlersEventMap, any>;
 
 export const DEFAULT_CONFIG: SidebarConfig = {
@@ -81,12 +87,12 @@ export function shouldDefineMainContent(mainContent?: HTMLElement): HTMLElement 
   }
 }
 
-export function forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: string) => void): void {
-  const actions = ['toggle', 'open', 'close'];
-  for (let i = 0; i < actions.length; i++) {
-    const elements = document.querySelectorAll(`[${SIDEBARJS}-${actions[i]}="${sidebarName}"]`);
+export function forEachActionElement(sidebarName: string, func: (element: HTMLElement, action: typeof ELEMENT_ACTIONS[number]) => void): void {
+  for (let i = 0; i < ELEMENT_ACTIONS.length; i++) {
+    const action = ELEMENT_ACTIONS[i];
+    const elements = document.querySelectorAll(`[${SIDEBARJS}-${action}="${sidebarName}"]`);
     for (let j = 0; j < elements.length; j++) {
-      func(elements[j] as HTMLElement, actions[i]);
+      func(elements[j] as HTMLElement, action);
     }
   }
 }

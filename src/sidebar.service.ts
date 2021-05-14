@@ -1,12 +1,4 @@
-import {
-  elemHasListener,
-  HTMLSidebarElement,
-  SidebarBase,
-  SidebarConfig,
-  SIDEBARJS,
-  SIDEBARJS_FALLBACK_NAME,
-  SidebarPosition,
-} from './sidebar.core';
+import {elemHasListener, HTMLSidebarElement, SidebarBase, SidebarConfig, SIDEBARJS, SIDEBARJS_FALLBACK_NAME, SidebarPosition} from './sidebar.core';
 import {SidebarElement} from './sidebar.element';
 
 export class SidebarService implements SidebarBase {

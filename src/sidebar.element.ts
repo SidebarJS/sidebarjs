@@ -12,6 +12,7 @@ import {
   shouldDefineMainContent,
   shouldInvokeFunction,
   SidebarBase,
+  SidebarChangeEvent,
   SidebarConfig,
   SIDEBARJS,
   SIDEBARJS_CONTENT,
@@ -23,6 +24,12 @@ import {
   TOUCH_MOVE,
   TOUCH_START,
 } from './sidebar.core';
+
+type CSSStyleProperties = keyof Omit<
+  CSSStyleDeclaration,
+  number | 'length' | 'parentRule' | '[Symbol.iterator]' | 'getPropertyPriority' | 'getPropertyValue' | 'item' | 'removeProperty' | 'setProperty'
+>;
+type CSSStyleValues = CSSStyleDeclaration[CSSStyleProperties] & string;
 
 export class SidebarElement implements SidebarBase {
   public position?: SidebarPosition;
@@ -44,7 +51,7 @@ export class SidebarElement implements SidebarBase {
   private readonly mainContent: HTMLElement;
   private readonly _emitOnOpen?: CallableFunction;
   private readonly _emitOnClose?: CallableFunction;
-  private readonly _emitOnChangeVisibility?: (changes: {isVisible: boolean}) => void;
+  private readonly _emitOnChangeVisibility?: (changes: SidebarChangeEvent) => void;
 
   constructor(options: SidebarConfig = {}) {
     const config = {...DEFAULT_CONFIG, ...options};
@@ -116,7 +123,7 @@ export class SidebarElement implements SidebarBase {
     }
     this.component.removeChild(this.container);
     this.component.removeChild(this.backdrop);
-    Object.keys(this).forEach((key) => (this[key] = null));
+    Object.keys(this).forEach((key) => ((this as any)[key] = null));
   }
 
   public setPosition(position: SidebarPosition): void {
@@ -142,7 +149,7 @@ export class SidebarElement implements SidebarBase {
 
   public removeAttrsEventsListeners(sidebarName: string): void {
     forEachActionElement(sidebarName, (element, action) => {
-      if (elemHasListener(element as HTMLElement)) {
+      if (elemHasListener(element)) {
         element.removeEventListener('click', this[action]);
         elemHasListener(element, false);
       }
@@ -346,13 +353,14 @@ export class SidebarElement implements SidebarBase {
     this.addComponentClass('sidebarjs--responsive');
   }
 
-  private applyStyle(el: HTMLElement, prop: string, val: string, vendorify?: boolean): void {
+  private applyStyle(el: HTMLElement, prop: CSSStyleProperties, val: CSSStyleValues, vendorify?: boolean): void {
     if (this.isStyleMapSupported) {
       (el as any).attributeStyleMap.set(prop, val);
     } else {
       el.style[prop] = val;
       if (vendorify) {
-        el.style['webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)] = val;
+        const vendor = ('webkit' + prop.charAt(0).toUpperCase() + prop.slice(1)) as CSSStyleProperties;
+        el.style[vendor] = val;
       }
     }
   }

@@ -10,7 +10,7 @@ describe('Static', () => {
     test('Should create a div element with specific attribute', () => {
       const elem = create('hello');
       expect(elem).toBeInstanceOf(HTMLDivElement);
-      expect(elem.attributes['hello']).toBeDefined();
+      expect((elem.attributes as any)['hello']).toBeDefined();
       expect(elem.outerHTML).toBe('<div hello=""></div>');
     });
   });

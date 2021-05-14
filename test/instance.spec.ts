@@ -24,7 +24,7 @@ describe('Instance creation', () => {
 
   describe('Transclude', () => {
     test('Should transclude content', () => {
-      const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
+      const spy = sinon.spy(SidebarElement.prototype as any, 'transcludeContent');
       document.body.innerHTML = '<div sidebarjs>Hello</div>';
       const sidebarjs = new SidebarElement();
       expect(sidebarjs.container.innerHTML).toBe('Hello');
@@ -37,7 +37,7 @@ describe('Instance creation', () => {
     });
 
     test('Should not transclude content with all custom HTMLElement params in config', () => {
-      const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
+      const spy = sinon.spy(SidebarElement.prototype as any, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>
@@ -62,7 +62,7 @@ describe('Instance creation', () => {
     });
 
     test('Should transclude content if has not all custom HTMLElement params in config', () => {
-      const spy = sinon.spy(SidebarElement.prototype, 'transcludeContent');
+      const spy = sinon.spy(SidebarElement.prototype as any, 'transcludeContent');
       document.body.innerHTML = `
         <div sidebarjs>
           <section custom-container>Hello</section>

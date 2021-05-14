@@ -1,9 +1,9 @@
 import {swipe} from 'gesture-events';
 import {SidebarElement} from '../src';
 
-const mock = (el) => {
+const mock = (el: any) => {
   return {
-    prop(name, value) {
+    prop(name: string, value: any) {
       Object.defineProperty(el, name, {
         get() {
           return value;
