@@ -27,7 +27,7 @@ import {
 
 type CSSStyleProperties = keyof Omit<
   CSSStyleDeclaration,
-  number | 'length' | 'parentRule' | '[Symbol.iterator]' | 'getPropertyPriority' | 'getPropertyValue' | 'item' | 'removeProperty' | 'setProperty'
+  number | 'length' | 'parentRule' | '[Symbol.iterator]' | 'getPropertyPriority' | 'getPropertyValue' | 'item' | 'removeProperty' | 'setProperty' | typeof Symbol.iterator
 >;
 type CSSStyleValues = CSSStyleDeclaration[CSSStyleProperties] & string;
 
