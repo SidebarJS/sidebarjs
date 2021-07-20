@@ -1,3 +1,12 @@
+# [9.0.0](https://github.com/SidebarJS/sidebarjs/compare/8.0.0...9.0.0) (2021-07-20)
+
+
+### Features
+
+* update all dev deps ([08ed445](https://github.com/SidebarJS/sidebarjs/commit/08ed44555f564b920a3c1b204ee722aab6308a7f))
+
+
+
 # [8.0.0](https://github.com/SidebarJS/sidebarjs/compare/7.0.0...8.0.0) (2021-05-14)
 
 
@@ -75,8 +84,8 @@
 
 * **sidebarElement:** destroy method ([5bcd2b4](https://github.com/SidebarJS/sidebarjs/commit/5bcd2b4a1a8d6164ac2a7f42c618ef86182f9486))
 * **sidebarElement:** destroy method ([a207f38](https://github.com/SidebarJS/sidebarjs/commit/a207f38b043b1b37ae67daa63ceb3ea32830b58e))
-* **sidebarElement:** transclude ([75998f0](https://github.com/SidebarJS/sidebarjs/commit/75998f00a62d5cb760c5696c5be1f4be2ad1c175))
 * **SidebarElement:** remove unnecessary will-change prop ([e4b2b62](https://github.com/SidebarJS/sidebarjs/commit/e4b2b62440b4f52fe3b0b07fb8311420d7c6ca60))
+* **sidebarElement:** transclude ([75998f0](https://github.com/SidebarJS/sidebarjs/commit/75998f00a62d5cb760c5696c5be1f4be2ad1c175))
 
 
 ### Features
@@ -87,10 +96,10 @@
 
 ### Performance Improvements
 
+* **SidebarElement:** __onTouchMove / __onSwipeOpenMove ([7ff77e2](https://github.com/SidebarJS/sidebarjs/commit/7ff77e282daaefe9977252063f63dbf2a4eceb76))
 * **sidebarElement:** component will-change ([78030ea](https://github.com/SidebarJS/sidebarjs/commit/78030ea24bd84f1206ea88b01ed3f1fee045120f))
 * **sidebarElement:** drop support IE9 ([19f9984](https://github.com/SidebarJS/sidebarjs/commit/19f998477f71cde194824e5ce4dc4c050b93edb8))
 * **sidebarElement:** no more detached DOM nodes ([28061b2](https://github.com/SidebarJS/sidebarjs/commit/28061b2ac8c02a741d8cffdec2719c3a1f59cbf8))
-* **SidebarElement:** __onTouchMove / __onSwipeOpenMove ([7ff77e2](https://github.com/SidebarJS/sidebarjs/commit/7ff77e282daaefe9977252063f63dbf2a4eceb76))
 
 
 

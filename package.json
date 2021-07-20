@@ -1,7 +1,7 @@
 {
   "name": "sidebarjs",
   "library": "SidebarJS",
-  "version": "8.0.0",
+  "version": "9.0.0",
   "description": "Create mobile sidebar/sidenav experience in pure javascript",
   "main": "./lib/umd/sidebarjs.js",
   "module": "./lib/esm/sidebarjs.js",
