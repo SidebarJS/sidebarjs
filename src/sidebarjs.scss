@@ -87,6 +87,9 @@ $width: 300px;
   &.sidebarjs--is-moving {
     transition: none;
     transform: translate(0, 0);
+    [sidebarjs-container] {
+      transform: none!important;
+    }
     [sidebarjs-container], [sidebarjs-backdrop] {
       transition: none;
     }
