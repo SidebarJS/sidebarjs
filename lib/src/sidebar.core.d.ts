@@ -18,7 +18,7 @@ declare const ELEMENT_ACTIONS: readonly ["toggle", "open", "close"];
 export interface SidebarChangeEvent {
     isVisible: boolean;
 }
-export declare type MapGestureEvent = Map<keyof GlobalEventHandlersEventMap, any>;
+export type MapGestureEvent = Map<keyof GlobalEventHandlersEventMap, any>;
 export declare const DEFAULT_CONFIG: SidebarConfig;
 export interface SidebarBase {
     open: () => void;

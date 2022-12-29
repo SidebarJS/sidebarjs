@@ -1,3 +1,12 @@
+# [10.0.0](https://github.com/SidebarJS/sidebarjs/compare/9.0.0...10.0.0) (2022-12-29)
+
+
+### Features
+
+* update all deps and change build process ([10ca7f0](https://github.com/SidebarJS/sidebarjs/commit/10ca7f0603d17f9b351c8e95407c69ed9c14c898))
+
+
+
 # [9.0.0](https://github.com/SidebarJS/sidebarjs/compare/8.0.0...9.0.0) (2021-07-20)
 
 
