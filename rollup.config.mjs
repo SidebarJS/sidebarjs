@@ -1,7 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
 import babel from '@rollup/plugin-babel';
-import {terser} from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 import * as packageJson from './package.json';
 
 const info = `/*
@@ -13,7 +13,7 @@ const info = `/*
 
 const config = (options = {}) => ({
   input: 'lib/src/index.js',
-  output: options.output.map(type => ({
+  output: options.output.map((type) => ({
     name: 'SidebarJS',
     file: `lib/${type}/sidebarjs${options.minify ? '.min' : ''}.js`,
     format: type,
