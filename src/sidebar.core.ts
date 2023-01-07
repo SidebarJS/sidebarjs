@@ -3,10 +3,23 @@ export const SIDEBARJS_FALLBACK_NAME = '';
 export const SIDEBARJS_CONTENT = 'sidebarjs-content';
 export const SIDEBARJS_TRANSITION_START = 'sidebarjs--transition-start';
 export const SIDEBARJS_TRANSITION_END = 'sidebarjs--transition-end';
+export const SIDEBARJS_RESPONSIVE = 'sidebarjs--responsive';
 export const IS_VISIBLE = `${SIDEBARJS}--is-visible`;
 export const IS_MOVING = `${SIDEBARJS}--is-moving`;
 export const POSITIONS: SidebarPosition[] = [SidebarPosition.Left, SidebarPosition.Right];
 export const EVENT_LISTENER_OPTIONS: AddEventListenerOptions = {passive: true};
+
+export const MediaQuery = {
+  pattern: new RegExp(/((\d*\.?\d+\s*)(px|em|rem))/),
+  DEFAULT_BREAKPOINT: '1025px',
+  getValidBreakpoint(value: SidebarConfig['responsive']) {
+    if (this.pattern.test(value as any)) {
+      return value as string;
+    }
+    console.warn(`Provided invalid breakpoint value: ${value}, fallback to ${this.DEFAULT_BREAKPOINT}`);
+    return this.DEFAULT_BREAKPOINT;
+  },
+};
 
 export const enum SidebarPosition {
   Left = 'left',
@@ -51,7 +64,7 @@ export interface SidebarConfig {
   documentSwipeRange?: number;
   nativeSwipe?: boolean;
   nativeSwipeOpen?: boolean;
-  responsive?: boolean;
+  responsive?: boolean | string;
   mainContent?: HTMLElement;
   position?: SidebarPosition;
   backdropOpacity?: number;

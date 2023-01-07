@@ -8,6 +8,7 @@ import {
   IS_VISIBLE,
   isStyleMapSupported,
   MapGestureEvent,
+  MediaQuery,
   POSITIONS,
   shouldDefineMainContent,
   shouldInvokeFunction,
@@ -16,6 +17,7 @@ import {
   SidebarConfig,
   SIDEBARJS,
   SIDEBARJS_CONTENT,
+  SIDEBARJS_RESPONSIVE,
   SIDEBARJS_TRANSITION_END,
   SIDEBARJS_TRANSITION_START,
   SidebarPosition,
@@ -52,6 +54,7 @@ export class SidebarElement implements SidebarBase {
   private readonly _emitOnOpen?: CallableFunction;
   private readonly _emitOnClose?: CallableFunction;
   private readonly _emitOnChangeVisibility?: (changes: SidebarChangeEvent) => void;
+  private readonly _destroyResponsive?: () => void;
 
   constructor(options: SidebarConfig = {}) {
     const config = {...DEFAULT_CONFIG, ...options};
@@ -83,7 +86,7 @@ export class SidebarElement implements SidebarBase {
     this.setSwipeGestures(true);
 
     if (this.responsive || this.mainContent) {
-      this.setResponsive();
+      this._destroyResponsive = this.setResponsive(config.responsive);
     }
 
     this.setPosition(config.position!);
@@ -117,12 +120,13 @@ export class SidebarElement implements SidebarBase {
     this.backdrop.removeEventListener('click', this.close);
     this.removeNativeOpenGestures();
     this.removeAttrsEventsListeners(this.component.getAttribute(SIDEBARJS)!);
-    this.removeComponentClassPosition();
+    this.removeComponentClassPosition(true);
     while (this.container.firstElementChild) {
       this.component.appendChild(this.container.firstElementChild);
     }
     this.component.removeChild(this.container);
     this.component.removeChild(this.backdrop);
+    this._destroyResponsive?.();
     Object.keys(this).forEach((key) => ((this as any)[key] = null));
   }
 
@@ -343,14 +347,35 @@ export class SidebarElement implements SidebarBase {
     this.applyStyle(this.backdrop, 'opacity', opacity.toString());
   }
 
-  private setResponsive(): void {
+  private setResponsive(breakpoint?: SidebarConfig['responsive']) {
     if (!this.responsive && this.mainContent) {
       throw new Error(`You provide a [${SIDEBARJS_CONTENT}] element without set {responsive: true}`);
     }
     if (this.responsive && !this.mainContent) {
       throw new Error(`You have set {responsive: true} without provide a [${SIDEBARJS_CONTENT}] element`);
     }
-    this.addComponentClass('sidebarjs--responsive');
+    this.addComponentClass(SIDEBARJS_RESPONSIVE);
+    const destroyMediaQuery = this.setMediaQuery(breakpoint);
+    return () => {
+      destroyMediaQuery();
+      this.removeComponentClass(SIDEBARJS_RESPONSIVE);
+    };
+  }
+
+  private setMediaQuery(breakpoint?: SidebarConfig['responsive']) {
+    const value = MediaQuery.getValidBreakpoint(breakpoint);
+    const mediaQuery = window.matchMedia(`(min-width: ${value})`);
+    const toggleMediaQueryClass = (e: MediaQueryList | MediaQueryListEvent) => this.toggleDesktopBreakpointClass(e.matches);
+    mediaQuery.addEventListener('change', toggleMediaQueryClass, EVENT_LISTENER_OPTIONS);
+    toggleMediaQueryClass(mediaQuery);
+    return () => {
+      mediaQuery.removeEventListener('change', toggleMediaQueryClass);
+      this.toggleDesktopBreakpointClass(false);
+    }
+  }
+
+  private toggleDesktopBreakpointClass(isDesktop: boolean) {
+    document.body.classList.toggle('sidebarjs--desktop-breakpoint', isDesktop);
   }
 
   private applyStyle(el: HTMLElement, prop: CSSStyleProperties, val: CSSStyleValues, vendorify?: boolean): void {
