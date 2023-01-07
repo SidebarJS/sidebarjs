@@ -256,13 +256,3 @@ input[type="radio"]:checked + label:before {
 h2 {
   margin: 12px 0;
 }
-
-@media (min-width: 1025px) {
-  [sidebarjs-toggle="rightSidebarName"] {
-    margin-left: auto;
-  }
-
-  [sidebarjs-toggle="leftSidebarName"], [sidebarjs-toggle=""] {
-    display: none;
-  }
-}
