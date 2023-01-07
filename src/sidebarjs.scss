@@ -37,6 +37,7 @@ $width: 300px;
 
 [sidebarjs].sidebarjs--left {
   @extend %component--left;
+
   [sidebarjs-container] {
     @extend %component--left;
     @include shadow('left');
@@ -45,6 +46,7 @@ $width: 300px;
 
 [sidebarjs].sidebarjs--right {
   @extend %component--right;
+
   [sidebarjs-container] {
     @extend %component--right;
     @include shadow('right');
@@ -87,6 +89,7 @@ $width: 300px;
   &.sidebarjs--is-moving {
     transition: none;
     transform: translate(0, 0);
+
     [sidebarjs-container], [sidebarjs-backdrop] {
       transition: none;
     }
@@ -98,34 +101,41 @@ $width: 300px;
   width: 100%;
   min-height: 100%;
   transition: width $duration $timing;
+
   &.sidebarjs-content--left {
     margin-left: auto;
     margin-right: 0;
   }
+
   &.sidebarjs-content--right {
     margin-left: 0;
     margin-right: auto;
   }
 }
 
-@media (min-width: 1025px) {
+.sidebarjs--desktop-breakpoint {
   [sidebarjs].sidebarjs--responsive {
     @include component--is-visible(!important);
     width: $width;
+
     &.sidebarjs--left {
       left: 0;
       right: auto;
+
       [sidebarjs-container] {
         box-shadow: 1px 0 0 rgba(black, .1);
       }
     }
+
     &.sidebarjs--right {
       right: 0;
       left: auto;
+
       [sidebarjs-container] {
         box-shadow: -1px 0 0 rgba(black, .1);
       }
     }
+
     [sidebarjs-container] {
       max-width: none;
       width: 100%;
@@ -135,6 +145,7 @@ $width: 300px;
 
   [sidebarjs-content] {
     width: calc(100% - #{$width});
+
     &.sidebarjs-content--left.sidebarjs-content--right {
       width: calc(100% - #{$width*2});
       margin: 0 auto;

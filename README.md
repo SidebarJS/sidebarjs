@@ -57,7 +57,8 @@ const sidebarjs = new SidebarJS.SidebarElement({
     // Backdrop opacity on sidebar open
     backdropOpacity?: 0.3,
     
-    // Show sidebar on screen > 1024px
+    // If true, it show sidebar on screen > 1024px
+    // If string, it set a custom breakpoint -> responsive: '800px' (available units: px | rem | em)
     responsive?: false,
     
     // Page content if sidebar has option responsive
