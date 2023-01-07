@@ -1,6 +1,8 @@
-$timing: ease;
-$duration: .3s;
-$width: 300px;
+:root {
+  --sidebarjs-width: 300px;
+  --sidebarjs-transition-duration: .3s;
+  --sidebarjs-transition-timing-function: ease;
+}
 
 @mixin shadow($position) {
   $x: 0;
@@ -19,14 +21,6 @@ $width: 300px;
   height: 100%;
 }
 
-@mixin component--is-visible($important: null) {
-  transform: translate(0, 0) $important;
-  transition: transform 0s $timing 0s;
-  [sidebarjs-container] {
-    transform: translate(0, 0) $important;
-  }
-}
-
 %component--left {
   transform: translate(-100%, 0);
 }
@@ -35,31 +29,12 @@ $width: 300px;
   transform: translate(100%, 0);
 }
 
-[sidebarjs].sidebarjs--left {
-  @extend %component--left;
-
-  [sidebarjs-container] {
-    @extend %component--left;
-    @include shadow('left');
-  }
-}
-
-[sidebarjs].sidebarjs--right {
-  @extend %component--right;
-
-  [sidebarjs-container] {
-    @extend %component--right;
-    @include shadow('right');
-    margin-left: auto;
-  }
-}
-
 [sidebarjs-backdrop] {
   @extend %component--full-screen;
   position: absolute;
   background: #000;
   opacity: 0;
-  transition: opacity $duration $timing;
+  transition: opacity var(--sidebarjs-transition-duration) var(--sidebarjs-transition-timing-function);
   will-change: opacity;
 }
 
@@ -69,10 +44,10 @@ $width: 300px;
   display: flex;
   flex-direction: column;
   width: 90%;
-  max-width: $width;
+  max-width: var(--sidebarjs-width);
   height: 100%;
   background: #fff;
-  transition: transform $timing $duration;
+  transition: transform var(--sidebarjs-transition-timing-function) var(--sidebarjs-transition-duration);
   will-change: transform;
 }
 
@@ -80,18 +55,43 @@ $width: 300px;
   @extend %component--full-screen;
   position: fixed;
   z-index: 9999;
-  transition: transform 0s $timing $duration;
+  transition: transform 0s var(--sidebarjs-transition-timing-function) var(--sidebarjs-transition-duration);
 
   &.sidebarjs--is-visible {
-    @include component--is-visible;
+    transform: translate(0, 0);
+    transition: transform 0s var(--sidebarjs-transition-timing-function) 0s;
+
+    [sidebarjs-container] {
+      transform: translate(0, 0);
+    }
   }
 
   &.sidebarjs--is-moving {
-    transition: none;
     transform: translate(0, 0);
 
-    [sidebarjs-container], [sidebarjs-backdrop] {
-      transition: none;
+    &, [sidebarjs-container], [sidebarjs-backdrop] {
+      transition: none !important;
+    }
+  }
+
+  &.sidebarjs--left {
+    &, [sidebarjs-container] {
+      @extend %component--left;
+    }
+
+    [sidebarjs-container] {
+      @include shadow('left');
+    }
+  }
+
+  &.sidebarjs--right {
+    &, [sidebarjs-container] {
+      @extend %component--right;
+    }
+
+    [sidebarjs-container] {
+      @include shadow('right');
+      margin-left: auto;
     }
   }
 }
@@ -100,7 +100,7 @@ $width: 300px;
   position: relative;
   width: 100%;
   min-height: 100%;
-  transition: width $duration $timing;
+  transition: width var(--sidebarjs-transition-duration) var(--sidebarjs-transition-timing-function);
 
   &.sidebarjs-content--left {
     margin-left: auto;
@@ -114,13 +114,29 @@ $width: 300px;
 }
 
 .sidebarjs--desktop-breakpoint {
-  [sidebarjs].sidebarjs--responsive {
-    @include component--is-visible(!important);
-    width: $width;
+  display: flex;
+
+  [sidebarjs-backdrop] {
+    display: none;
+  }
+
+  [sidebarjs] {
+    position: relative;
+    flex-shrink: 0;
+    height: 100vh;
+    width: 0;
+    transition: width var(--sidebarjs-transition-duration) var(--sidebarjs-transition-timing-function);
+
+    &.sidebarjs--transition-start {
+      will-change: width;
+    }
+
+    &.sidebarjs--is-visible {
+      width: var(--sidebarjs-width);
+    }
 
     &.sidebarjs--left {
-      left: 0;
-      right: auto;
+      order: 0;
 
       [sidebarjs-container] {
         box-shadow: 1px 0 0 rgba(black, .1);
@@ -128,12 +144,15 @@ $width: 300px;
     }
 
     &.sidebarjs--right {
-      right: 0;
-      left: auto;
+      order: 1000;
 
       [sidebarjs-container] {
         box-shadow: -1px 0 0 rgba(black, .1);
       }
+    }
+
+    &, [sidebarjs-container] {
+      transform: none;
     }
 
     [sidebarjs-container] {
@@ -141,14 +160,15 @@ $width: 300px;
       width: 100%;
       box-shadow: none;
     }
+
+    &:not(.sidebarjs--is-visible) {
+      [sidebarjs-container] {
+        overflow-x: hidden;
+      }
+    }
   }
 
-  [sidebarjs-content] {
-    width: calc(100% - #{$width});
-
-    &.sidebarjs-content--left.sidebarjs-content--right {
-      width: calc(100% - #{$width*2});
-      margin: 0 auto;
-    }
+  [sidebarjs-content].sidebarjs-content--left.sidebarjs-content--right {
+    margin: 0 auto;
   }
 }

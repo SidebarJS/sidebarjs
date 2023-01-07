@@ -3,7 +3,6 @@ export const SIDEBARJS_FALLBACK_NAME = '';
 export const SIDEBARJS_CONTENT = 'sidebarjs-content';
 export const SIDEBARJS_TRANSITION_START = 'sidebarjs--transition-start';
 export const SIDEBARJS_TRANSITION_END = 'sidebarjs--transition-end';
-export const SIDEBARJS_RESPONSIVE = 'sidebarjs--responsive';
 export const IS_VISIBLE = `${SIDEBARJS}--is-visible`;
 export const IS_MOVING = `${SIDEBARJS}--is-moving`;
 export const POSITIONS: SidebarPosition[] = [SidebarPosition.Left, SidebarPosition.Right];

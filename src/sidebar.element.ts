@@ -17,7 +17,6 @@ import {
   SidebarConfig,
   SIDEBARJS,
   SIDEBARJS_CONTENT,
-  SIDEBARJS_RESPONSIVE,
   SIDEBARJS_TRANSITION_END,
   SIDEBARJS_TRANSITION_START,
   SidebarPosition,
@@ -131,15 +130,15 @@ export class SidebarElement implements SidebarBase {
   }
 
   public setPosition(position: SidebarPosition): void {
-    this.addComponentClass(IS_MOVING);
-    this.position = POSITIONS.indexOf(position) >= 0 ? position : SidebarPosition.Left;
-    const resetMainContent = (document.querySelectorAll(`[${SIDEBARJS}]`) || []).length === 1;
-    this.removeComponentClassPosition(resetMainContent);
-    this.addComponentClass(`${SIDEBARJS}--${this.position}`);
-    if (this.responsive && this.mainContent) {
-      this.mainContent.classList.add(`${SIDEBARJS_CONTENT}--${this.position}`);
-    }
-    setTimeout(() => this.component && this.removeComponentClass(IS_MOVING), 200);
+    this.invokeWithoutComponentTransition(() => {
+      this.position = POSITIONS.indexOf(position) >= 0 ? position : SidebarPosition.Left;
+      const resetMainContent = (document.querySelectorAll(`[${SIDEBARJS}]`) || []).length === 1;
+      this.removeComponentClassPosition(resetMainContent);
+      this.addComponentClass(`${SIDEBARJS}--${this.position}`);
+      if (this.responsive && this.mainContent) {
+        this.mainContent.classList.add(`${SIDEBARJS_CONTENT}--${this.position}`);
+      }
+    }, true);
   }
 
   public addAttrsEventsListeners(sidebarName: string): void {
@@ -354,12 +353,8 @@ export class SidebarElement implements SidebarBase {
     if (this.responsive && !this.mainContent) {
       throw new Error(`You have set {responsive: true} without provide a [${SIDEBARJS_CONTENT}] element`);
     }
-    this.addComponentClass(SIDEBARJS_RESPONSIVE);
     const destroyMediaQuery = this.setMediaQuery(breakpoint);
-    return () => {
-      destroyMediaQuery();
-      this.removeComponentClass(SIDEBARJS_RESPONSIVE);
-    };
+    return () => destroyMediaQuery();
   }
 
   private setMediaQuery(breakpoint?: SidebarConfig['responsive']) {
@@ -371,11 +366,23 @@ export class SidebarElement implements SidebarBase {
     return () => {
       mediaQuery.removeEventListener('change', toggleMediaQueryClass);
       this.toggleDesktopBreakpointClass(false);
-    }
+    };
+  }
+
+  private removeIsMovingComponentClass = () => {
+    this.component && this.removeComponentClass(IS_MOVING);
+  };
+
+  private invokeWithoutComponentTransition(fn: () => void, isAsync?: boolean) {
+    this.addComponentClass(IS_MOVING);
+    fn();
+    isAsync ? setTimeout(this.removeIsMovingComponentClass, 200) : this.removeIsMovingComponentClass();
   }
 
   private toggleDesktopBreakpointClass(isDesktop: boolean) {
-    document.body.classList.toggle('sidebarjs--desktop-breakpoint', isDesktop);
+    this.invokeWithoutComponentTransition(() => {
+      document.body.classList.toggle('sidebarjs--desktop-breakpoint', isDesktop);
+    }, true);
   }
 
   private applyStyle(el: HTMLElement, prop: CSSStyleProperties, val: CSSStyleValues, vendorify?: boolean): void {
