@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/dt/sidebarjs.svg)](https://www.npmjs.com/package/sidebarjs)
 
 # SidebarJS
-Create mobile sidebar/sidenav experiance in pure javascript.
+Create mobile sidebar/sidenav experience in pure javascript.
 
 ```ssh
 npm install sidebarjs --save
